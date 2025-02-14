@@ -19,7 +19,8 @@ public class ProductBean implements Serializable {
     public ProductBean() {
         File file = new File(filename);
         if (file.exists()) {
-            try (FileReader fileReader = new FileReader(file)) {
+            try {
+                FileReader fileReader = new FileReader(file);
                 JsonObject jsonObject =
                         JsonbBuilder.create().fromJson(fileReader, JsonObject.class);
                 products = JsonbBuilder.create().fromJson(jsonObject.getJsonArray("products").toString(),
