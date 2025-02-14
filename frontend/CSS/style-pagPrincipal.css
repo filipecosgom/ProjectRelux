@@ -1,0 +1,123 @@
+/* Cabeçalho */
+
+@font-face {
+  font-family: "Nature Impact Demo";
+  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
+}
+
+.bem-vindo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza o nome */
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  color: #e5e0d8;
+}
+
+.logout a:hover {
+  background-color: #710707;
+  color: white;
+}
+/*Esconde o botão quando temos o nome do utilizador no cabeçalho*/
+.botao_login.hidden {
+  display: none;
+}
+/*Botão de adicionar produto que está por cima da barra de header*/
+.adicionar_produto a {
+  background-color: #e5e0d8;
+  color: #809671;
+  font-family: "Courier New", Courier, monospace;
+  padding: 10px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  gap: 15px;
+}
+
+.adicionar_produto a:hover {
+  background-color: #809671;
+  color: white;
+}
+
+.botao_login,
+.logout,
+.formulario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+}
+
+/*organizar produtos dentro do main*/
+
+.lista_produtos {
+  display: flex;
+  gap: 5px; /* Espaçamento entre os cartões */
+  justify-content: left; /* Centraliza os cartões horizontalmente */
+  align-items: flex-start; /* Alinha os itens no topo */
+  flex-wrap: wrap; /* Permite que os cartões se ajustem em várias linhas, se necessário */
+  margin: 5px;
+  padding: 2;
+}
+/* Estilo do cartão do produto */
+.cartao_produto {
+  width: 220px;
+  background-color: var(--primary-300);
+  border: 3px solid var(--white-100);
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  justify-content: center; /* Alinha horizontalmente */
+  align-items: center; /* Alinha verticalmente */
+  margin: 7px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartao_produto img {
+  width: 200px;
+  height: 220px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.cartao_produto h2 {
+  margin: 5px;
+  font-size: 15px;
+  color: var(--white-100);
+}
+
+.cartao_produto p,
+.product-description {
+  margin: 2px;
+  color: var(--white-100);
+}
+
+.product-price {
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--white-100);
+}
+
+.botao_comprar_produto {
+  background-color: var(--primary-200);
+  color: var(--white-100);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+}
+
+.botao_comprar_produto:hover {
+  background-color: var(--primary-400);
+  color: var(--white-100);
+}

@@ -1,0 +1,23 @@
+.footer {
+  background-color: #282f23; /* Cor de fundo escura */
+  color: #fff; /* Texto branco */
+  padding: 20px; /* Espaçamento interno */
+  display: flex; /* Usa Flexbox */
+  flex-direction: row;
+  justify-content: space-between; /* Distribui os elementos */
+  align-items: center; /* Alinha verticalmente */
+  flex-wrap: wrap; /* Garante que se ajuste em telas menores */
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Estilização da seção de direitos autorais */
+.direitos_autor {
+  text-align: left;
+}
+
+/* Estilização do Centro de Atendimento */
+.centro_atendimento {
+  text-align: right;
+}

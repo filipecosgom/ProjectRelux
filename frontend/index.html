@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
+  <link rel="stylesheet" type="text/css" href="./CSS/style-pagPrincipal.css" />
+
+  <script defer src="./javaScript/loadCommons.js"></script>
+  <script defer src="./javaScript/index.js"></script>
+  <!--
+    <script defer src="./javaScript/novo_produto.js"></script>
+    <script defer src="./javaScript/pagina-principal.js"></script>
+    -->
+
+  <title>LoopMarket</title>
+</head>
+
+<body>
+  <header id="header"></header>
+
+  <div class="formulario_novo_produto" id="formulario_novo_produto">
+    <form class="conteudo_form">
+      <h1>Novo Produto</h1>
+
+      <div class="Título">
+        <label for="text"><b>Título</b></label>
+        <input type="text" placeholder="Introduza um título para o seu produto" id="titulo" required />
+      </div>
+
+      <div class="Descrição">
+        <label for="nome"><b>Descrição</b></label>
+        <input type="text" id="descricao" name="descricao" title="Descrição do produto"
+          placeholder="Introduza a descrição do produto" required />
+      </div>
+
+      <div class="Categoria">
+        <label for="text"><b>Categoria</b></label>
+        <br />
+        <select name="categoria" id="categoria">
+          <option value="homem">Homem</option>
+          <option value="mulher">Mulher</option>
+          <option value="crianca">Criança</option>
+          <option value="NA">Não aplicável</option>
+        </select>
+        <br />
+      </div>
+      <br />
+      <div class="Tamanho">
+        <label for="text"><b>Tamanho</b></label>
+        <br />
+        <select name="tamanho" id="tamanho">
+          <option value="s">S</option>
+          <option value="m">M</option>
+          <option value="L">L</option>
+          <option value="NA">Não aplicável</option>
+        </select>
+      </div>
+
+      <br />
+      <div class="Preço">
+        <label for="text"><b>Preço</b></label>
+        <input type="text" placeholder="Introduza o preço de venda" required />
+      </div>
+
+      <div class="Foto">
+        <label for="imagem"><b> Insira um link da imagem:</b></label>
+        <input type="text" id="imagem" placeholder="Cole o link da imagem aqui" required />
+      </div>
+
+      <div class="Localização">
+        <label for="text"><b>Localização</b></label>
+        <input type="text" placeholder="Em que zona do país é que se encontra?" required />
+      </div>
+
+      <button type="submit" class="btn">Submeter produto</button>
+      <button type="button" class="btn cancel" onclick="closeForm()">
+        Cancelar
+      </button>
+    </form>
+  </div>
+
+  <main class="main-container">
+    <aside>
+      <div class="sobre_nos">
+        <h1>Sobre Nós</h1>
+        <p class="sobre_nos">
+          Somos uma empresa que promove a enconomia circular.
+        </p>
+      </div>
+      <div class="produtos_permitidos">
+        <p class="produtos_permitidos">
+          Só é permitida a comercialização de
+          <strong>VESTUÁRIO</strong>
+        </p>
+      </div>
+    </aside>
+    <div class="lista_produtos" id="lista_produtos"></div>
+  </main>
+
+  <footer id="footer"></footer>
+</body>
+
+</html>
