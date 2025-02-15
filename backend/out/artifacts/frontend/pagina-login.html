@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="./CSS/index.css" />
+
+  <script defer src="./javaScript/novo-registo.js"></script>
+  <script defer src="./javaScript/login.js"></script>
+  <script defer src="./javaScript/loadCommons.js"></script>
+
+  <title>LogIn</title>
+</head>
+
+<body>
+  <header id="header"></header>
+
+  <main class="login">
+    <div class="login-container">
+      <h2>Login</h2>
+      <form id="formulario_login">
+        <label for="username">Nome de Utilizador</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Entrar</button>
+        <a href="novo-registo.html">
+          <button type="button">Registar</button>
+        </a>
+      </form>
+    </div>
+  </main>
+
+
+  <footer id="footer"></footer>
+</body>
+
+</html>

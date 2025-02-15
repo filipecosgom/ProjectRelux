@@ -1,0 +1,15 @@
+### VS Code ###
+.vscode/
+
+### IntelliJ IDEA ###
+.idea
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Prettier ###
+.prettierrc

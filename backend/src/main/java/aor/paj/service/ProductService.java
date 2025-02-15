@@ -26,7 +26,7 @@ public class ProductService {
     }
 
     @GET
-    @Path("/productId{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") String id) {
         ProductDto productDto = productBean.getProductById(id);

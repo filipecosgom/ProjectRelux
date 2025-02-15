@@ -26,18 +26,6 @@ async function getAllProducts() {
   return products;
 }
 
-async function addProduct(product) {
-  const response = await fetch(`${rootPath}/product/add`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(product),
-  });
-  const result = await response.json();
-  return result;
-}
-
 async function displayProducts() {
   const mainContainer = document.querySelector('.card-container');
   const products = await getAllProducts();

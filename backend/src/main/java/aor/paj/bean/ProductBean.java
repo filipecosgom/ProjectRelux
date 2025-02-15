@@ -47,18 +47,6 @@ public class ProductBean implements Serializable {
         }
         return null;
     }
-
-    public UserPojo getUser(String username, String password) {
-        for (UserPojo u1 : userPojos) {
-            if (u1.getUsername().equals(username) && u1.getPassword().equals(password))
-                return u1;
-        }
-        return null;
-    }
-
-    public void adicionar_utilizador(UserPojo u1) {
-        userPojos.add(u1);
-    }
 }
 
 

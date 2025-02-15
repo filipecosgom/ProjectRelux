@@ -1,5 +1,5 @@
 package aor.paj.service;
-
+/*
 
 import aor.paj.bean.UserBean;
 import aor.paj.dto.UserDto;
@@ -42,3 +42,6 @@ public class UserService {
         return Response.status(200).entity("Erro de Login").build();
     }
 }
+
+
+ */

@@ -1,5 +1,5 @@
 package aor.paj.bean;
-
+/*
 import aor.paj.pojo.UserPojo;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -37,3 +37,5 @@ return true;
      }
  }
 }
+
+ */
