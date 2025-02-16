@@ -3,6 +3,7 @@ package aor.paj.dto;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
@@ -19,6 +20,7 @@ public class ProductDto {
     private List<AvaliacaoDto> avaliacoes;
 
     public ProductDto() {
+        this.avaliacoes = new ArrayList<>();
     }
 
     public ProductDto(String titulo, String categoria, double preco,
@@ -34,7 +36,7 @@ public class ProductDto {
         this.id = id;
         this.dataDePublicacao = dataDePublicacao;
         this.userAutor = userAutor;
-        this.avaliacoes = avaliacoes;
+        this.avaliacoes = (avaliacoes != null) ? avaliacoes : new ArrayList<>();
     }
 
     @XmlElement
@@ -121,5 +123,9 @@ public class ProductDto {
     @XmlElement
     public List<AvaliacaoDto> getAvaliacoes() {
         return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<AvaliacaoDto> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
 }

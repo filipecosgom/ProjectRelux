@@ -55,7 +55,11 @@ async function displayMostRatedProducts() {
   const mainContainer = document.querySelector('.most-rated-products');
   const products = await getAllProducts();
   const mostRatedProducts = products
-    .sort((a, b) => b.rating - a.rating)
+    .map(product => ({
+      ...product,
+      mediaEstrelas: gerarRating(product.avaliacoes).mediaEstrelas,
+    }))
+    .sort((a, b) => b.mediaEstrelas - a.mediaEstrelas)
     .slice(0, 3);
   mainContainer.innerHTML = '';
   mostRatedProducts.forEach(p => {
@@ -66,6 +70,7 @@ async function displayMostRatedProducts() {
 
 // Cria a card do produto
 function createCard(product) {
+  const rating = gerarRating(product.avaliacoes);
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
@@ -74,7 +79,7 @@ function createCard(product) {
       <h1>${product.titulo}</h1>
       <h4>${product.local}</h4>
       <h2>${product.categoria}</h2>
-      <h3 class="rating">${gerarRating(product.avaliacoes)}</h3>
+      <h3 class="rating">${rating.estrelas}</h3>
       <span>${parseFloat(product.preco).toFixed(2)}€</span>
       <button type="button" title="descricao">Saber mais</button>
     </div>
@@ -94,8 +99,8 @@ function gerarRating(avaliacoes) {
   for (let avaliacao of avaliacoes) {
     totalEstrelas += avaliacao.estrelas;
   }
-  let mediaEstrelas = totalEstrelas / avaliacoes.length;
-
+  let mediaEstrelas =
+    avaliacoes.length > 0 ? totalEstrelas / avaliacoes.length : 0;
   let estrelas = '';
   for (let i = 0; i < 5; i++) {
     if (i < mediaEstrelas) {
@@ -104,5 +109,5 @@ function gerarRating(avaliacoes) {
       estrelas += '&#10032';
     }
   }
-  return estrelas;
+  return { mediaEstrelas, estrelas };
 }

@@ -3,10 +3,7 @@ package aor.paj.resource;
 import aor.paj.service.ProductService;
 import aor.paj.dto.ProductDto;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -34,5 +31,34 @@ public class ProductResource {
         return productDto == null ?
                 Response.status(200).entity("Produto não encontrado!").build() :
                 Response.ok(productDto).build();
+    }
+
+    @POST
+    public Response addProduct(ProductDto productDto) {
+        productService.addProduct(productDto);
+        return Response.status(Response.Status.CREATED).entity(productDto).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
+        ProductDto existingProduct = productService.getProductById(id);
+        if (existingProduct == null) {
+            return Response.status(404).entity("Product not found!").build();
+        }
+        productDto.setId(id); // Ensure the ID remains the same
+        productService.updateProduct(productDto);
+        return Response.ok(productDto).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteProduct(@PathParam("id") String id) {
+        ProductDto existingProduct = productService.getProductById(id);
+        if (existingProduct == null) {
+            return Response.status(404).entity("Product not found!").build();
+        }
+        productService.deleteProduct(id);
+        return Response.noContent().build();
     }
 }

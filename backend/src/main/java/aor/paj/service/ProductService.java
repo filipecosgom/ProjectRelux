@@ -1,9 +1,6 @@
 package aor.paj.service;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -14,7 +11,10 @@ import java.util.Map;
 
 import aor.paj.dto.ProductDto;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonWriter;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.json.bind.JsonbConfig;
@@ -67,17 +67,54 @@ public class ProductService implements Serializable {
 
     public void addProduct(ProductDto product) {
         productMap.put(product.getId(), product);
+        saveProductsToFile();
     }
 
     public void updateProduct(ProductDto product) {
         productMap.put(product.getId(), product);
+        saveProductsToFile();
     }
 
     public void deleteProduct(String id) {
         productMap.remove(id);
+        saveProductsToFile();
     }
 
     public List<ProductDto> getAllProducts() {
         return new ArrayList<>(productMap.values());
+    }
+
+    private void saveProductsToFile() {
+        File file = new File(filename);
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            JsonbConfig config = new JsonbConfig()
+                    .withPropertyVisibilityStrategy(new PropertyVisibilityStrategy() {
+                        @Override
+                        public boolean isVisible(Field field) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean isVisible(Method method) {
+                            return true;
+                        }
+                    }).withFormatting(true);
+            Jsonb jsonb = JsonbBuilder.create(config);
+            List<ProductDto> products = new ArrayList<>(productMap.values());
+
+            String productsJson = jsonb.toJson(products);
+            JsonArray jsonArray = Json.createReader(new StringReader(productsJson)).readArray();
+
+            JsonObject jsonObject = Json.createObjectBuilder()
+                    .add("products", jsonArray)
+                    .build();
+
+            try (JsonWriter jsonWriter = Json.createWriter(fileWriter)) {
+                jsonWriter.write(jsonObject);
+            }
+        } catch (IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }
