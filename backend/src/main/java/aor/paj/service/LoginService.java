@@ -1,4 +1,4 @@
-package aor.paj.bean;
+package aor.paj.service;
 
 import aor.paj.pojo.UserPojo;
 import jakarta.enterprise.context.SessionScoped;
@@ -6,14 +6,14 @@ import jakarta.enterprise.context.SessionScoped;
 import java.io.Serializable;
 
 @SessionScoped
-public class LoginBean implements Serializable {
+public class LoginService implements Serializable {
 
     UserPojo utilizadorAtualPojo;
 
-    public LoginBean() {
+    public LoginService() {
 
     }
-    public LoginBean(UserPojo utilizadorAtualPojo) {
+    public LoginService(UserPojo utilizadorAtualPojo) {
         this.utilizadorAtualPojo = utilizadorAtualPojo;
     }
 

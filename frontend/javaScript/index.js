@@ -1,22 +1,13 @@
 'use strict';
 
-/*jar -cvf frontend.war -C frontend .*/ // Comando para criar o ficheiro .war
-
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 
-async function getAllActivities() {
-  await fetch('http://localhost:8080/my_activities_backend/rest/activity/all', {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then(response => response.json())
-    .then(data => fillActivityTable(JSON.stringify(data)));
-}
+document.addEventListener('DOMContentLoaded', () => {
+  displayProducts();
+});
 
 async function getAllProducts() {
-  const response = await fetch(`${rootPath}/product/all`, {
+  const response = await fetch(`${rootPath}/products/all`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -27,7 +18,7 @@ async function getAllProducts() {
 }
 
 async function addProduct(product) {
-  const response = await fetch(`${rootPath}/product/add`, {
+  const response = await fetch(`${rootPath}/products/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,10 +40,6 @@ async function displayProducts() {
   });
   console.log(products);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  displayProducts();
-});
 
 // Cria a card do produto
 function createCard(produto) {

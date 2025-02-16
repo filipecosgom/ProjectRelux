@@ -1,37 +1,52 @@
 package aor.paj.service;
 
-import aor.paj.bean.ProductBean;
-import aor.paj.dto.ProductDto;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
-@Path("/product")
-public class ProductService {
+import aor.paj.dto.ProductDto;
+import aor.paj.pojo.UserPojo;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.JsonObject;
+import jakarta.json.bind.JsonbBuilder;
 
-    @Inject
-    ProductBean productBean;
+@ApplicationScoped
+public class ProductService implements Serializable {
+    private final String filename = "../database/database.json";
+    private List<ProductDto> products;
+    private ArrayList<UserPojo> userPojos;
 
-    @GET
-    @Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<ProductDto> getProducts() {
-        return productBean.getProducts();
+    public ProductService() {
+        File file = new File(filename);
+        if (file.exists()) {
+            try {
+                FileReader fileReader = new FileReader(file);
+                JsonObject jsonObject =
+                        JsonbBuilder.create().fromJson(fileReader, JsonObject.class);
+                products = JsonbBuilder.create().fromJson(jsonObject.getJsonArray("products").toString(),
+                        new ArrayList<ProductDto>() {
+                        }.getClass().getGenericSuperclass()
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            products = new ArrayList<ProductDto>();
+        }
     }
 
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductById(@PathParam("id") String id) {
-        ProductDto productDto = productBean.getProductById(id);
-        return productDto == null ?
-                Response.status(200).entity("Produto não encontrado!").build() :
-                Response.ok(productDto).build();
+    public List<ProductDto> getProducts() {
+        return products;
+    }
+
+    public ProductDto getProductById(String id) {
+        for (ProductDto product : products) {
+            if (product.getId().equals(id)) {
+                return product;
+            }
+        }
+        return null;
     }
 }
+
+

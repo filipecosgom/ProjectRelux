@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
 * {
   --primary-color: #809671;
   --primary-100: #d2deca;
@@ -20,7 +18,7 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: "Poppins", serif;
+  font-family: "Poppins", sans-serif;
 }
 
 @font-face {
@@ -63,9 +61,7 @@ header h1 {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  /* Centraliza o nome */
   font-size: 20px;
-  font-family: "Courier New", Courier, monospace;
   color: var(--secondary-color);
 }
 
@@ -90,10 +86,7 @@ header h1 {
 /* Footer */
 
 footer {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  background-color: var(--primary-400); /* Cor de fundo escura */
+  background-color: var(--primary-400);
   color: var(--white-100);
   padding: 20px; /* Espaçamento interno */
   display: flex;
@@ -102,6 +95,7 @@ footer {
   align-items: center;
   width: 100%;
   height: 60px;
+  box-sizing: border-box;
 }
 
 footer .centro_atendimento, 
@@ -111,11 +105,15 @@ footer .centro_atendimento,
 
 /* Body */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
   background-color: var(--primary-100);
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 main{
+  flex: 1;
   display: flex;
   min-height: 100vh;
   background-color: #bacbae; 
@@ -134,7 +132,8 @@ main{
 aside {
   background-color: var(--white-100);
   height: 70vh;
-  width: 20%;
+  min-width: 20vw;
+  width: 30vw;
   border: 10px solid var(--primary-400);
   padding: 10px;
   margin: 20px;
@@ -165,6 +164,7 @@ aside {
   height: 510px;
   transition: transform 0.3s ease; /* Adiciona uma transição suave para o hover */
   padding-bottom: 15px;
+  box-shadow: var(--box-shadow);
 }
 
 .card img {

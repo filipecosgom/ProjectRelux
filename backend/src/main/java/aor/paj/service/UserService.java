@@ -1,47 +1,41 @@
 package aor.paj.service;
 /*
-
-import aor.paj.bean.UserBean;
-import aor.paj.dto.UserDto;
+import aor.paj.pojo.UserPojo;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
-@Path("/users")
-public class UserService {
+
+import java.io.Serializable;
+
+@RequestScoped
+public class UserBean implements Serializable {
 
     @Inject
-    UserBean userBean;
+    LoginBean loginBean;
 
-    @Context
-    private HttpServletRequest request;
+ public boolean login(String username, String password) {
+        UserPojo
 
-    @POST
-    @Path("/register")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response register(UserDto user) {
-        if (userBean.register(user.getUsername(), user.getPassword())) {
-            return Response.status(200).entity("Parabéns! Novo utilizador registado!").build();
+        if(u1!=null){
+            loginBean.setUtilizadorAtualPojo(u1);
+            return true;
         }
-        return Response.status(200).entity("Erro! temos um utilizador registado com o mesmo username").build();
-
-    }
-
-    @POST
-    @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response login(UserDto user) {
-        if (userBean.login(user.getUsername(), user.getPassword())) {
-            return Response.status(200).entity("Login efetuado com sucesso").build();
+        else{
+            return false;
         }
-        return Response.status(200).entity("Erro de Login").build();
-    }
+ }
+
+ public boolean register(String username, String password) {
+     UserPojo u1= UserBean.getUser(username,password);
+
+     if (u1 != null) {
+         u1= new UserPojo(username,password);
+         productBean.adicionar_utilizador(u1);
+return true;
+     } else{
+         return false;
+     }
+ }
 }
-
 
  */
