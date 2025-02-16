@@ -1,24 +1,15 @@
 package aor.paj.service;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import aor.paj.dto.ProductDto;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonWriter;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.json.bind.JsonbConfig;
-import jakarta.json.bind.config.PropertyVisibilityStrategy;
 
 @ApplicationScoped
 public class ProductService implements Serializable {

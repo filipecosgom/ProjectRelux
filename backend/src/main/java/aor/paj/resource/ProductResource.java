@@ -6,7 +6,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.util.List;
 
 @Path("/products")
@@ -34,6 +33,8 @@ public class ProductResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addProduct(ProductDto productDto) {
         productService.addProduct(productDto);
         return Response.status(Response.Status.CREATED).entity(productDto).build();
@@ -41,6 +42,8 @@ public class ProductResource {
 
     @PUT
     @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
         ProductDto existingProduct = productService.getProductById(id);
         if (existingProduct == null) {
@@ -53,6 +56,7 @@ public class ProductResource {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
     public Response deleteProduct(@PathParam("id") String id) {
         ProductDto existingProduct = productService.getProductById(id);
         if (existingProduct == null) {
