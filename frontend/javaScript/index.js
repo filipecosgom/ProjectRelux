@@ -2,29 +2,35 @@
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 
+const addProductURL = `${rootPath}/products/add`;
+
 document.addEventListener('DOMContentLoaded', () => {
   displayProducts();
 });
 
 async function getAllProducts() {
-  const response = await fetch(`${rootPath}/products/all`, {
+  const requestURL = `${rootPath}/products/all`;
+  const request = new Request(requestURL, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
     },
   });
+  const response = await fetch(request);
   const products = await response.json();
   return products;
 }
 
 async function addProduct(product) {
-  const response = await fetch(`${rootPath}/products/add`, {
+  const requestURL = addProductURL;
+  const request = new Request(requestURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(product),
   });
+  const response = await fetch(request);
   const result = await response.json();
   return result;
 }

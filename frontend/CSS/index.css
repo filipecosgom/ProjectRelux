@@ -130,6 +130,8 @@ main{
 }
 
 aside {
+  position: sticky;
+  top: 100px;
   background-color: var(--white-100);
   height: 70vh;
   min-width: 20vw;
@@ -142,6 +144,15 @@ aside {
 }
 
 /* Cartões de produtos */
+.main-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
 .card-container {
   margin-top: 20px;
   margin-bottom: 20px;
