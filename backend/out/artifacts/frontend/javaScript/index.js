@@ -19,7 +19,6 @@ async function getAllProducts() {
   });
   const response = await fetch(request);
   const products = await response.json();
-  console.log(products);
   return products;
 }
 
@@ -48,7 +47,6 @@ async function displayMostRecentProducts() {
     const card = createCard(p);
     mainContainer.appendChild(card);
   });
-  console.log(products);
 }
 
 async function displayMostRatedProducts() {

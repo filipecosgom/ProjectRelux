@@ -1,8 +1,8 @@
 'use strict';
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
-const addProductURL = `${rootPath}/products/add`;
 
 document.addEventListener('DOMContentLoaded', () => {
   displayMostRecentProducts();
@@ -19,12 +19,11 @@ async function getAllProducts() {
   });
   const response = await fetch(request);
   const products = await response.json();
-  console.log(products);
   return products;
 }
 
 async function addProduct(product) {
-  const requestURL = addProductURL;
+  const requestURL = productsPath;
   const request = new Request(requestURL, {
     method: 'POST',
     headers: {
@@ -48,7 +47,6 @@ async function displayMostRecentProducts() {
     const card = createCard(p);
     mainContainer.appendChild(card);
   });
-  console.log(products);
 }
 
 async function displayMostRatedProducts() {
@@ -84,12 +82,10 @@ function createCard(product) {
       <button type="button" title="descricao">Saber mais</button>
     </div>
   `;
-
   const button = card.querySelector('button');
   button.addEventListener('click', () => {
     window.location.href = `detalhes-produtos.html?id=${product.id}`;
   });
-
   return card;
 }
 
