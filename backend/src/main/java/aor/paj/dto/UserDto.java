@@ -3,28 +3,104 @@ package aor.paj.dto;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.util.List;
+
 @XmlRootElement
 public class UserDto {
     private String username;
     private String password;
+    private String primeiro_nome;
+    private String ultimo_nome;
+    private String email;
+    private String telefone;
+    private String imagem;
+    private List<String> produtos;
 
     public UserDto() {
     }
 
-    public UserDto(String username, String password) {
+    public UserDto(String username, String password, String primeiro_nome,
+                   String ultimo_nome, String email, String telefone, String imagem, List<String> produtos) {
         this.username = username;
         this.password = password;
+        this.primeiro_nome = primeiro_nome;
+        this.ultimo_nome = ultimo_nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.imagem = imagem;
+        this.produtos = produtos;
     }
-
 
     @XmlElement
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @XmlElement
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @XmlElement
+    public String getPrimeiro_nome() {
+        return primeiro_nome;
+    }
+
+    public void setPrimeiro_nome(String primeiro_nome) {
+        this.primeiro_nome = primeiro_nome;
+    }
+
+    @XmlElement
+    public String getUltimo_nome() {
+        return ultimo_nome;
+    }
+
+    public void setUltimo_nome(String ultimo_nome) {
+        this.ultimo_nome = ultimo_nome;
+    }
+
+    @XmlElement
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @XmlElement
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    @XmlElement
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    @XmlElement
+    public List<String> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<String> produtos) {
+        this.produtos = produtos;
     }
 }
 

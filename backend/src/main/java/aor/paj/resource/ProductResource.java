@@ -21,8 +21,9 @@ public class ProductResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ProductDto> getProducts() {
-        return productService.getProducts();
+    public Response getAllProducts() {
+        List<ProductDto> products = productService.getAllProducts();
+        return Response.ok(products).build();
     }
 
     @GET

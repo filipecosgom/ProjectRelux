@@ -80,10 +80,11 @@ header .fa {
   color: var(--white-100);
 }
 
+/* Classe para esconder objetos na página */
 .hidden {
   display: none;
 }
-
+/**/
 .navbar {
   display: flex;
 }
@@ -117,7 +118,7 @@ body {
   background-color: var(--primary-100);
 }
 
-main{
+main {
   flex: 1;
   display: flex;
   justify-content: space-around;
@@ -140,6 +141,7 @@ aside {
   top: 100px;
   background-color: var(--white-100);
   height: fit-content;
+  width: fit-content;
   max-width: 20vw;
   border: 10px solid var(--primary-400);
   padding: 10px;
