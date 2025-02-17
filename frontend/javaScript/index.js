@@ -225,7 +225,7 @@ async function submitLoginForm() {
   }
 }
 
-async function welcome_paramts() {
+function welcome_paramts() {
   const user = sessionStorage.getItem("user");
 
   if (user) {
@@ -233,6 +233,7 @@ async function welcome_paramts() {
     welcomeMessage.classList.remove("hidden");
     welcomeMessage.innerHTML = `<a href="pagina_perfil_utilizador.html">Bemvindo/a ${user.nome}</a>!`;
   } else {
+    console.log("Não temos um user logado");
   }
 }
 welcome_paramts();
