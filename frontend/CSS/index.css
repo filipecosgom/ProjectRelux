@@ -12,18 +12,18 @@
   --black: #000;
   --white: #fff;
   --white-100: #e5e0d8;
-  --box-shadow: box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 @font-face {
-  font-family: "Nature Impact Demo";
-  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
+  font-family: 'Nature Impact Demo';
+  src: url('../fonts/Nature Impact Demo.otf') format('opentype');
 }
 
 /* Header */
@@ -41,7 +41,6 @@ header {
   align-items: center;
   height: 100px;
   width: 100%;
-  position: relative;
   box-sizing: border-box;
   margin: 0;
 }
@@ -52,7 +51,7 @@ header a {
 }
 
 header h1 {
-  font-family: "Nature Impact Demo", sans-serif;
+  font-family: 'Nature Impact Demo', sans-serif;
   margin: 5px;
   flex: 1;
 }
@@ -104,7 +103,7 @@ footer {
   box-sizing: border-box;
 }
 
-footer .centro_atendimento, 
+footer .centro_atendimento,
 .direitos_autor {
   font-size: 0.6rem;
 }
@@ -123,7 +122,7 @@ main {
   display: flex;
   justify-content: space-around;
   min-height: 100vh;
-  background-color: #bacbae; 
+  background-color: #bacbae;
 }
 
 .login {
@@ -131,7 +130,7 @@ main {
   justify-content: center;
 }
 
-.registo-container{
+.registo-container {
   display: flex;
   justify-content: center;
 }
@@ -161,10 +160,7 @@ aside {
 }
 
 .card-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 20px auto 20px auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -197,31 +193,31 @@ aside {
   margin-right: 20px;
   display: block;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
 }
 
 .card h1 {
   color: var(--secondary-color);
   font-size: 1.2rem;
   text-align: left;
-  margin: 0%;
+  margin: 0;
 }
 
 .card h2 {
   font-size: 0.9rem;
   color: var(--primary-300);
-  margin: 0%;
+  margin: 0;
 }
 
 .card h3 {
   font-size: 1rem; /* Corrige o tamanho da fonte */
   color: var(--complementary-color);
-  margin: 0%;
+  margin: 0;
 }
 
 .card h4 {
   font-size: 0.9rem;
-  margin: 0%;
+  margin: 0;
   color: var(--complementary-color);
 }
 
@@ -300,7 +296,7 @@ aside {
   box-shadow: var(--box-shadow);
   margin-bottom: 100px;
   width: 30vw;
-  margin-top:20px;
+  margin-top: 20px;
 }
 
 .registo-container {
@@ -340,7 +336,7 @@ aside {
   font-size: 16px;
   cursor: pointer;
 }
-  
+
 .registo-container button:hover {
   background-color: var(--primary-400);
 }
@@ -348,12 +344,12 @@ aside {
 /*Formulário Registo de Produto */
 
 .formulario_novo_produto {
-  display: none; 
+  display: none;
   position: fixed;
   top: 10px;
   right: 0;
   width: 50%;
-  max-height: 90vh; 
+  max-height: 90vh;
   border-left: 3px solid var(--primary-200);
   background-color: var(--white-100);
   padding: 20px;
@@ -368,7 +364,7 @@ aside {
 
 .conteudo_form input,
 .conteudo_caixas_texto {
-  display:flex;
+  display: flex;
   width: 70%;
   padding: 10px;
   margin: 5px 0 10px;
