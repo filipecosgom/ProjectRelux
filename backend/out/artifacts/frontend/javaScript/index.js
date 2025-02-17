@@ -1,8 +1,8 @@
 'use strict';
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
-const addProductURL = `${rootPath}/products/add`;
 
 document.addEventListener('DOMContentLoaded', () => {
   displayMostRecentProducts();
@@ -23,7 +23,7 @@ async function getAllProducts() {
 }
 
 async function addProduct(product) {
-  const requestURL = addProductURL;
+  const requestURL = productsPath;
   const request = new Request(requestURL, {
     method: 'POST',
     headers: {
@@ -82,12 +82,10 @@ function createCard(product) {
       <button type="button" title="descricao">Saber mais</button>
     </div>
   `;
-
   const button = card.querySelector('button');
   button.addEventListener('click', () => {
     window.location.href = `detalhes-produtos.html?id=${product.id}`;
   });
-
   return card;
 }
 
@@ -108,4 +106,80 @@ function gerarRating(avaliacoes) {
     }
   }
   return { mediaEstrelas, estrelas };
+}
+
+async function gerarDetalhesDoProduto() {
+  const produtos = await getAllProducts();
+  const containerDetalhes = document.querySelector('.detalhes-container');
+  const urlParams = new URLSearchParams(window.location.search);
+  const idDoProduto = urlParams.get('id');
+  containerDetalhes.innerHTML = '';
+
+  const produto = produtos.find(prod => prod.id === idDoProduto);
+
+  if (produto) {
+    containerDetalhes.innerHTML = `
+    <div class="imagem">
+      <img src="${produto.imagem}" alt="${produto.titulo}" />
+    </div>
+    <div class="detalhes">
+      <h1>${produto.titulo}</h1>
+      <h4>${produto.local}</h4>
+      <h2>${produto.categoria}</h2>
+      <a id="link-avaliacoes" href="#">
+      <h3>
+        ${
+          produto.avaliacoes.length == 0
+            ? 'Sem avaliações'
+            : gerarRating(produto.avaliacoes)
+        }
+        <span id="numero-avaliacoes">
+        (${produto.avaliacoes.length} avaliações)
+        </span>
+      </h3>
+      </a>
+      <h6>${parseFloat(produto.preco).toFixed(2)}€</h6>
+      <h2>Publicado por ${produto.userAutor} em ${produto.dataDePublicacao}<h2>
+      <p>${produto.descricao}</p>
+      <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
+    Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+    </button>
+      <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
+        produto.id
+      }')">Editar <i class="fa fa-pencil" aria-hidden="true"></i></button>
+      <button type="button" title="Eliminar Produto" onclick="eliminarProduto('${
+        produto.id
+      }')">Eliminar <i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    `;
+
+    let avaliacoesVisiveis = false;
+    document
+      .getElementById('link-avaliacoes')
+      .addEventListener('click', function (event) {
+        event.preventDefault();
+        const avaliacoesContainer = document.querySelector('.avaliacoes');
+        if (avaliacoesVisiveis) {
+          avaliacoesContainer.innerHTML = '';
+        } else {
+          avaliacoesContainer.innerHTML = '';
+          produto.avaliacoes.forEach(avaliacao => {
+            const avaliacaoElement = document.createElement('div');
+            avaliacaoElement.className = 'avaliacao';
+            avaliacaoElement.innerHTML = `
+              <h4>
+              ${avaliacao.autor}  <span>(${avaliacao.data})<span>
+              </h4>
+              <div class="rating">${gerarRating([avaliacao])}</div>
+              <p>${avaliacao.texto}</p>
+              <hr id="separador" />
+            `;
+            avaliacoesContainer.appendChild(avaliacaoElement);
+          });
+        }
+        avaliacoesVisiveis = !avaliacoesVisiveis;
+      });
+  } else {
+    alert('Produto não encontrado!');
+  }
 }

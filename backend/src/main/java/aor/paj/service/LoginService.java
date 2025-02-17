@@ -1,12 +1,10 @@
 package aor.paj.service;
-
-import aor.paj.pojo.UserPojo;
+/*
 import jakarta.enterprise.context.SessionScoped;
-
 import java.io.Serializable;
 
 @SessionScoped
-public class LoginService implements Serializable {
+public class LoginService {
 
     UserPojo utilizadorAtualPojo;
 
@@ -25,3 +23,4 @@ public class LoginService implements Serializable {
         this.utilizadorAtualPojo=utilizadorAtualPojo;
     }
 }
+*/

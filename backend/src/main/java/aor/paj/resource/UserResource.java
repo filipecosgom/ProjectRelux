@@ -1,47 +1,49 @@
 package aor.paj.resource;
-/*
 
-import aor.paj.bean.UserBean;
 import aor.paj.dto.UserDto;
+import aor.paj.service.UserService;
 import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/users")
-public class UserService {
+public class UserResource {
 
     @Inject
-    UserBean userBean;
-
-    @Context
-    private HttpServletRequest request;
+    UserService userService;
 
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response register(UserDto user) {
-        if (userBean.register(user.getUsername(), user.getPassword())) {
-            return Response.status(200).entity("Parabéns! Novo utilizador registado!").build();
-        }
-        return Response.status(200).entity("Erro! temos um utilizador registado com o mesmo username").build();
-
+    public Response registerUser(UserDto userDto) {
+        UserDto createdUser = userService.registerUser(userDto);
+        return Response.ok(createdUser).build();
     }
 
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(UserDto user) {
-        if (userBean.login(user.getUsername(), user.getPassword())) {
-            return Response.status(200).entity("Login efetuado com sucesso").build();
-        }
-        return Response.status(200).entity("Erro de Login").build();
+    public Response loginUser(UserDto userDto) {
+        UserDto loggedInUser = userService.loginUser(userDto);
+        return Response.ok(loggedInUser).build();
+    }
+
+    @GET
+    @Path("/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUser(@PathParam("username") String username) {
+        UserDto userDto = userService.getUserByUsername(username);
+        return Response.ok(userDto).build();
+    }
+
+    @DELETE
+    @Path("/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@PathParam("username") String username) {
+        userService.deleteUserByUsername(username);
+        return Response.noContent().build();
     }
 }
-
-
- */

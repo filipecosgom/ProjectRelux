@@ -6,6 +6,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.net.URI;
 import java.util.List;
 
 @Path("/products")
@@ -30,6 +32,12 @@ public class ProductResource {
         return productDto == null ?
                 Response.status(200).entity("Produto não encontrado!").build() :
                 Response.ok(productDto).build();
+    }
+
+    @GET
+    @Path("/details")
+    public Response getProductDetails(@QueryParam("id") String productId) {
+        return Response.seeOther(URI.create("/detalhes-produto.html?id=" + productId)).build();
     }
 
     @POST

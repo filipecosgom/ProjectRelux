@@ -7,16 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import aor.paj.dto.ProductDto;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 @ApplicationScoped
-public class ProductService implements Serializable {
+public class ProductService {
     private final String filename = "../database/products.json";
     private Map<String, ProductDto> productMap;
 
-    public ProductService() {
+    @PostConstruct
+    public void init() {
+        loadProductsFromFile();
+    }
+
+    public void loadProductsFromFile() {
         File file = new File(filename);
         if (file.exists()) {
             try (FileReader fileReader = new FileReader(file)) {

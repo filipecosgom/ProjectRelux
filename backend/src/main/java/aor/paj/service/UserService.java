@@ -1,41 +1,91 @@
 package aor.paj.service;
-/*
-import aor.paj.pojo.UserPojo;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
 
+import aor.paj.dto.UserDto;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
-import java.io.Serializable;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@RequestScoped
-public class UserBean implements Serializable {
+@ApplicationScoped
+public class UserService {
 
-    @Inject
-    LoginBean loginBean;
+    private Map<String, UserDto> users = new HashMap<>();
+    private static final String usersFile = "../database/users.json";
 
- public boolean login(String username, String password) {
-        UserPojo
+    @PostConstruct
+    public void init() {
+        loadUsersFromFile();
+    }
 
-        if(u1!=null){
-            loginBean.setUtilizadorAtualPojo(u1);
-            return true;
+    private void loadUsersFromFile() {
+        File file = new File(usersFile);
+        if (file.exists()) {
+            try (FileReader fileReader = new FileReader(file)) {
+                Jsonb jsonb = JsonbBuilder.create();
+                Type userListType = new ArrayList<UserDto>() {}.getClass().getGenericSuperclass();
+                List<UserDto> userList = jsonb.fromJson(fileReader, userListType);
+                users = new HashMap<>();
+                for (UserDto user : userList) {
+                    users.put(user.getUsername(), user);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            users = new HashMap<>();
         }
-        else{
-            return false;
+    }
+
+    private void saveUsersToFile() {
+        try (FileWriter fileWriter = new FileWriter(usersFile)) {
+            Jsonb jsonb = JsonbBuilder.create();
+            List<UserDto> userList = new ArrayList<>(users.values());
+            jsonb.toJson(userList, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
- }
+    }
 
- public boolean register(String username, String password) {
-     UserPojo u1= UserBean.getUser(username,password);
+    public UserDto registerUser(UserDto userDto) {
+        if (users.containsKey(userDto.getUsername())) {
+            throw new RuntimeException("Username já existente!");
+        }
+        users.put(userDto.getUsername(), userDto);
+        saveUsersToFile();
+        return userDto;
+    }
 
-     if (u1 != null) {
-         u1= new UserPojo(username,password);
-         productBean.adicionar_utilizador(u1);
-return true;
-     } else{
-         return false;
-     }
- }
+    public UserDto loginUser(UserDto userDto) {
+        UserDto existingUser = users.get(userDto.getUsername());
+        if (existingUser == null || !existingUser.getPassword().equals(userDto.getPassword())) {
+            throw new RuntimeException("Credenciais inválidas!");
+        }
+        return existingUser;
+    }
+
+    public UserDto getUserByUsername(String username) {
+        UserDto userDto = users.get(username);
+        if (userDto == null) {
+            throw new RuntimeException("Utilizador não encontrado!");
+        }
+        return userDto;
+    }
+
+    public void deleteUserByUsername(String username) {
+        if (!users.containsKey(username)) {
+            throw new RuntimeException("User not found");
+        }
+        users.remove(username);
+        saveUsersToFile();
+    }
 }
-
- */
