@@ -1,0 +1,99 @@
+@font-face {
+  font-family: "Nature Impact Demo";
+  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
+}
+
+header {
+  background-color: #282f23;
+  color: #e5e0d8;
+  font-family: "Nature Impact Demo", sans-serif;
+  font-size: large;
+  border: 3px solid #e5e0d8;
+  border-radius: 3px;
+  padding: 50px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  /* Para garantir que possamos posicionar o nome no centro */
+}
+
+.header h1 {
+  margin: 5px;
+  flex: 1;
+  /* O título ocupa a maior parte do espaço */
+}
+
+.bem-vindo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Centraliza o nome */
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  color: #e5e0d8;
+}
+
+/*BOTÃO LOGIN QUE ESTÁ DENTRO DA BARRA DE HEADER*/
+
+.botao_login a,
+.logout a {
+  background-color: #e5e0d8;
+  color: #809671;
+  font-family: "Courier New", Courier, monospace;
+  padding: 10px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  gap: 15px;
+}
+
+.botao_login a:hover {
+  background-color: #809671;
+  color: white;
+}
+
+.logout a:hover {
+  background-color: #710707;
+  color: white;
+}
+
+/*Esconde o botão quando temos o nome do utilizador no cabeçalho*/
+.botao_login.hidden {
+  display: none;
+}
+
+/*Botão de adicionar produto que está por cima da barra de header*/
+.adicionar_produto a {
+  background-color: #e5e0d8;
+  color: #809671;
+  font-family: "Courier New", Courier, monospace;
+  padding: 10px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  gap: 15px;
+}
+
+.adicionar_produto a:hover {
+  background-color: #809671;
+  color: white;
+}
+
+.botao_login,
+.logout,
+.formulario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+}
+
+.navbar {
+  display: flex;
+}

@@ -1,22 +1,27 @@
 'use strict';
 
-import loadHeaderFooter from './loadCommons.js';
+import { loadHeaderFooter } from './loadCommons.js';
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
 const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
 
-if (window.location.pathname.endsWith('index.html')) {
-  document.addEventListener('DOMContentLoaded', () => {
-    loadHeaderFooter();
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadHeaderFooter();
+
+  if (window.location.pathname.endsWith('index.html')) {
     displayMostRecentProducts();
     displayMostRatedProducts();
-    welcome_paramts();
+  }
+});
+
+if (window.location.pathname.endsWith('pagina-login.html')) {
+  document.addEventListener('DOMContentLoaded', () => {
+    document
+      .getElementById('submitLoginForm')
+      .addEventListener('click', submitLoginForm);
   });
-} else {
-  loadHeaderFooter();
-  welcome_paramts();
 }
 
 async function getAllProducts() {
@@ -229,15 +234,5 @@ async function submitLoginForm() {
     window.location.href = 'index.html';
   } else {
     alert('Login falhou! Por favor verifique as suas credenciais.');
-  }
-}
-
-async function welcome_paramts() {
-  const user = JSON.parse(sessionStorage.getItem('user'));
-
-  if (user) {
-    const welcomeMessage = document.getElementById('bem-vindo-container');
-    welcomeMessage.classList.remove('hidden');
-    welcomeMessage.innerHTML = `<a href="pagina_perfil_utilizador.html">Bemvindo/a ${user.nome}</a>!`;
   }
 }
