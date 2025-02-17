@@ -3,11 +3,14 @@
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
+const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
 
-document.addEventListener('DOMContentLoaded', () => {
-  displayMostRecentProducts();
-  displayMostRatedProducts();
-});
+if (window.location.pathname.endsWith('index.html')) {
+  document.addEventListener('DOMContentLoaded', () => {
+    displayMostRecentProducts();
+    displayMostRatedProducts();
+  });
+}
 
 async function getAllProducts() {
   const requestURL = getAllProductsURL;
@@ -181,5 +184,39 @@ async function gerarDetalhesDoProduto() {
       });
   } else {
     alert('Produto não encontrado!');
+  }
+}
+
+/* LOGIN */
+async function submitLoginForm() {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+
+  const loginData = {
+    username: username,
+    password: password,
+  };
+
+  const requestURL = loginRequestURL;
+  const response = await fetch(requestURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
+  });
+
+  if (response.ok) {
+    const result = await response.json();
+    alert('Login bem sucedido! Bem- vindo/a, ' + result.nome);
+    console.log('login successful', result);
+    // TODO: adcicionar o nome do utilizador à sessionStorage e redicionar para a página principal
+    sessionStorage.setItem(
+      'user',
+      JSON.stringify({ username: result.username, password: password })
+    );
+    window.location.href = 'index.html';
+  } else {
+    alert('Login falhou! Por favor verifique as suas credenciais.');
   }
 }

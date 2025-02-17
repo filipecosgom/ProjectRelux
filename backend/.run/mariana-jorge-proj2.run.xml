@@ -4,6 +4,7 @@
     <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
     <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
     <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
+    <option name="UPDATING_POLICY" value="redeploy-artifacts" />
     <deployment>
       <artifact name="mariana-jorge-proj2:war exploded">
         <settings />
