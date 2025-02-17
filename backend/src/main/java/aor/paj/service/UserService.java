@@ -65,9 +65,9 @@ public class UserService {
         return userDto;
     }
 
-    public UserDto loginUser(UserDto userDto) {
-        UserDto existingUser = users.get(userDto.getUsername());
-        if (existingUser == null || !existingUser.getPassword().equals(userDto.getPassword())) {
+    public UserDto loginUser(String username, String password) {
+        UserDto existingUser = users.get(username);
+        if (existingUser == null || !existingUser.getPassword().equals(password)) {
             throw new RuntimeException("Credenciais inválidas!");
         }
         return existingUser;

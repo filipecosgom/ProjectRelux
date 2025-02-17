@@ -9,8 +9,7 @@ import java.util.List;
 public class UserDto {
     private String username;
     private String password;
-    private String primeiro_nome;
-    private String ultimo_nome;
+    private String nome;
     private String email;
     private String telefone;
     private String imagem;
@@ -19,12 +18,11 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String username, String password, String primeiro_nome,
-                   String ultimo_nome, String email, String telefone, String imagem, List<String> produtos) {
+    public UserDto(String username, String password, String nome, String email,
+                   String telefone, String imagem, List<String> produtos) {
         this.username = username;
         this.password = password;
-        this.primeiro_nome = primeiro_nome;
-        this.ultimo_nome = ultimo_nome;
+        this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.imagem = imagem;
@@ -50,21 +48,12 @@ public class UserDto {
     }
 
     @XmlElement
-    public String getPrimeiro_nome() {
-        return primeiro_nome;
+    public String getNome() {
+        return nome;
     }
 
-    public void setPrimeiro_nome(String primeiro_nome) {
-        this.primeiro_nome = primeiro_nome;
-    }
-
-    @XmlElement
-    public String getUltimo_nome() {
-        return ultimo_nome;
-    }
-
-    public void setUltimo_nome(String ultimo_nome) {
-        this.ultimo_nome = ultimo_nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @XmlElement

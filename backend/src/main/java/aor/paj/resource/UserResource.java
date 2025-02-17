@@ -1,5 +1,6 @@
 package aor.paj.resource;
 
+import aor.paj.dto.LoginRequestDto;
 import aor.paj.dto.UserDto;
 import aor.paj.service.UserService;
 import jakarta.inject.Inject;
@@ -26,9 +27,16 @@ public class UserResource {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response loginUser(UserDto userDto) {
-        UserDto loggedInUser = userService.loginUser(userDto);
-        return Response.ok(loggedInUser).build();
+    public Response loginUser(LoginRequestDto loginRequestDto) {
+        try {
+            UserDto loggedInUser =
+                    userService.loginUser(loginRequestDto.getUsername(),
+                            loginRequestDto.getPassword());
+            return Response.ok(loggedInUser).build();
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(
+                    "Credenciais Inválidas!").build();
+        }
     }
 
     @GET
