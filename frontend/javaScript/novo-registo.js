@@ -1,33 +1,32 @@
-function Add_new_user() {
+const rootPath = "http://localhost:8080/mariana-jorge-proj2/rest";
+const registerRequestURL = `${rootPath}/users/register`;
+
+function addNewUser() {
   document
     .getElementById("formulario_novo_registo")
     .addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const dados_utilizador = {
-        primeiro_nome: document.getElementById("primeiro_nome").value,
-        ultimo_nome: document.getElementById("ultimo_nome").value,
+      const dadosUtilizador = {
+        nome: document.getElementById("nome").value,
         username: document.getElementById("username").value,
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
         telefone: document.getElementById("telefone").value,
         fotografia: document.getElementById("fotografia").value,
       };
-      const jsonData = JSON.stringify(dados_utilizador);
 
-      const response = await fetch(
-        "http://localhost:8080/my_activities_backend/rest/users/add",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: jsonData,
-        }
-      );
+      const response = await fetch(registerRequestURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dadosUtilizador),
+      });
 
       if (response.ok) {
-        alert("Utilizador registado! Bem vindo," + username);
+        alert("Utilizador registado! Bem-vindo/a, " + dadosUtilizador.username);
+        window.location.href = "pagina-login.html";
       } else {
-        alert("ERRO!!!!!!!!!!!!.");
+        alert("Erro ao registar utilizador. Tente novamente.");
       }
     });
 }
