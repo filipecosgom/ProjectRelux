@@ -226,16 +226,16 @@ aside {
 }
 
 .card button {
-  background-color: #4ecca3;
+  background-color: --(var --primary-300);
   height: 30px;
   border: none;
   width: 100%;
-  color: white;
+  color: --(var --white-100);
   font-weight: bold;
 }
 
 .card button:hover {
-  background-color: #106d50;
+  background-color: --(var --primary-400);
   cursor: pointer;
 }
 
