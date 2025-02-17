@@ -226,7 +226,7 @@ aside {
 }
 
 .card button {
-  background-color: --(var --primary-300);
+  background-color: var(--primary-300);
   height: 30px;
   border: none;
   width: 100%;
