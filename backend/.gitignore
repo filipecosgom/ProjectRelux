@@ -13,3 +13,8 @@
 
 ### Prettier ###
 .prettierrc
+
+### pastas ###
+.mvn/
+out/
+target/
