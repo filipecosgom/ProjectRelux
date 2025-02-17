@@ -177,7 +177,7 @@ aside {
 }
 
 .card {
-  background-color: #fbfafa;
+  background-color: var(--white-100);
   width: 300px; /* Define uma largura fixa para os cards */
   height: 510px;
   transition: transform 0.3s ease; /* Adiciona uma transição suave para o hover */
@@ -209,7 +209,7 @@ aside {
 
 .card h2 {
   font-size: 0.9rem;
-  color: #aaaaaa;
+  color: var(--primary-300);
   margin: 0%;
 }
 
@@ -226,16 +226,16 @@ aside {
 }
 
 .card button {
-  background-color: #4ecca3;
+  background-color: --(var --primary-300);
   height: 30px;
   border: none;
   width: 100%;
-  color: white;
+  color: var(--white-100);
   font-weight: bold;
 }
 
 .card button:hover {
-  background-color: #106d50;
+  background-color: var(--primary-400);
   cursor: pointer;
 }
 
