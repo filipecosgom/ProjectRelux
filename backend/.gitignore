@@ -10,6 +10,7 @@
 *.iws
 *.iml
 *.ipr
+.run
 
 ### Prettier ###
 .prettierrc
