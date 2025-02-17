@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const rootPath = "http://localhost:8080/mariana-jorge-proj2/rest";
 const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   displayMostRecentProducts();
   displayMostRatedProducts();
 });
@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 async function getAllProducts() {
   const requestURL = getAllProductsURL;
   const request = new Request(requestURL, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
+      Accept: "application/json",
     },
   });
   const response = await fetch(request);
@@ -25,9 +25,9 @@ async function getAllProducts() {
 async function addProduct(product) {
   const requestURL = productsPath;
   const request = new Request(requestURL, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(product),
   });
@@ -37,30 +37,30 @@ async function addProduct(product) {
 }
 
 async function displayMostRecentProducts() {
-  const mainContainer = document.querySelector('.recent-products');
+  const mainContainer = document.querySelector(".recent-products");
   const products = await getAllProducts();
   const mostRecentProducts = products
     .sort((a, b) => new Date(b.dataDePublicacao) - new Date(a.dataDePublicacao))
     .slice(0, 3);
-  mainContainer.innerHTML = '';
-  mostRecentProducts.forEach(p => {
+  mainContainer.innerHTML = "";
+  mostRecentProducts.forEach((p) => {
     const card = createCard(p);
     mainContainer.appendChild(card);
   });
 }
 
 async function displayMostRatedProducts() {
-  const mainContainer = document.querySelector('.most-rated-products');
+  const mainContainer = document.querySelector(".most-rated-products");
   const products = await getAllProducts();
   const mostRatedProducts = products
-    .map(product => ({
+    .map((product) => ({
       ...product,
       mediaEstrelas: gerarRating(product.avaliacoes).mediaEstrelas,
     }))
     .sort((a, b) => b.mediaEstrelas - a.mediaEstrelas)
     .slice(0, 3);
-  mainContainer.innerHTML = '';
-  mostRatedProducts.forEach(p => {
+  mainContainer.innerHTML = "";
+  mostRatedProducts.forEach((p) => {
     const card = createCard(p);
     mainContainer.appendChild(card);
   });
@@ -69,8 +69,8 @@ async function displayMostRatedProducts() {
 // Cria a card do produto
 function createCard(product) {
   const rating = gerarRating(product.avaliacoes);
-  const card = document.createElement('div');
-  card.className = 'card';
+  const card = document.createElement("div");
+  card.className = "card";
   card.innerHTML = `
     <img src="${product.imagem}" alt="${product.titulo}" />
     <div>
@@ -82,8 +82,8 @@ function createCard(product) {
       <button type="button" title="descricao">Saber mais</button>
     </div>
   `;
-  const button = card.querySelector('button');
-  button.addEventListener('click', () => {
+  const button = card.querySelector("button");
+  button.addEventListener("click", () => {
     window.location.href = `detalhes-produtos.html?id=${product.id}`;
   });
   return card;
@@ -97,12 +97,12 @@ function gerarRating(avaliacoes) {
   }
   let mediaEstrelas =
     avaliacoes.length > 0 ? totalEstrelas / avaliacoes.length : 0;
-  let estrelas = '';
+  let estrelas = "";
   for (let i = 0; i < 5; i++) {
     if (i < mediaEstrelas) {
-      estrelas += '&#9733';
+      estrelas += "&#9733";
     } else {
-      estrelas += '&#10032';
+      estrelas += "&#10032";
     }
   }
   return { mediaEstrelas, estrelas };
@@ -110,12 +110,12 @@ function gerarRating(avaliacoes) {
 
 async function gerarDetalhesDoProduto() {
   const produtos = await getAllProducts();
-  const containerDetalhes = document.querySelector('.detalhes-container');
+  const containerDetalhes = document.querySelector(".detalhes-container");
   const urlParams = new URLSearchParams(window.location.search);
-  const idDoProduto = urlParams.get('id');
-  containerDetalhes.innerHTML = '';
+  const idDoProduto = urlParams.get("id");
+  containerDetalhes.innerHTML = "";
 
-  const produto = produtos.find(prod => prod.id === idDoProduto);
+  const produto = produtos.find((prod) => prod.id === idDoProduto);
 
   if (produto) {
     containerDetalhes.innerHTML = `
@@ -130,7 +130,7 @@ async function gerarDetalhesDoProduto() {
       <h3>
         ${
           produto.avaliacoes.length == 0
-            ? 'Sem avaliações'
+            ? "Sem avaliações"
             : gerarRating(produto.avaliacoes)
         }
         <span id="numero-avaliacoes">
@@ -155,17 +155,17 @@ async function gerarDetalhesDoProduto() {
 
     let avaliacoesVisiveis = false;
     document
-      .getElementById('link-avaliacoes')
-      .addEventListener('click', function (event) {
+      .getElementById("link-avaliacoes")
+      .addEventListener("click", function (event) {
         event.preventDefault();
-        const avaliacoesContainer = document.querySelector('.avaliacoes');
+        const avaliacoesContainer = document.querySelector(".avaliacoes");
         if (avaliacoesVisiveis) {
-          avaliacoesContainer.innerHTML = '';
+          avaliacoesContainer.innerHTML = "";
         } else {
-          avaliacoesContainer.innerHTML = '';
-          produto.avaliacoes.forEach(avaliacao => {
-            const avaliacaoElement = document.createElement('div');
-            avaliacaoElement.className = 'avaliacao';
+          avaliacoesContainer.innerHTML = "";
+          produto.avaliacoes.forEach((avaliacao) => {
+            const avaliacaoElement = document.createElement("div");
+            avaliacaoElement.className = "avaliacao";
             avaliacaoElement.innerHTML = `
               <h4>
               ${avaliacao.autor}  <span>(${avaliacao.data})<span>
@@ -180,6 +180,6 @@ async function gerarDetalhesDoProduto() {
         avaliacoesVisiveis = !avaliacoesVisiveis;
       });
   } else {
-    alert('Produto não encontrado!');
+    alert("Produto não encontrado!");
   }
 }
