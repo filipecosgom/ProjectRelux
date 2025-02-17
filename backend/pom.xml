@@ -67,6 +67,7 @@
                     <username>admin</username>
                     <password>admin</password>
                     <filename>${project.build.finalName}.war</filename>
+                    <auto-reload>true</auto-reload>
                 </configuration>
             </plugin>
 
