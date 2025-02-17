@@ -1,19 +1,33 @@
-document
-  .getElementById("formulario_login")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); //Isto faz com que quando clicamos no botão de submeter o formulário não recarregue a página
+/* LOGIN */
+const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
 
-    let username = document.getElementById("username").value;
+async function submitLoginForm() {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
 
-    console.log(username.value);
+  const loginData = {
+    username: username,
+    password: password,
+  };
 
-    //armazenar o nome no sessionStorage
-    sessionStorage.setItem("username", username);
-
-    //mostrar mensagem de boas-vindas
-    alert("Bem-vindo, " + username + "!");
-
-    //redirecionar para a página principal
-    window.location.href = "index.html";
-    console.log("Estou a fazer login");
+  const requestURL = loginRequestURL;
+  const response = await fetch(requestURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
   });
+
+  if (response.ok) {
+    const result = await response.json();
+    alert('Login bem sucedido! Bemvindo, ' + result.nome);
+    console.log('login successful', result);
+    // TODO: adcicionar o nome do utilizador à sessionStorage e redicionar para a página principal
+    sessionStorage.setItem('username', result.username);
+    window.location.href = 'index.html';
+  } else {
+    alert('Login falhou! Por favor verifique as suas credenciais.');
+  }
+}

@@ -26,6 +26,7 @@ async function submitLoginForm() {
     console.log('login successful', result);
     // TODO: adcicionar o nome do utilizador à sessionStorage e redicionar para a página principal
     sessionStorage.setItem('username', result.username);
+    window.location.href = 'index.html';
   } else {
     alert('Login falhou! Por favor verifique as suas credenciais.');
   }
