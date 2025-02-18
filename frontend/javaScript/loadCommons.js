@@ -67,6 +67,7 @@ async function addModalListeners() {
   const btn = document.getElementById('openModalBtn');
   const span = document.getElementsByClassName('close')[0];
   const cancel = document.getElementById('cancelar');
+  const form = document.getElementById('form-novo-produto');
 
   btn.onclick = function () {
     modal.style.display = 'block';
@@ -74,15 +75,18 @@ async function addModalListeners() {
 
   cancel.onclick = function () {
     modal.style.display = 'none';
+    form.reset();
   };
 
   span.onclick = function () {
     modal.style.display = 'none';
+    form.reset();
   };
 
   window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = 'none';
+      form.reset();
     }
   };
 }
