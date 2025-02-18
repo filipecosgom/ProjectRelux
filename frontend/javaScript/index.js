@@ -14,15 +14,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     displayMostRecentProducts();
     displayMostRatedProducts();
   }
-});
 
-if (window.location.pathname.endsWith('pagina-login.html')) {
-  document.addEventListener('DOMContentLoaded', () => {
+  if (window.location.pathname.endsWith('pagina-login.html')) {
     document
       .getElementById('submitLoginForm')
       .addEventListener('click', submitLoginForm);
-  });
-}
+  }
+});
 
 async function getAllProducts() {
   const requestURL = getAllProductsURL;
