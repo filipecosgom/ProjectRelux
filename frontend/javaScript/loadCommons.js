@@ -1,6 +1,13 @@
 'use strict';
 
-export async function loadHeaderFooter() {
+export async function loadCommonElements() {
+  fetch('common/newProductModal.html')
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+    })
+    .catch(error => console.error('Erro ao carregar o modal:', error));
+
   fetch('common/header.html')
     .then(response => response.text())
     .then(data => {
@@ -8,7 +15,7 @@ export async function loadHeaderFooter() {
     })
     .then(() => {
       welcomeMessage();
-      showModalToAddProduct();
+      addModalListeners();
     })
     .catch(error => console.error('Erro ao carregar o cabeçalho:', error));
 
@@ -18,13 +25,6 @@ export async function loadHeaderFooter() {
       document.getElementById('footer').innerHTML = data;
     })
     .catch(error => console.error('Erro ao carregar o rodapé:', error));
-
-  fetch('common/newProductModal.html')
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-    })
-    .catch(error => console.error('Erro ao carregar o modal:', error));
 }
 
 async function welcomeMessage() {
@@ -58,15 +58,18 @@ async function welcomeMessage() {
   }
 }
 
-async function showModalToAddProduct() {
+async function addModalListeners() {
   const modal = document.getElementById('modal');
   const btn = document.getElementById('openModalBtn');
   const span = document.getElementsByClassName('close')[0];
-
-  console.log(modal, btn, span);
+  const cancel = document.getElementById('cancelar');
 
   btn.onclick = function () {
     modal.style.display = 'block';
+  };
+
+  cancel.onclick = function () {
+    modal.style.display = 'none';
   };
 
   span.onclick = function () {

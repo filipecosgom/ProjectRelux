@@ -1,6 +1,6 @@
 'use strict';
 
-import { loadHeaderFooter } from './loadCommons.js';
+import { loadCommonElements } from './loadCommons.js';
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;
@@ -8,7 +8,7 @@ const getAllProductsURL = `${rootPath}/products/all`;
 const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
 
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadHeaderFooter();
+  await loadCommonElements();
 
   if (window.location.pathname.endsWith('index.html')) {
     displayMostRecentProducts();
