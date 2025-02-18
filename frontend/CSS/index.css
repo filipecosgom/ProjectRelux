@@ -150,7 +150,7 @@ aside {
 
 .nav-pag {
   display: flex;
-  justify-content: center; /* Centraliza o botão horizontalmente */
+  justify-content: center;
   margin-bottom: 20px;
 }
 
