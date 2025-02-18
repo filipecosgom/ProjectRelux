@@ -18,12 +18,12 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 @font-face {
-  font-family: "Nature Impact Demo";
-  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
+  font-family: 'Nature Impact Demo';
+  src: url('../fonts/Nature Impact Demo.otf') format('opentype');
 }
 
 /* Header */
@@ -50,7 +50,7 @@ header a {
 }
 
 header h1 {
-  font-family: "Nature Impact Demo", sans-serif;
+  font-family: 'Nature Impact Demo', sans-serif;
   margin: 5px;
   flex: 1;
 }
@@ -67,13 +67,13 @@ header .bem-vindo {
 .img-perfil {
   display: flex;
   align-items: center;
-  margin-left: 10px; /* Ajuste conforme necessário */
+  margin-left: 10px;
 }
 
 .img-perfil img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* Opcional: para tornar a imagem circular */
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 
 header .button {
@@ -105,7 +105,7 @@ header .fa {
 footer {
   background-color: var(--primary-400);
   color: var(--white-100);
-  padding: 20px; /* Espaçamento interno */
+  padding: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -206,7 +206,7 @@ aside {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center; /* Centraliza os cards */
+  justify-content: center;
 }
 
 .card:hover {
@@ -215,9 +215,9 @@ aside {
 
 .card {
   background-color: var(--white-100);
-  width: 300px; /* Define uma largura fixa para os cards */
+  width: 300px;
   height: 510px;
-  transition: transform 0.3s ease; /* Adiciona uma transição suave para o hover */
+  transition: transform 0.3s ease;
   padding-bottom: 15px;
   box-shadow: var(--box-shadow);
 }
@@ -251,7 +251,7 @@ aside {
 }
 
 .card h3 {
-  font-size: 1rem; /* Corrige o tamanho da fonte */
+  font-size: 1rem;
   color: var(--complementary-color);
   margin: 0;
 }
@@ -382,8 +382,6 @@ aside {
   background-color: var(--primary-400);
 }
 
-/*Formulário Registo de Produto */
-
 /* Modal para adicionar produto */
 .modal {
   display: none;
@@ -400,10 +398,10 @@ aside {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%;
 }
 
 .close {
