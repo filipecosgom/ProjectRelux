@@ -198,6 +198,11 @@ async function gerarDetalhesDoProduto() {
 }
 
 /* LOGIN */
+async function getProductsByIds(ids) {
+  const products = await getAllProducts();
+  return products.filter(product => ids.includes(product.id));
+}
+
 async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
@@ -212,21 +217,25 @@ async function submitLoginForm() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Username: username,
+      Password: password,
     },
-    body: JSON.stringify(loginData),
+    body: JSON.stringify({}),
   });
 
   if (response.ok) {
     const result = await response.json();
     alert('Login bem sucedido! Bem- vindo/a, ' + result.nome);
     console.log('login successful', result);
-    // TODO: adicionar o nome do utilizador à sessionStorage e redicionar para a página principal
+
+    const userProducts = await getProductsByIds(result.produtos);
     sessionStorage.setItem(
       'user',
       JSON.stringify({
         username: result.username,
         password: result.password,
         nome: result.nome,
+        products: userProducts,
       })
     );
     window.location.href = 'index.html';
