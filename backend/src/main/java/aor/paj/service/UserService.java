@@ -1,11 +1,5 @@
 package aor.paj.service;
 
-import aor.paj.dto.UserDto;
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -15,6 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import aor.paj.dto.UserDto;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
 @ApplicationScoped
 public class UserService {
@@ -32,7 +32,8 @@ public class UserService {
         if (file.exists()) {
             try (FileReader fileReader = new FileReader(file)) {
                 Jsonb jsonb = JsonbBuilder.create();
-                Type userListType = new ArrayList<UserDto>() {}.getClass().getGenericSuperclass();
+                Type userListType = new ArrayList<UserDto>() {
+                }.getClass().getGenericSuperclass();
                 List<UserDto> userList = jsonb.fromJson(fileReader, userListType);
                 users = new HashMap<>();
                 for (UserDto user : userList) {

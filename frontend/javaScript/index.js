@@ -35,20 +35,6 @@ async function getAllProducts() {
   return products;
 }
 
-async function addProduct(product) {
-  const requestURL = productsPath;
-  const request = new Request(requestURL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(product),
-  });
-  const response = await fetch(request);
-  const result = await response.json();
-  return result;
-}
-
 async function displayMostRecentProducts() {
   const mainContainer = document.querySelector('.recent-products');
   const products = await getAllProducts();
@@ -207,11 +193,6 @@ async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
 
-  const loginData = {
-    username: username,
-    password: password,
-  };
-
   const requestURL = loginRequestURL;
   const response = await fetch(requestURL, {
     method: 'POST',
@@ -220,7 +201,6 @@ async function submitLoginForm() {
       Username: username,
       Password: password,
     },
-    body: JSON.stringify({}),
   });
 
   if (response.ok) {

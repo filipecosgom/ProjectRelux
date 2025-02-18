@@ -8,7 +8,7 @@ export async function loadHeaderFooter() {
     })
     .then(() => {
       welcomeMessage();
-      addNewProduct();
+      showModalToAddProduct();
     })
     .catch(error => console.error('Erro ao carregar o cabeçalho:', error));
 
@@ -18,6 +18,13 @@ export async function loadHeaderFooter() {
       document.getElementById('footer').innerHTML = data;
     })
     .catch(error => console.error('Erro ao carregar o rodapé:', error));
+
+  fetch('common/newProductModal.html')
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+    })
+    .catch(error => console.error('Erro ao carregar o modal:', error));
 }
 
 async function welcomeMessage() {
@@ -51,7 +58,7 @@ async function welcomeMessage() {
   }
 }
 
-async function addNewProduct() {
+async function showModalToAddProduct() {
   const modal = document.getElementById('modal');
   const btn = document.getElementById('openModalBtn');
   const span = document.getElementsByClassName('close')[0];
@@ -71,4 +78,18 @@ async function addNewProduct() {
       modal.style.display = 'none';
     }
   };
+}
+
+async function sendNewProductReq(product) {
+  const requestURL = productsPath;
+  const request = new Request(requestURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(product),
+  });
+  const response = await fetch(request);
+  const result = await response.json();
+  return result;
 }
