@@ -18,12 +18,12 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 @font-face {
-  font-family: 'Nature Impact Demo';
-  src: url('../fonts/Nature Impact Demo.otf') format('opentype');
+  font-family: "Nature Impact Demo";
+  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
 }
 
 /* Header */
@@ -50,7 +50,7 @@ header a {
 }
 
 header h1 {
-  font-family: 'Nature Impact Demo', sans-serif;
+  font-family: "Nature Impact Demo", sans-serif;
   margin: 5px;
   flex: 1;
 }
@@ -179,7 +179,6 @@ aside {
 .card img {
   width: 100%;
   height: 350px;
-  object-fit: cover;
   object-position: top;
 }
 
@@ -383,4 +382,68 @@ aside {
 
 .conteudo_form .btn:hover {
   background-color: var(--primary-400);
+}
+
+/* Página Pessoal */
+.wrapper-pag-pessoal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+.info-pessoal {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.perfil-utilizador {
+  display: flex;
+  flex-direction: column;
+  padding-right: 350px;
+}
+
+.perfil-utilizador h2 {
+  margin-top: 50px;
+  color: #56303a;
+}
+
+.perfil-utilizador h6 {
+  color: #56303a;
+}
+
+.outras-info {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.produtos-pessoais {
+  display: flex;
+  align-items: center;
+}
+
+.produtos-pessoais h2 {
+  margin-top: 30px;
+  color: #56303a;
+}
+
+.imagem-perfil {
+  margin-bottom: 30px;
+}
+.imagem-perfil img {
+  display: flex;
+  width: 350px;
+  height: 250px;
+  border: 5px solid #56303a;
+  border-radius: 10px;
+}
+
+.editar-pag-pessoal {
+  display: flex;
+  border-radius: 5px;
+  background-color: var(--secondary-400);
+  color: var(--secondary-200);
+  padding: 10px;
+  margin-bottom: 5px;
 }
