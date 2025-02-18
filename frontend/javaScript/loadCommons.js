@@ -6,7 +6,10 @@ export async function loadHeaderFooter() {
     .then(data => {
       document.getElementById('header').innerHTML = data;
     })
-    .then(() => welcomeMessage())
+    .then(() => {
+      welcomeMessage();
+      addNewProduct();
+    })
     .catch(error => console.error('Erro ao carregar o cabeçalho:', error));
 
   fetch('common/footer.html')
@@ -19,6 +22,7 @@ export async function loadHeaderFooter() {
 
 async function welcomeMessage() {
   let user = null;
+  const openModalBtn = document.getElementById('openModalBtn');
   const welcomeMessage = document.getElementById('welcome-message');
   const logoutButton = document.getElementById('botao-logout');
   const loginButton = document.getElementById('botao-login');
@@ -29,6 +33,7 @@ async function welcomeMessage() {
   }
 
   if (user) {
+    openModalBtn.classList.remove('hidden');
     welcomeMessage.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
     loginButton.classList.add('hidden');
@@ -39,8 +44,31 @@ async function welcomeMessage() {
       window.location.href = 'index.html';
     });
   } else {
+    openModalBtn.classList.add('hidden');
     loginButton.classList.remove('hidden');
     logoutButton.classList.add('hidden');
     welcomeMessage.classList.add('hidden');
   }
+}
+
+async function addNewProduct() {
+  const modal = document.getElementById('modal');
+  const btn = document.getElementById('openModalBtn');
+  const span = document.getElementsByClassName('close')[0];
+
+  console.log(modal, btn, span);
+
+  btn.onclick = function () {
+    modal.style.display = 'block';
+  };
+
+  span.onclick = function () {
+    modal.style.display = 'none';
+  };
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  };
 }
