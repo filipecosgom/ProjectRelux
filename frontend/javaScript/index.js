@@ -215,6 +215,10 @@ async function submitLoginForm() {
         username: result.username,
         password: result.password,
         nome: result.nome,
+        email: result.email,
+        telefone: result.telefone,
+        localizacao: result.localizacao,
+        imagem: result.imagem,
         products: userProducts,
       })
     );

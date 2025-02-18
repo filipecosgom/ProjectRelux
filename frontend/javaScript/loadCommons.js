@@ -29,6 +29,7 @@ export async function loadCommonElements() {
 
 async function welcomeMessage() {
   let user = null;
+  const profilePicture = document.getElementById('profile-picture');
   const openModalBtn = document.getElementById('openModalBtn');
   const welcomeMessage = document.getElementById('welcome-message');
   const logoutButton = document.getElementById('botao-logout');
@@ -44,6 +45,8 @@ async function welcomeMessage() {
     welcomeMessage.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
     loginButton.classList.add('hidden');
+    profilePicture.classList.remove('hidden');
+    profilePicture.src = user.imagem;
     welcomeMessage.innerHTML = `<a href="pagina_perfil_utilizador.html">Bemvindo/a ${user.nome}</a>!`;
 
     logoutButton.addEventListener('click', () => {
@@ -55,6 +58,7 @@ async function welcomeMessage() {
     loginButton.classList.remove('hidden');
     logoutButton.classList.add('hidden');
     welcomeMessage.classList.add('hidden');
+    profilePicture.classList.add('hidden');
   }
 }
 
