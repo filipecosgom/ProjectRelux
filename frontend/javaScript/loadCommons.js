@@ -34,6 +34,7 @@ async function welcomeMessage() {
   const welcomeMessage = document.getElementById("welcome-message");
   const logoutButton = document.getElementById("botao-logout");
   const loginButton = document.getElementById("botao-login");
+
   try {
     user = JSON.parse(sessionStorage.getItem("user"));
   } catch (error) {
@@ -47,7 +48,7 @@ async function welcomeMessage() {
     loginButton.classList.add("hidden");
     profilePicture.classList.remove("hidden");
     profilePicture.src = user.imagem;
-    welcomeMessage.innerHTML = `<a href="perfil_utilizador.html">Bem-vindo/a ${user.nome}</a>!`;
+    welcomeMessage.innerHTML = `<a href="perfil-utilizador.html">Bem-vindo/a ${user.nome}</a>!`;
 
     logoutButton.addEventListener("click", () => {
       sessionStorage.clear();

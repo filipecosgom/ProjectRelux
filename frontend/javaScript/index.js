@@ -23,29 +23,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (window.location.pathname.endsWith("produto-total.html")) {
     displayAllProducts();
-    // Coloca esta lógica que tens abaixo naquela função.
-    // Podes ver, por exemplo, a função displayMostRecentProducts() para te ajudar a perceber como fazer.
-    // Basicamente é só copiar a lógica daquela função sem o filtro das datas, para que ele te mostre todos os produtos.
-    // Tentar fazer isso e se tiveres dúvidas diz.
-    /*
-    getAllProducts()
-      .then(products => {
-        const container = document.querySelector('.product-list');
-
-        if (!container) {
-          console.log('Não está a chegar ao html');
-          return;
-        }
-        container.innerHTML = '';
-        products.forEach(product => {
-          const card = createCard(product);
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.log('Erro ao carregar produtos');
-      });
-      */
   }
 });
 
@@ -72,6 +49,7 @@ async function displayAllProducts() {
   }
   container.innerHTML = "";
   products.forEach((product) => {
+    console.log("Estou a carregar os cartões dos produtos");
     const card = createCard(product);
     container.appendChild(card);
   });
