@@ -1,118 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
+    <link rel="shortcut icon" href="favicon.png" type="image/png" />
+    <script defer type="module" src="./javaScript/index.js"></script>
 
-  <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
-  <link rel="shortcut icon" href="favicon.png" type="image/png" />
-  <script defer type="module" src="./javaScript/index.js"></script>
+    <title>LoopMarket</title>
+  </head>
 
-  <title>LoopMarket</title>
-</head>
+  <body>
+    <header id="header"></header>
 
-<body>
-  <header id="header"></header>
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="formulario_novo_produto" id="formulario_novo_produto">
+          <form class="conteudo_form">
+            <h1>Novo Produto</h1>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <div class="formulario_novo_produto" id="formulario_novo_produto">
-        <form class="conteudo_form">
-          <h1>Novo Produto</h1>
+            <div class="Título">
+              <label for="text"><b>Título</b></label>
+              <input
+                type="text"
+                placeholder="Introduza um título para o seu produto"
+                id="titulo"
+                required
+              />
+            </div>
 
-          <div class="Título">
-            <label for="text"><b>Título</b></label>
-            <input type="text" placeholder="Introduza um título para o seu produto" id="titulo" required />
-          </div>
+            <div class="Descrição">
+              <label for="nome"><b>Descrição</b></label>
+              <input
+                type="text"
+                id="descricao"
+                name="descricao"
+                title="Descrição do produto"
+                placeholder="Introduza a descrição do produto"
+                required
+              />
+            </div>
 
-          <div class="Descrição">
-            <label for="nome"><b>Descrição</b></label>
-            <input type="text" id="descricao" name="descricao" title="Descrição do produto"
-              placeholder="Introduza a descrição do produto" required />
-          </div>
-
-          <div class="Categoria">
-            <label for="text"><b>Categoria</b></label>
+            <div class="Categoria">
+              <label for="text"><b>Categoria</b></label>
+              <br />
+              <select
+                name="categoria"
+                id="categoria"
+                title="Categoria do produto"
+              >
+                <option value="homem">Homem</option>
+                <option value="mulher">Mulher</option>
+                <option value="crianca">Criança</option>
+                <option value="NA">Não aplicável</option>
+              </select>
+              <br />
+            </div>
             <br />
-            <select name="categoria" id="categoria" title="Categoria do produto">
-              <option value="homem">Homem</option>
-              <option value="mulher">Mulher</option>
-              <option value="crianca">Criança</option>
-              <option value="NA">Não aplicável</option>
-            </select>
+            <div class="Tamanho">
+              <label for="text"><b>Tamanho</b></label>
+              <br />
+              <select name="tamanho" id="tamanho" title="Tamanho do produto">
+                <option value="s">S</option>
+                <option value="m">M</option>
+                <option value="l">L</option>
+                <option value="NA">Não aplicável</option>
+              </select>
+            </div>
+
             <br />
-          </div>
-          <br />
-          <div class="Tamanho">
-            <label for="text"><b>Tamanho</b></label>
-            <br />
-            <select name="tamanho" id="tamanho" title="Tamanho do produto">
-              <option value="s">S</option>
-              <option value="m">M</option>
-              <option value="l">L</option>
-              <option value="NA">Não aplicável</option>
-            </select>
-          </div>
+            <div class="Preço">
+              <label for="text"><b>Preço</b></label>
+              <input
+                type="text"
+                placeholder="Introduza o preço de venda"
+                required
+              />
+            </div>
 
-          <br />
-          <div class="Preço">
-            <label for="text"><b>Preço</b></label>
-            <input type="text" placeholder="Introduza o preço de venda" required />
-          </div>
+            <div class="Foto">
+              <label for="imagem"><b> Insira um link da imagem:</b></label>
+              <input
+                type="text"
+                id="imagem"
+                placeholder="Cole o link da imagem aqui"
+                required
+              />
+            </div>
 
-          <div class="Foto">
-            <label for="imagem"><b> Insira um link da imagem:</b></label>
-            <input type="text" id="imagem" placeholder="Cole o link da imagem aqui" required />
-          </div>
+            <div class="Localização">
+              <label for="text"><b>Localização</b></label>
+              <input
+                type="text"
+                placeholder="Em que zona do país é que se encontra?"
+                required
+              />
+            </div>
 
-          <div class="Localização">
-            <label for="text"><b>Localização</b></label>
-            <input type="text" placeholder="Em que zona do país é que se encontra?" required />
-          </div>
-
-          <button type="submit" class="btn">Submeter produto</button>
-          <button type="button" class="btn cancel" onclick="closeForm()">
-            Cancelar
-          </button>
-        </form>
+            <button type="submit" class="btn">Submeter produto</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">
+              Cancelar
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <main class="main-container">
-    <aside>
-      <div class="sobre_nos">
-        <h1>Sobre Nós</h1>
-        <p class="sobre_nos">
-          <br />
-          No Loop Market, promovemos a economia circular, reutilizando e reciclando recursos para minimizar o
-          desperdício. Nossa plataforma conecta consumidores e empresas a produtos sustentáveis, prolongando o ciclo de
-          vida dos materiais e reduzindo o impacto ambiental.
-          <br />
-          <br />
-          Cada compra no Loop Market apoia um consumo mais consciente e ecológico. Junte-se a nós e contribua para um
-          futuro mais verde e sustentável.
-        </p>
+    <main class="main-container">
+      <div class="aside-container">
+      <div class="nav-pag">
+        <button class="btn-produtos">Produtos</button>
       </div>
-    </aside>
-    <div class="main-card-container">
-      <h1>Últimos produtos adicionados</h1>
-      <section class="card-container recent-products"></section>
-      <h1>Produtos com melhores avaliações</h1>
-      <section class="card-container most-rated-products"></section>
-    </div>
-  </main>
+      <aside>
+        <br />
+        <br />
+        <div class="sobre_nos">
+          <h1>Sobre Nós</h1>
+          <p class="sobre_nos">
+            <br />
+            No Loop Market, promovemos a economia circular, reutilizando e
+            reciclando recursos para minimizar o desperdício. Nossa plataforma
+            conecta consumidores e empresas a produtos sustentáveis, prolongando
+            o ciclo de vida dos materiais e reduzindo o impacto ambiental.
+            <br />
+            <br />
+            Cada compra no Loop Market apoia um consumo mais consciente e
+            ecológico. Junte-se a nós e contribua para um futuro mais verde e
+            sustentável.
+          </p>
+        </div>
+      </div>
+      </aside>
+      <div class="main-card-container">
+        <h1>Últimos produtos adicionados</h1>
+        <section class="card-container recent-products"></section>
+        <h1>Produtos com melhores avaliações</h1>
+        <section class="card-container most-rated-products"></section>
+      </div>
+    </main>
 
-  <footer id="footer"></footer>
-</body>
-
+    <footer id="footer"></footer>
+  </body>
 </html>
