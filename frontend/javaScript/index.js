@@ -14,8 +14,8 @@ function init() {
     await loadCommonElements();
 
     if (window.location.pathname.endsWith('index.html')) {
-      displayMostRecentProducts();
-      displayMostRatedProducts();
+      await displayMostRecentProducts();
+      await displayMostRatedProducts();
     }
 
     if (window.location.pathname.endsWith('pagina-login.html')) {
@@ -25,11 +25,11 @@ function init() {
     }
 
     if (window.location.pathname.endsWith('produto-total.html')) {
-      displayAllProducts();
+      await displayAllProducts();
     }
 
     if (window.location.pathname.endsWith('detalhes-produto.html')) {
-      gerarDetalhesDoProduto();
+      await gerarDetalhesDoProduto();
     }
 
     if (window.location.pathname.endsWith('perfil-utilizador.html')) {
