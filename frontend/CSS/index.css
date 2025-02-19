@@ -536,3 +536,90 @@ aside {
   gap: 17px;
   flex-wrap: wrap;
 }
+
+/* Detalhes do produto */
+.detalhes-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detalhes-container h1 {
+  font-size: 24px;
+  color: var(--secondary-color);
+  margin: 0px;
+}
+
+.detalhes-container h3 {
+  font-size: 18px;
+  color: var(--complementary-color);
+  margin: 0px;
+}
+
+.detalhes-container h4 {
+  font-size: 16px;
+  color: var(--complementary-color);
+  margin: 0px;
+}
+
+.detalhes-container h2 {
+  font-size: 16px;
+  color: #aaaaaa;
+  margin: 0px;
+}
+
+.detalhes-container h6 {
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  display: block;
+  margin: 10px 0;
+}
+
+.detalhes-container p {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 20px;
+  max-width: 700px;
+}
+
+.detalhes-container button {
+  background-color: var(--secondary-300);
+  color: var(--white);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.detalhes-container button:hover {
+  background-color: var(--secondary-color);
+}
+
+.imagem {
+  margin-right: 50px;
+  border: 5px solid #56303a;
+  border-radius: 15px;
+}
+
+.imagem img {
+  display: block;
+  max-width: 600px;
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 0;
+}
+
+#link-avaliacoes {
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+#numero-avaliacoes {
+  font-size: 0.8rem;
+  font-style: italic;
+}

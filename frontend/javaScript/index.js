@@ -156,6 +156,7 @@ async function gerarDetalhesDoProduto() {
   containerDetalhes.innerHTML = '';
 
   const produto = produtos.find(prod => prod.id === idDoProduto);
+  const rating = gerarRating(produto.avaliacoes);
 
   if (produto) {
     containerDetalhes.innerHTML = `
@@ -168,11 +169,7 @@ async function gerarDetalhesDoProduto() {
       <h2>${produto.categoria}</h2>
       <a id="link-avaliacoes" href="#">
       <h3>
-        ${
-          produto.avaliacoes.length == 0
-            ? 'Sem avaliações'
-            : gerarRating(produto.avaliacoes)
-        }
+        ${produto.avaliacoes.length == 0 ? 'Sem avaliações' : rating.estrelas}
         <span id="numero-avaliacoes">
         (${produto.avaliacoes.length} avaliações)
         </span>
