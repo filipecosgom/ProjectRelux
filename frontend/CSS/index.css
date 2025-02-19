@@ -473,17 +473,22 @@ aside {
 .info-pessoal {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  justify-content: space-around;
+  align-self: flex-start;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .perfil-utilizador {
   display: flex;
   flex-direction: column;
-  padding-right: 350px;
+  width: 60%;
 }
 
 .perfil-utilizador h2 {
-  margin-top: 50px;
+  margin: 30px 0 20px 0;
   color: #56303a;
 }
 
@@ -523,9 +528,52 @@ aside {
   display: flex;
   border-radius: 5px;
   background-color: var(--secondary-400);
-  color: var(--secondary-200);
+  color: var(--white);
   padding: 10px;
   margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+/* rótulosEstilo geral para o formulário */
+#perfil-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--white-100);
+}
+
+/* Estilo para as seções do formulário */
+#perfil-form section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo para os rótulos */
+#perfil-form label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Estilo para os campos de entrada */
+#perfil-form input[type="text"],
+#perfil-form input[type="email"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Estilo para os campos de entrada em modo somente leitura */
+#perfil-form input[readonly] {
+  background-color: #e9ecef;
+  cursor: not-allowed;
 }
 
 /*produto-total*/

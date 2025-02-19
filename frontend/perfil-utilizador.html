@@ -43,32 +43,32 @@
       <div class="info-pessoal">
         <div class="perfil-utilizador">
           <h2>Página Pessoal</h2>
-          <section class="nome-wrapper">
-            <h3 class="nome"></h3>
-            <br />
-          </section>
-          <section class="username-wrapper">
-            <h6>Username:</h6>
-            <h4 class="username"></h4>
-            <br />
-          </section>
-          <section class="telefone-wrapper">
-            <h6>Telefone:</h6>
-            <h4 class="telefone"></h4>
-            <br />
-          </section>
-          <section class="email-wrapper">
-            <h6>Email:</h6>
-            <h4 class="email"></h4>
-            <br />
-          </section>
+          <form id="perfil-form">
+            <section class="nome-wrapper">
+              <label for="nome">Nome:</label>
+              <input type="text" id="nome" name="nome" value="" readonly>
+            </section>
+            <section class="username-wrapper">
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username" value="" readonly>
+            </section>
+            <section class="telefone-wrapper">
+              <label for="telefone">Telefone:</label>
+              <input type="text" id="telefone" name="telefone" value="" readonly>
+            </section>
+            <section class="email-wrapper">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" value="" readonly>
+            </section>
+          </form>
         </div>
         <div class="outras-info">
           <section class="imagem-perfil-wrapper">
             <img class="imagem-perfil" src="" alt="foto-perfil" />
           </section>
           <section>
-            <button class="editar-pag-pessoal">Editar informações</button>
+            <button type="button" class="editar-pag-pessoal" id="toggle-readonly"
+              title="Editar Página Pessoal">Editar</button>
           </section>
         </div>
       </div>

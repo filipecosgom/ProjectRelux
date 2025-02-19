@@ -33,7 +33,8 @@ function init() {
     }
 
     if (window.location.pathname.endsWith('perfil-utilizador.html')) {
-      displayUser();
+      await displayUser();
+      await toggleFormEdit();
     }
   });
 }
@@ -273,10 +274,10 @@ async function displayUser() {
       '<p>Utilizador não encontrado</p>';
     return;
   }
-  document.querySelector('.nome').textContent = user.nome;
-  document.querySelector('.username').textContent = user.username;
-  document.querySelector('.telefone').textContent = user.telefone;
-  document.querySelector('.email').textContent = user.email;
+  document.getElementById('nome').value = user.nome;
+  document.getElementById('username').value = user.username;
+  document.getElementById('telefone').value = user.telefone;
+  document.getElementById('email').value = user.email;
   document.querySelector('.imagem-perfil').src = user.imagem;
 
   const productsContainer = document.querySelector('.card-container');
@@ -286,4 +287,31 @@ async function displayUser() {
     const card = createCard(product);
     productsContainer.appendChild(card);
   });
+}
+
+async function toggleFormEdit() {
+  document
+    .getElementById('toggle-readonly')
+    .addEventListener('click', function () {
+      const formElements = document.querySelectorAll('#perfil-form input');
+      let isReadOnly = true;
+
+      formElements.forEach(element => {
+        if (element.id !== 'username') {
+          if (element.hasAttribute('readonly')) {
+            element.removeAttribute('readonly');
+            isReadOnly = false;
+          } else {
+            element.setAttribute('readonly', 'readonly');
+          }
+        }
+      });
+
+      const button = document.getElementById('toggle-readonly');
+      if (isReadOnly) {
+        button.textContent = 'Editar';
+      } else {
+        button.textContent = 'Guardar';
+      }
+    });
 }
