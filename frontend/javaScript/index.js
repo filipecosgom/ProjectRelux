@@ -28,7 +28,7 @@ function init() {
       displayAllProducts();
     }
 
-    if (window.location.pathname.endsWith('pagina-detalhe.html')) {
+    if (window.location.pathname.endsWith('detalhes-produto.html')) {
       gerarDetalhesDoProduto();
     }
 
