@@ -95,6 +95,7 @@ header .fa {
 .hidden {
   display: none;
 }
+
 /**/
 .navbar {
   display: flex;
@@ -151,6 +152,7 @@ main {
   display: flex;
   flex-direction: column;
 }
+
 aside {
   position: sticky;
   top: 100px;
@@ -174,6 +176,7 @@ aside {
 .btn-produtos-link {
   text-decoration: none;
 }
+
 .btn-produtos {
   width: 250px;
   padding: 15px;
@@ -466,6 +469,7 @@ aside {
   align-items: center;
   width: 90%;
 }
+
 .info-pessoal {
   display: flex;
   flex-direction: row;
@@ -503,13 +507,14 @@ aside {
   color: #56303a;
 }
 
-.imagem-perfil {
+.imagem-perfil-wrapper {
   margin-bottom: 30px;
 }
+
 .imagem-perfil {
   display: flex;
-  width: 350px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   border: 5px solid #56303a;
   border-radius: 10px;
 }

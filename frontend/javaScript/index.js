@@ -271,22 +271,21 @@ async function submitLoginForm() {
 
 async function displayUser() {
   const user = JSON.parse(sessionStorage.getItem('user')) || [];
-
   if (!user) {
     document.getElementById('perfil-utilizador').innerHTML =
       '<p>Utilizador não encontrado</p>';
     return;
   }
-
   document.querySelector('.nome').textContent = user.nome;
   document.querySelector('.username').textContent = user.username;
   document.querySelector('.telefone').textContent = user.telefone;
   document.querySelector('.email').textContent = user.email;
   document.querySelector('.imagem-perfil').src = user.imagem;
 
-  const productsContainer = document.querySelector('main-card-container');
+  const productsContainer = document.querySelector('.card-container');
   productsContainer.innerHTML = '';
-  user.products.forEach(product => {
+  const products = user.products;
+  products.forEach(product => {
     const card = createCard(product);
     productsContainer.appendChild(card);
   });
