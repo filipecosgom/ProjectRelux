@@ -124,7 +124,7 @@ function createCard(product) {
   `;
   const button = card.querySelector('button');
   button.addEventListener('click', () => {
-    window.location.href = `detalhes-produtos.html?id=${product.id}`;
+    window.location.href = `detalhes-produto.html?id=${product.id}`;
   });
   return card;
 }
