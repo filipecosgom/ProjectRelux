@@ -12,7 +12,7 @@
 *.ipr
 
 ### Prettier ###
-.prettierrc
+## .prettierrc
 
 ### Node.js ###
 node_modules/
