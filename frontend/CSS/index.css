@@ -18,12 +18,12 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 @font-face {
-  font-family: "Nature Impact Demo";
-  src: url("../fonts/Nature Impact Demo.otf") format("opentype");
+  font-family: 'Nature Impact Demo';
+  src: url('../fonts/Nature Impact Demo.otf') format('opentype');
 }
 
 /* Header */
@@ -50,7 +50,7 @@ header a {
 }
 
 header h1 {
-  font-family: "Nature Impact Demo", sans-serif;
+  font-family: 'Nature Impact Demo', sans-serif;
   margin: 5px;
   flex: 1;
 }
@@ -506,7 +506,7 @@ aside {
 .imagem-perfil {
   margin-bottom: 30px;
 }
-.imagem-perfil img {
+.imagem-perfil {
   display: flex;
   width: 350px;
   height: 250px;
