@@ -27,6 +27,10 @@ function init() {
     if (window.location.pathname.endsWith('produto-total.html')) {
       displayAllProducts();
     }
+
+    if (window.location.pathname.endsWith('pagina-detalhe.html')) {
+      gerarDetalhesDoProduto()
+    }
   });
 }
 
@@ -260,3 +264,5 @@ async function submitLoginForm() {
     alert('Login falhou! Por favor verifique as suas credenciais.');
   }
 }
+
+async function 
