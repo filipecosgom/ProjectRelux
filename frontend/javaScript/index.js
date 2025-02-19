@@ -278,6 +278,7 @@ async function displayUser() {
   document.getElementById('username').value = user.username;
   document.getElementById('telefone').value = user.telefone;
   document.getElementById('email').value = user.email;
+  document.getElementById('profile-pic').value = user.imagem;
   document.querySelector('.imagem-perfil').src = user.imagem;
 
   const productsContainer = document.querySelector('.card-container');

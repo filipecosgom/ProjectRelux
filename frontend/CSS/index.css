@@ -561,7 +561,8 @@ aside {
 
 /* Estilo para os campos de entrada */
 #perfil-form input[type="text"],
-#perfil-form input[type="email"] {
+#perfil-form input[type="email"],
+#perfil-form input[type="profile-pic"] {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
