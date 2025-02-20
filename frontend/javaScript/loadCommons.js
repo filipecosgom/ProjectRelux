@@ -4,13 +4,6 @@ const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;
 
 export async function loadCommonElements() {
-  fetch('common/newProductModal.html')
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-    })
-    .catch(error => console.error('Erro ao carregar o modal:', error));
-
   fetch('common/header.html')
     .then(response => response.text())
     .then(data => {
@@ -18,9 +11,19 @@ export async function loadCommonElements() {
     })
     .then(() => {
       welcomeMessage();
+    })
+    .then(() => new Promise(resolve => setTimeout(resolve, 1000)))
+    .then(() => {
       addModalListeners();
     })
     .catch(error => console.error('Erro ao carregar o cabeçalho:', error));
+  // Wait for 1 second
+  fetch('common/newProductModal.html')
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+    })
+    .catch(error => console.error('Erro ao carregar o modal:', error));
 
   fetch('common/footer.html')
     .then(response => response.text())
@@ -72,10 +75,11 @@ async function addModalListeners() {
   const span = document.getElementsByClassName('close')[0];
   const cancel = document.getElementById('cancelar');
   const form = document.getElementById('form-novo-produto');
-  /*const submitBtn = document.getElementById('submitBtn');*/
+  const submitBtn = document.getElementById('submitBtn');
 
   btn.onclick = function () {
     modal.style.display = 'block';
+    addNewProduct();
   };
 
   cancel.onclick = function () {
@@ -94,11 +98,14 @@ async function addModalListeners() {
       form.reset();
     }
   };
+}
+
+async function addNewProduct() {
+  const loggedInUser = JSON.parse(sessionStorage.getItem('user'));
+  const form = document.getElementById('form-novo-produto');
 
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
-    console.log('Novo Produto Submetido');
-    alert('Produto adicionado com Sucesso');
 
     const titulo = document.getElementById('titulo').value;
     const descricao = document.getElementById('descricao').value;
@@ -106,35 +113,65 @@ async function addModalListeners() {
       document.querySelector("select[name='categoria']").value || 'N/A';
     const tamanho =
       document.querySelector("select[name='tamanho']").value || 'N/A';
-    const preco = document.getElementByID('preco').value;
+    const preco = document.getElementById('preco').value;
     const imagem = document.getElementById('imagem').value;
     const localizacao = document.getElementById('localizacao').value;
+    const dataDePublicacao = new Date().toISOString().split('T')[0];
 
     const novoProduto = {
       titulo: titulo,
       descricao: descricao,
       categoria: categoria,
       tamanho: tamanho,
-      preco: preco,
+      preco: parseFloat(preco).toFixed(2),
       imagem: imagem,
-      localizacao: localizacao,
+      local: localizacao,
+      dataDePublicacao: dataDePublicacao,
+      userAutor: loggedInUser.username,
     };
-
-    console.log('Dados do novo produto:', JSON.stringify(novoProduto, null, 2));
 
     try {
       const result = await sendNewProductReq(novoProduto);
-      console.log('Produto enviado com sucesso:', result);
+      if (!loggedInUser.produtos) {
+        loggedInUser.produtos = [];
+      }
+      loggedInUser.produtos.push(result);
+      sessionStorage.setItem('user', JSON.stringify(loggedInUser));
+      const productIds = loggedInUser.produtos.map(product => product.id);
+      const updatedUser = { ...loggedInUser, produtos: productIds };
+      await updateUser(updatedUser);
+      alert('Produto criado com sucesso!');
       modal.style.display = 'none';
       form.reset();
+      window.location.reload();
     } catch (error) {
       console.error('Erro ao enviar o produto:', error);
     }
   });
 }
 
+export async function updateUser(user) {
+  try {
+    const requestURL = `${rootPath}/users/${user.username}`;
+    const response = await fetch(requestURL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao atualizar o usuário: ${response.statusText}`);
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Erro ao atualizar o usuário:', error);
+    throw error;
+  }
+}
+
 async function sendNewProductReq(product) {
-  console.log('estou dentro da função sendNewRequest');
   try {
     const requestURL = productsPath;
     const response = await fetch(requestURL, {
@@ -144,11 +181,9 @@ async function sendNewProductReq(product) {
       },
       body: JSON.stringify(product),
     });
-
     if (!response.ok) {
       throw new Error(`Erro ao enviar o produto: ${response.statusText}`);
     }
-
     const result = await response.json();
     return result;
   } catch (error) {

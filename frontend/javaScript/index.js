@@ -1,6 +1,6 @@
 'use strict';
 
-import { loadCommonElements } from './loadCommons.js';
+import { loadCommonElements, updateUser } from './loadCommons.js';
 
 const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;

@@ -1,52 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-    <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
-    <link rel="shortcut icon" href="favicon.png" type="image/png" />
-    <script defer type="module" src="./javaScript/index.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
 
-    <title>LoopMarket</title>
-  </head>
+  <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
+  <link rel="shortcut icon" href="favicon.png" type="image/png" />
+  <!--
+  <script defer type="module" src="./javaScript/index.js"></script>
+  -->
+  <title>LoopMarket</title>
+</head>
 
-  <body>
-    <header id="header"></header>
+<body>
+  <header id="header"></header>
 
-    <main class="main-container">
-      <aside>
-        <div class="sobre_nos">
-          <h1>Sobre Nós</h1>
-          <p class="sobre_nos">
-            <br />
-            No Loop Market, promovemos a economia circular, reutilizando e
-            reciclando recursos para minimizar o desperdício. Nossa plataforma
-            conecta consumidores e empresas a produtos sustentáveis, prolongando
-            o ciclo de vida dos materiais e reduzindo o impacto ambiental.
-            <br />
-            <br />
-            Cada compra no Loop Market apoia um consumo mais consciente e
-            ecológico. Junte-se a nós e contribua para um futuro mais verde e
-            sustentável.
-          </p>
-        </div>
-      </aside>
-      <div class="detalhes-container" id="detalhes-container"></div>
-    </main>
+  <main class="main-container">
+    <aside>
+      <div class="sobre_nos">
+        <h1>Sobre Nós</h1>
+        <p class="sobre_nos">
+          <br />
+          No Loop Market, promovemos a economia circular, reutilizando e
+          reciclando recursos para minimizar o desperdício. Nossa plataforma
+          conecta consumidores e empresas a produtos sustentáveis, prolongando
+          o ciclo de vida dos materiais e reduzindo o impacto ambiental.
+          <br />
+          <br />
+          Cada compra no Loop Market apoia um consumo mais consciente e
+          ecológico. Junte-se a nós e contribua para um futuro mais verde e
+          sustentável.
+        </p>
+      </div>
+    </aside>
+    <div class="detalhes-container" id="detalhes-container">
 
-    <footer id="footer"></footer>
-  </body>
+      <div class="imagem">
+        <img src="#" alt="Imagem do produto" />
+      </div>
+      <form class="detalhes"></form>
+      <label for="nome-produto">Nome do Produto:</label>
+      <input type="text" id="nome-produto" value="Botas da Tropa" readonly />
+
+      <label for="localizacao">Localização:</label>
+      <input type="text" id="localizacao" value="Lisboa" readonly />
+
+      <label for="categoria">Categoria:</label>
+      <input type="text" id="categoria" value="Calçado" readonly />
+
+      <label for="avaliacoes">Avaliações:</label>
+      <a id="link-avaliacoes" href="#">
+        <input type="text" id="avaliacoes" value="2" readonly />
+      </a>
+
+      <label for="preco">Preço:</label>
+      <input type="text" id="preco" value="25,00€" readonly />
+
+      <label for="publicado-por">Publicado por:</label>
+      <input type="text" id="publicado-por" value="soldado em 2025-02-13" readonly />
+
+      <label for="descricao">Descrição:</label>
+      <textarea id="descricao" readonly>Botas como novas, apertam nos dedos da frente</textarea>
+
+      <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
+        Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+      </button>
+      <button type="button" title="Editar Produto" onclick="">Editar <i class="fa fa-pencil"
+          aria-hidden="true"></i></button>
+      <button type="button" title="Eliminar Produto" onclick="">Eliminar <i class="fa fa-times"
+          aria-hidden="true"></i></button>
+      </form>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+</body>
+
 </html>
