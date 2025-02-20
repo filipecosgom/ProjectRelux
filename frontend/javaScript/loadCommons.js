@@ -107,13 +107,6 @@ async function addModalListeners() {
   const imagem = document.getElementById('imagem').value;
   const localizacao = document.querySelector('.Localização input').value;
 
-  let novoId;
-  if (produtos.length > 0) {
-    novoId = produtos[produtos.length - 1].id + 1;
-  } else {
-    novoId = 1;
-  }
-
   const novoProduto = {
     id: novoId,
     titulo: titulo,
