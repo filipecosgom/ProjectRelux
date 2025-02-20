@@ -1,5 +1,8 @@
 'use strict';
 
+const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const productsPath = `${rootPath}/products`;
+
 export async function loadCommonElements() {
   fetch('common/newProductModal.html')
     .then(response => response.text())
@@ -94,7 +97,8 @@ async function addModalListeners() {
 
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
-    console.log('New product form submitted');
+    console.log('Novo Produto Submetido');
+    alert('Produto adicionado com Sucesso');
 
     const titulo = document.getElementById('titulo').value;
     const descricao = document.getElementById('descricao').value;
@@ -102,9 +106,9 @@ async function addModalListeners() {
       document.querySelector("select[name='categoria']").value || 'N/A';
     const tamanho =
       document.querySelector("select[name='tamanho']").value || 'N/A';
-    const preco = document.querySelector('.Preço input').value;
+    const preco = document.getElementByID('preco').value;
     const imagem = document.getElementById('imagem').value;
-    const localizacao = document.querySelector('.Localização input').value;
+    const localizacao = document.getElementById('localizacao').value;
 
     const novoProduto = {
       titulo: titulo,
@@ -126,6 +130,7 @@ async function addModalListeners() {
     }
   });
 }
+
 async function sendNewProductReq(product) {
   try {
     const requestURL = productsPath;
