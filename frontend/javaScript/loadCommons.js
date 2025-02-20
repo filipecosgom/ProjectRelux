@@ -72,7 +72,7 @@ async function addModalListeners() {
   const span = document.getElementsByClassName('close')[0];
   const cancel = document.getElementById('cancelar');
   const form = document.getElementById('form-novo-produto');
-  const submitBtn = document.getElementById('submitBtn');
+  /*const submitBtn = document.getElementById('submitBtn');*/
 
   btn.onclick = function () {
     modal.style.display = 'block';
@@ -106,7 +106,7 @@ async function addModalListeners() {
       document.querySelector("select[name='categoria']").value || 'N/A';
     const tamanho =
       document.querySelector("select[name='tamanho']").value || 'N/A';
-    const preco = document.getElementByID('preco').value;
+    /* const preco = document.getElementByID('preco').value;*/
     const imagem = document.getElementById('imagem').value;
     const localizacao = document.getElementById('localizacao').value;
 
@@ -115,10 +115,12 @@ async function addModalListeners() {
       descricao: descricao,
       categoria: categoria,
       tamanho: tamanho,
-      preco: preco,
+      /* preco: preco, */
       imagem: imagem,
       localizacao: localizacao,
     };
+
+    console.log('Dados do novo produto:', JSON.stringify(novoProduto, null, 2));
 
     try {
       const result = await sendNewProductReq(novoProduto);
@@ -132,6 +134,7 @@ async function addModalListeners() {
 }
 
 async function sendNewProductReq(product) {
+  console.log('estou dentro da função sendNewRequest');
   try {
     const requestURL = productsPath;
     const response = await fetch(requestURL, {

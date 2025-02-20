@@ -199,9 +199,9 @@ async function gerarDetalhesDoProduto() {
       <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
     Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
     </button>
-      <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
-        produto.id
-      }')">Editar <i class="fa fa-pencil" aria-hidden="true"></i></button>
+    <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
+      produto.id
+    }')">Editar <i class="fa fa-pencil" aria-hidden="true"></i></button>
       <button type="button" title="Eliminar Produto" onclick="eliminarProduto('${
         produto.id
       }')">Eliminar <i class="fa fa-times" aria-hidden="true"></i></button>
@@ -309,6 +309,63 @@ async function displayUser() {
       const card = createCard(product);
       productsContainer.appendChild(card);
     });
+  }
+}
+
+/*async function toggleFormProductEdit() {
+  const formElements = document.querySelectorAll(
+    '.detalhes input, .detalhes textarea'
+  );
+  const saveButton = document.getElementById('save-changes');
+  let isReadOnly = true;
+
+  formElements.forEach(element => {
+    if (element.hasAttribute('readonly')) {
+      element.removeAttribute('readonly');
+      isReadOnly = false;
+    } else {
+      element.setAttribute('readonly', 'readonly');
+    }
+  });
+
+  if (isReadOnly) {
+    saveButton.classList.add('hidden');
+  } else {
+    saveButton.classList.remove('hidden');
+  }
+
+  const button = document.getElementById('toggle-edit');
+  if (isReadOnly) {
+    button.textContent = 'Editar';
+  } else {
+    button.textContent = 'Cancelar';
+  }
+}
+  */
+
+async function saveProductChanges(productId) {
+  const updatedProduct = {
+    titulo: document.getElementById('titulo').value,
+    local: document.getElementById('local').value,
+    categoria: document.getElementById('categoria').value,
+    preco: parseFloat(document.getElementById('preco').value.replace('€', '')),
+    descricao: document.getElementById('descricao').value,
+  };
+
+  const requestURL = `${rootPath}/products/${productId}`;
+  const response = await fetch(requestURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedProduct),
+  });
+
+  if (response.ok) {
+    alert('Produto atualizado com sucesso!');
+    window.location.reload();
+  } else {
+    alert('Erro ao atualizar o produto. Tente novamente.');
   }
 }
 
