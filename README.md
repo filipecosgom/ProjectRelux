@@ -7,9 +7,6 @@
 |            Categoria            |                                 Requisitos                                 |       Grupos       |  Responsável  |
 | :-----------------------------: | :------------------------------------------------------------------------: | :----------------: | :-----------: |
 |      Interface - Frontend       |        Botão para fazer logout de utilizador atualmente autenticado        |       Todos        | Mariana/Jorge |
-|      Interface - Frontend       |        Botão para fazer logout de utilizador atualmente autenticado        |       Todos        | Mariana/Jorge |
-|      Interface - Frontend       |        Botão para fazer logout de utilizador atualmente autenticado        |       Todos        | Mariana/Jorge |
-|      Interface - Frontend       |        Botão para fazer logout de utilizador atualmente autenticado        |       Todos        | Mariana/Jorge |
 |      Interface - Frontend       |            Campos do Formulário para registo de novo utilizador            |       Todos        | Mariana/Jorge |
 |      Interface - Frontend       |   Campos do Formulário para visualização/edição de perfil do utilizador    |       Todos        | Mariana/Jorge |
 |      Interface - Frontend       |              Visualização dos produtos do usuário autenticado              |       Todos        | Mariana/Jorge |
@@ -41,9 +38,6 @@
 | Requisitos funcionais - Backend |                 R8 - Add product to user products (Server)                 |       Todos        | Mariana/Jorge |
 | Requisitos funcionais - Backend |                        R9 - Update product (Server)                        |       Todos        | Mariana/Jorge |
 | Requisitos funcionais - Backend |                       R10 - Delete product (Server)                        |       Todos        | Mariana/Jorge |
-| Requisitos funcionais - Backend |                         R11 - Add review (Server)                          |     Grupo de 3     | Mariana/Jorge |
-| Requisitos funcionais - Backend |                      R12 - List all reviews (Server)                       |     Grupo de 3     | Mariana/Jorge |
-| Requisitos funcionais - Backend |                        R13 - Update review (Server)                        |     Grupo de 3     | Mariana/Jorge |
-| Requisitos funcionais - Backend |                        R14 - Delete review (Server)                        |     Grupo de 3     | Mariana/Jorge |
-|              Teste              |        Pelo menos 10 testes da função principal em java usando Jest        |       Todos        | Mariana/Jorge |
-|              Teste              | Pelo menos 3 testes da função principal em java usando Jest para Avaliação |     Grupo de 3     | Mariana/Jorge |
+
+| Teste | Pelo menos 10 testes da função principal em java usando Jest | Todos | Mariana/Jorge |
+| Teste | Pelo menos 3 testes da função principal em java usando Jest para Avaliação | Grupo de 3 | Mariana/Jorge |
