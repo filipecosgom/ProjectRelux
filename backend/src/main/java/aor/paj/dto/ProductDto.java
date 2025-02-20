@@ -1,13 +1,16 @@
 package aor.paj.dto;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @XmlRootElement
 public class ProductDto {
+    public static int incremento = 0;
     private String titulo;
     private String categoria;
     private double preco;
@@ -20,23 +23,29 @@ public class ProductDto {
     private List<AvaliacaoDto> avaliacoes;
 
     public ProductDto() {
+        this.id = generateTimestampId();
         this.avaliacoes = new ArrayList<>();
     }
 
     public ProductDto(String titulo, String categoria, double preco,
-            String imagem, String local, String descricao,
-            String id, String dataDePublicacao, String userAutor,
-                      List<AvaliacaoDto> avaliacoes) {
+            String imagem, String local, String descricao, String dataDePublicacao, String userAutor,
+            List<AvaliacaoDto> avaliacoes) {
         this.titulo = titulo;
         this.categoria = categoria;
         this.preco = preco;
         this.imagem = imagem;
         this.local = local;
         this.descricao = descricao;
-        this.id = id;
         this.dataDePublicacao = dataDePublicacao;
         this.userAutor = userAutor;
         this.avaliacoes = (avaliacoes != null) ? avaliacoes : new ArrayList<>();
+        this.id = generateTimestampId();
+    }
+
+    private String generateTimestampId() {
+        String timeStamp = new SimpleDateFormat("yyMMddHHmm").format(new Date());
+        String result = String.format("%s%03d", timeStamp, ++incremento);
+        return result;
     }
 
     @XmlElement
