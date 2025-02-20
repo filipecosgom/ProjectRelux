@@ -16,7 +16,6 @@
   <link rel="stylesheet" type="text/css" href="./CSS/index.css" />
 
   <script defer type="module" src="./javaScript/index.js"></script>
-  <script defer src="./javaScript/novo-registo.js"></script>
 </head>
 
 <body>
@@ -32,14 +31,17 @@
           <input type="text" id="username" name="username" placeholder="Escolha o seu username" required />
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" placeholder="Digite a sua password" required />
+          <label for="confirm_password">Confirme a Password:</label>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme a sua password"
+            required />
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="Digite seu email" required />
+          <input type="email" id="email" name="email" placeholder="Digite o seu email" required />
           <label for="telefone">Telefone:</label>
           <input type="text" id="telefone" name="telefone" maxlength="9" minlength="9" placeholder="--- --- ---"
             required />
           <label for="fotografia">Fotografia</label>
           <input type="url" id="fotografia" placeholder="Cole o link da imagem aqui" required />
-          <button type="submit" onclick="addNewUser()">Registar</button>
+          <button type="submit" id="registarButton">Registar</button>
         </div>
       </form>
     </div>

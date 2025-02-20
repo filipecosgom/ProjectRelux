@@ -6,6 +6,7 @@ const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
 const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
 const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
+const registerRequestURL = `${rootPath}/users/register`;
 
 init();
 
@@ -34,7 +35,11 @@ function init() {
 
     if (window.location.pathname.endsWith('perfil-utilizador.html')) {
       await displayUser();
-      await toggleFormEdit();
+      await toggleFormUserEdit();
+    }
+
+    if (window.location.pathname.endsWith('novo-registo.html')) {
+      await addNewUser();
     }
   });
 }
@@ -284,17 +289,26 @@ async function displayUser() {
   const productsContainer = document.querySelector('.card-container');
   productsContainer.innerHTML = '';
   const products = user.products;
-  products.forEach(product => {
-    const card = createCard(product);
-    productsContainer.appendChild(card);
-  });
+  if (products.length === 0) {
+    productsContainer.innerHTML =
+      '<h2>Ainda não adicionou nenhum produto para venda!</h2>';
+  } else {
+    products.forEach(product => {
+      const card = createCard(product);
+      productsContainer.appendChild(card);
+    });
+  }
 }
 
-async function toggleFormEdit() {
+async function toggleFormUserEdit() {
   document
     .getElementById('toggle-readonly')
     .addEventListener('click', function () {
       const formElements = document.querySelectorAll('#perfil-form input');
+      const passwordWrapper = document.querySelector('.password-wrapper');
+      const confirmPasswordWrapper = document.querySelector(
+        '.confirm-password-wrapper'
+      );
       let isReadOnly = true;
 
       formElements.forEach(element => {
@@ -308,6 +322,14 @@ async function toggleFormEdit() {
         }
       });
 
+      if (isReadOnly) {
+        passwordWrapper.classList.add('hidden');
+        confirmPasswordWrapper.classList.add('hidden');
+      } else {
+        passwordWrapper.classList.remove('hidden');
+        confirmPasswordWrapper.classList.remove('hidden');
+      }
+
       const button = document.getElementById('toggle-readonly');
       if (isReadOnly) {
         button.textContent = 'Editar';
@@ -315,4 +337,106 @@ async function toggleFormEdit() {
         button.textContent = 'Guardar';
       }
     });
+}
+
+async function addNewUser() {
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirm_password');
+
+  passwordInput.addEventListener('input', validatePasswords);
+  confirmPasswordInput.addEventListener('input', validatePasswords);
+
+  function validatePasswords() {
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      confirmPasswordInput.setCustomValidity(
+        'A password deve ter pelo menos 8 caracteres, incluindo números e letras.'
+      );
+    } else if (password !== confirmPassword) {
+      confirmPasswordInput.setCustomValidity('As passwords não coincidem.');
+    } else {
+      confirmPasswordInput.setCustomValidity('');
+    }
+  }
+
+  document
+    .getElementById('formulario_novo_registo')
+    .addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      if (validateFormPassword() === true) {
+        const username = document.getElementById('username').value;
+        // Verificar se o username já existe
+        const usernameExists = await checkUsernameExists(username);
+        if (usernameExists) {
+          const usernameInput = document.getElementById('username');
+          usernameInput.setCustomValidity(
+            'O username já existe. Por favor escolha outro.'
+          );
+          usernameInput.reportValidity();
+          return;
+        }
+
+        const newUser = {
+          nome: document.getElementById('nome').value,
+          username: document.getElementById('username').value,
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+          telefone: document.getElementById('telefone').value,
+          imagem: document.getElementById('fotografia').value,
+        };
+
+        const response = await fetch(registerRequestURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser),
+        });
+
+        if (response.ok) {
+          alert('Utilizador registado! Bem-vindo/a, ' + newUser.username);
+          window.location.href = 'pagina-login.html';
+        } else {
+          alert('Erro ao registar utilizador. Tente novamente.');
+        }
+      } else {
+        alert('Erro ao registar utilizador. Tente novamente.');
+        return;
+      }
+    });
+}
+
+function validateFormPassword() {
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm_password').value;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    alert(
+      'A password deve ter pelo menos 8 caracteres, incluindo números e letras.'
+    );
+    return false;
+  }
+
+  if (password !== confirmPassword) {
+    alert('As passwords não coincidem.');
+    return false;
+  }
+
+  return true;
+}
+
+async function checkUsernameExists(username) {
+  const response = await fetch(
+    `${rootPath}/users/check-username?username=${username}`
+  );
+  if (response.ok) {
+    const result = await response.json();
+    return result.exists; // Supondo que a API retorna um objeto { exists: true/false }
+  } else {
+    console.error('Erro ao verificar username:', response.statusText);
+    return false;
+  }
 }

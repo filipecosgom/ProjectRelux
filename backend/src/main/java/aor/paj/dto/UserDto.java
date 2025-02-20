@@ -1,9 +1,10 @@
 package aor.paj.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-
-import java.util.List;
 
 @XmlRootElement
 public class UserDto {
@@ -16,17 +17,18 @@ public class UserDto {
     private List<String> produtos;
 
     public UserDto() {
+        this.produtos = new ArrayList<>();
     }
 
     public UserDto(String username, String password, String nome, String email,
-                   String telefone, String imagem, List<String> produtos) {
+            String telefone, String imagem, List<String> produtos) {
         this.username = username;
         this.password = password;
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
         this.imagem = imagem;
-        this.produtos = produtos;
+        this.produtos = (produtos != null) ? produtos : new ArrayList<>();
     }
 
     @XmlElement
@@ -92,4 +94,3 @@ public class UserDto {
         this.produtos = produtos;
     }
 }
-

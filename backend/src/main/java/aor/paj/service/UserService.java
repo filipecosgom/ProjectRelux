@@ -20,7 +20,7 @@ import jakarta.json.bind.JsonbBuilder;
 public class UserService {
 
     private Map<String, UserDto> users = new HashMap<>();
-    private static final String usersFile = "../database/users.json";
+    private static final String USERS_FILE = "../database/users.json";
 
     @PostConstruct
     public void init() {
@@ -28,7 +28,7 @@ public class UserService {
     }
 
     private void loadUsersFromFile() {
-        File file = new File(usersFile);
+        File file = new File(USERS_FILE);
         if (file.exists()) {
             try (FileReader fileReader = new FileReader(file)) {
                 Jsonb jsonb = JsonbBuilder.create();
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     private void saveUsersToFile() {
-        try (FileWriter fileWriter = new FileWriter(usersFile)) {
+        try (FileWriter fileWriter = new FileWriter(USERS_FILE)) {
             Jsonb jsonb = JsonbBuilder.create();
             List<UserDto> userList = new ArrayList<>(users.values());
             jsonb.toJson(userList, fileWriter);
@@ -88,5 +88,9 @@ public class UserService {
         }
         users.remove(username);
         saveUsersToFile();
+    }
+
+    public boolean checkUsernameExists(String username) {
+        return users.containsKey(username);
     }
 }

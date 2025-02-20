@@ -74,6 +74,7 @@ header .bem-vindo {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 header .button {
@@ -93,7 +94,7 @@ header .fa {
 
 /* Classe para esconder objetos na página */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /**/
@@ -522,6 +523,7 @@ aside {
   height: 300px;
   border: 5px solid #56303a;
   border-radius: 10px;
+  object-fit: cover;
 }
 
 .editar-pag-pessoal {
