@@ -134,7 +134,7 @@ public class ProductDto {
 
     @XmlElement
     public List<AvaliacaoDto> getAvaliacoes() {
-        return avaliacoes;
+        return new ArrayList<>(avaliacoes);
     }
 
     public void setAvaliacoes(List<AvaliacaoDto> avaliacoes) {

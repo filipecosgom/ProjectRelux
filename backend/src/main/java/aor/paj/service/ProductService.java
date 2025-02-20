@@ -59,26 +59,43 @@ public class ProductService {
     public void updateProduct(ProductDto productDto) {
         if (productMap.containsKey(productDto.getId())) {
             ProductDto existingProduct = productMap.get(productDto.getId());
-            existingProduct.setTitulo(productDto.getTitulo());
-            existingProduct.setCategoria(productDto.getCategoria());
-            existingProduct.setPreco(productDto.getPreco());
-            existingProduct.setImagem(productDto.getImagem());
-            existingProduct.setLocal(productDto.getLocal());
-            existingProduct.setDescricao(productDto.getDescricao());
-            existingProduct.setDataDePublicacao(productDto.getDataDePublicacao());
-            existingProduct.setUserAutor(productDto.getUserAutor());
-            existingProduct.setAvaliacoes(productDto.getAvaliacoes());
-            existingProduct.setEstado(productDto.getEstado());
+
+            if (productDto.getTitulo() != null) {
+                existingProduct.setTitulo(productDto.getTitulo());
+            }
+            if (productDto.getCategoria() != null) {
+                existingProduct.setCategoria(productDto.getCategoria());
+            }
+            if (productDto.getPreco() != 0) {
+                existingProduct.setPreco(productDto.getPreco());
+            }
+            if (productDto.getImagem() != null) {
+                existingProduct.setImagem(productDto.getImagem());
+            }
+            if (productDto.getLocal() != null) {
+                existingProduct.setLocal(productDto.getLocal());
+            }
+            if (productDto.getDescricao() != null) {
+                existingProduct.setDescricao(productDto.getDescricao());
+            }
+            if (productDto.getDataDePublicacao() != null) {
+                existingProduct.setDataDePublicacao(productDto.getDataDePublicacao());
+            }
+            if (productDto.getUserAutor() != null) {
+                existingProduct.setUserAutor(productDto.getUserAutor());
+            }
+            if (productDto.getAvaliacoes() != null && !productDto.getAvaliacoes().isEmpty() &&
+                    productDto.getAvaliacoes().size() > existingProduct.getAvaliacoes().size()) {
+                existingProduct.setAvaliacoes(new ArrayList<>(productDto.getAvaliacoes()));
+            }
+            if (productDto.getEstado() != null) {
+                existingProduct.setEstado(productDto.getEstado());
+            }
+
             saveProductsToFile();
         } else {
             throw new IllegalArgumentException("Product not found with id: " + productDto.getId());
         }
-
-        /*
-         * productMap.put(product.getId(), product);
-         * saveProductsToFile();
-         */
-
     }
 
     public void deleteProduct(String id) {

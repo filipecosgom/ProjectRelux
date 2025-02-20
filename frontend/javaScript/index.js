@@ -52,6 +52,65 @@ function init() {
   });
 }
 
+async function comprarProduto(produtoId) {
+  const requestURL = `${rootPath}/products/${produtoId}`;
+  const response = await fetch(requestURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ estado: 'COMPRADO' }),
+  });
+
+  if (response.ok) {
+    alert('Produto comprado com sucesso!');
+    window.location.href = 'index.html';
+  } else {
+    alert('Erro ao comprar o produto. Tente novamente.');
+  }
+}
+
+async function setupComprarButton() {
+  const comprarButton = document.getElementById('comprar-produto');
+  if (comprarButton) {
+    const produtoId = comprarButton.getAttribute('data-produto-id');
+    comprarButton.addEventListener('click', async () => {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user) {
+        alert('Por favor, faça login para comprar o produto.');
+        window.location.href = 'pagina-login.html';
+        return;
+      }
+
+      const produto = await getProdutoById(produtoId);
+      if (produto.estado !== 'DISPONIVEL') {
+        alert('Este produto não está disponível para compra.');
+        return;
+      }
+
+      comprarProduto(produtoId);
+    });
+  }
+}
+
+async function getProdutoById(produtoId) {
+  const requestURL = `${rootPath}/products/${produtoId}`;
+  const response = await fetch(requestURL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.ok) {
+    const produto = await response.json();
+    return produto;
+  } else {
+    console.error('Erro ao buscar o produto:', response.statusText);
+    return null;
+  }
+}
+
 async function getAllProducts() {
   try {
     const requestURL = getAllProductsURL;
@@ -219,7 +278,9 @@ async function gerarDetalhesDoProduto() {
         <textarea id="descricao" readonly>${produto.descricao}</textarea>
 
         <label for="estado-produto-readonly">Estado:</label>
-        <input type="text" id="estado-produto-readonly" value="Disponível" readonly />
+        <input type="text" id="estado-produto-readonly" value="${
+          produto.estado
+        }" readonly />
 
         <label class="hidden" for="estado-produto">Estado:</label>
         <select class="hidden" name="estado-produto" id="estado-produto" title="Estado do Produto">
@@ -234,9 +295,9 @@ async function gerarDetalhesDoProduto() {
             Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
           </button>
 
-          <button type="button" title="Comprar" onclick="%COMPRAR_PRODUTO%('${
+          <button id="comprar-produto" type="button" title="Comprar" data-produto-id="${
             produto.id
-          }')">
+          }">
             Comprar <i class="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
 
@@ -280,6 +341,8 @@ async function gerarDetalhesDoProduto() {
         }
         avaliacoesVisiveis = !avaliacoesVisiveis;
       });
+
+    setupComprarButton();
   } else {
     alert('Produto não encontrado!');
   }
