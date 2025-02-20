@@ -23,6 +23,14 @@ function init() {
       document
         .getElementById('submitLoginForm')
         .addEventListener('click', submitLoginForm);
+      document
+        .getElementById('login-form')
+        .addEventListener('keypress', function (event) {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            submitLoginForm();
+          }
+        });
     }
 
     if (window.location.pathname.endsWith('produto-total.html')) {
