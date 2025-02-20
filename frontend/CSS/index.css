@@ -586,7 +586,8 @@ aside {
 #perfil-form input[type="profile-pic"],
 #perfil-form input[type="password"],
 #detalhes-produto-form input[type="text"],
-#detalhes-produto-form textarea {
+#detalhes-produto-form textarea,
+#detalhes-produto-form select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -597,7 +598,8 @@ aside {
 
 /* Estilo para os campos de entrada em modo somente leitura */
 #perfil-form input[readonly],
-#detalhes-produto-form input[readonly] #detalhes-produto-form textarea[readonly] {
+#detalhes-produto-form input[readonly],
+#detalhes-produto-form textarea[readonly] {
   background-color: #e9ecef;
   cursor: not-allowed;
 }

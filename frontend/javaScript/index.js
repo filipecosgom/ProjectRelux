@@ -52,47 +52,6 @@ function init() {
   });
 }
 
-async function comprarProduto(produtoId) {
-  const requestURL = `${rootPath}/products/${produtoId}`;
-  const response = await fetch(requestURL, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ estado: 'COMPRADO' }),
-  });
-
-  if (response.ok) {
-    alert('Produto comprado com sucesso!');
-    window.location.href = 'index.html';
-  } else {
-    alert('Erro ao comprar o produto. Tente novamente.');
-  }
-}
-
-async function setupComprarButton() {
-  const comprarButton = document.getElementById('comprar-produto');
-  if (comprarButton) {
-    const produtoId = comprarButton.getAttribute('data-produto-id');
-    comprarButton.addEventListener('click', async () => {
-      const user = JSON.parse(sessionStorage.getItem('user'));
-      if (!user) {
-        alert('Por favor, faça login para comprar o produto.');
-        window.location.href = 'pagina-login.html';
-        return;
-      }
-
-      const produto = await getProdutoById(produtoId);
-      if (produto.estado !== 'DISPONIVEL') {
-        alert('Este produto não está disponível para compra.');
-        return;
-      }
-
-      comprarProduto(produtoId);
-    });
-  }
-}
-
 async function getProdutoById(produtoId) {
   const requestURL = `${rootPath}/products/${produtoId}`;
   const response = await fetch(requestURL, {
@@ -133,9 +92,14 @@ async function getAllProducts() {
   }
 }
 
+async function getAvailableProducts() {
+  const products = await getAllProducts();
+  return products.filter(product => product.estado === 'DISPONIVEL');
+}
+
 async function displayAllProducts() {
   const container = document.querySelector('.product-list');
-  const products = await getAllProducts();
+  const products = await getAvailableProducts();
 
   if (!container) {
     console.log('Não está a chegar ao html');
@@ -151,7 +115,7 @@ async function displayAllProducts() {
 
 async function displayMostRecentProducts() {
   const mainContainer = document.querySelector('.recent-products');
-  const products = await getAllProducts();
+  const products = await getAvailableProducts();
   const mostRecentProducts = products
     .sort((a, b) => new Date(b.dataDePublicacao) - new Date(a.dataDePublicacao))
     .slice(0, 3);
@@ -164,7 +128,7 @@ async function displayMostRecentProducts() {
 
 async function displayMostRatedProducts() {
   const mainContainer = document.querySelector('.most-rated-products');
-  const products = await getAllProducts();
+  const products = await getAvailableProducts();
   const mostRatedProducts = products
     .map(product => ({
       ...product,
@@ -179,7 +143,6 @@ async function displayMostRatedProducts() {
   });
 }
 
-// Cria a card do produto
 function createCard(product) {
   const rating = gerarRating(product.avaliacoes);
   const card = document.createElement('div');
@@ -202,7 +165,6 @@ function createCard(product) {
   return card;
 }
 
-// Gera o rating de cada produto conforme definido no ficheiro .json.
 function gerarRating(avaliacoes) {
   if (!avaliacoes) {
     avaliacoes = [];
@@ -285,13 +247,13 @@ async function gerarDetalhesDoProduto() {
         <label class="hidden" for="estado-produto">Estado:</label>
         <select class="hidden" name="estado-produto" id="estado-produto" title="Estado do Produto">
           <option value="rascunho">Rascunho</option>
-          <option value="disponível">Disponível</option>
+          <option value="disponivel" selected>Disponível</option>
           <option value="reservado">Reservado</option>
           <option value="comprado">Comprado</option>
         </select>
 
         <section class="detalhes-form-buttons">
-          <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
+          <button id="enviar-mensagem" type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
             Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
           </button>
 
@@ -301,14 +263,10 @@ async function gerarDetalhesDoProduto() {
             Comprar <i class="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
 
-          <button class="hidden" type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
-            produto.id
-          }')">
+          <button class="hidden" id="editar-produto" type="button" title="Editar Produto">
             Editar <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
-          <button class="hidden" type="button" title="Eliminar Produto" onclick="eliminarProduto('${
-            produto.id
-          }')">
+          <button class="hidden" id="eliminar-produto" type="button" title="Eliminar Produto">
             Eliminar <i class="fa fa-times" aria-hidden="true"></i>
           </button>
         </section>
@@ -341,10 +299,211 @@ async function gerarDetalhesDoProduto() {
         }
         avaliacoesVisiveis = !avaliacoesVisiveis;
       });
-
+    toggleProductButtons(produto);
     setupComprarButton();
+    setupEditProductButton();
+    setupDeleteProductButton();
   } else {
     alert('Produto não encontrado!');
+  }
+}
+
+function setupDeleteProductButton() {
+  const eliminarButton = document.getElementById('eliminar-produto');
+  if (eliminarButton) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const produtoId = urlParams.get('id');
+
+    eliminarButton.addEventListener('click', async () => {
+      const confirmDelete = confirm(
+        'Tem certeza que deseja eliminar este produto?'
+      );
+      if (confirmDelete) {
+        await deleteProduct(produtoId);
+      }
+    });
+  }
+}
+
+async function deleteProduct(produtoId) {
+  const requestURL = `${rootPath}/products/${produtoId}`;
+  const response = await fetch(requestURL, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (response.ok) {
+    // Remove product from user's products array in sessionStorage
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    user.produtos = user.produtos.filter(p => p.id !== produtoId);
+    sessionStorage.setItem('user', JSON.stringify(user));
+
+    alert('Produto eliminado com sucesso!');
+    window.location.href = 'perfil-utilizador.html';
+  } else {
+    alert('Erro ao eliminar o produto. Tente novamente.');
+  }
+}
+
+function setupEditProductButton() {
+  const editarButton = document.getElementById('editar-produto');
+  const formElements = document.querySelectorAll(
+    '#detalhes-produto-form input, #detalhes-produto-form textarea'
+  );
+  const estadoReadonly = document.getElementById('estado-produto-readonly');
+  const estadoSelect = document.getElementById('estado-produto');
+
+  if (editarButton) {
+    editarButton.addEventListener('click', () => {
+      // Remove readonly from all form elements
+      formElements.forEach(element => {
+        if (element.id !== 'publicado-por') {
+          // Keep author field readonly
+          element.removeAttribute('readonly');
+        }
+      });
+
+      // Show select and hide readonly input for estado
+      estadoReadonly.classList.add('hidden');
+      estadoSelect.classList.remove('hidden');
+      document
+        .querySelector('label[for="estado-produto"]')
+        .classList.remove('hidden');
+      document
+        .querySelector('label[for="estado-produto-readonly"]')
+        .classList.add('hidden');
+
+      // Hide edit button and show save button
+      editarButton.classList.add('hidden');
+      const guardarButton = createSaveButton();
+      editarButton.parentNode.insertBefore(guardarButton, editarButton);
+    });
+  }
+}
+
+function createSaveButton() {
+  const guardarButton = document.createElement('button');
+  guardarButton.id = 'guardar-produto';
+  guardarButton.type = 'button';
+  guardarButton.title = 'Guardar Alterações';
+  guardarButton.innerHTML =
+    'Guardar <i class="fa fa-save" aria-hidden="true"></i>';
+
+  guardarButton.addEventListener('click', saveProductChanges);
+
+  return guardarButton;
+}
+
+async function saveProductChanges() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const produtoId = urlParams.get('id');
+
+  const updatedProduct = {
+    titulo: document.getElementById('nome-produto').value,
+    local: document.getElementById('localizacao').value,
+    categoria: document.getElementById('categoria').value,
+    preco: parseFloat(document.getElementById('preco').value.replace('€', '')),
+    descricao: document.getElementById('descricao').value,
+    estado: document.getElementById('estado-produto').value.toUpperCase(),
+  };
+
+  const requestURL = `${rootPath}/products/${produtoId}`;
+  const response = await fetch(requestURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedProduct),
+  });
+
+  if (response.ok) {
+    // Update product in user's products array in sessionStorage
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    const productIndex = user.produtos.findIndex(p => p.id === produtoId);
+    if (productIndex !== -1) {
+      user.produtos[productIndex] = {
+        ...user.produtos[productIndex],
+        ...updatedProduct,
+      };
+      sessionStorage.setItem('user', JSON.stringify(user));
+    }
+
+    alert('Produto atualizado com sucesso!');
+    window.location.reload();
+  } else {
+    alert('Erro ao atualizar o produto. Tente novamente.');
+  }
+}
+
+async function comprarProduto(produtoId) {
+  const requestURL = `${rootPath}/products/${produtoId}`;
+  const response = await fetch(requestURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ estado: 'COMPRADO' }),
+  });
+
+  if (response.ok) {
+    alert('Produto comprado com sucesso!');
+    window.location.href = 'index.html';
+  } else {
+    alert('Erro ao comprar o produto. Tente novamente.');
+  }
+}
+
+async function setupComprarButton() {
+  const comprarButton = document.getElementById('comprar-produto');
+  if (comprarButton) {
+    const produtoId = comprarButton.getAttribute('data-produto-id');
+    comprarButton.addEventListener('click', async () => {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      if (!user) {
+        alert('Por favor, faça login para comprar o produto.');
+        window.location.href = 'pagina-login.html';
+        return;
+      }
+
+      const produto = await getProdutoById(produtoId);
+      if (produto.estado !== 'DISPONIVEL') {
+        alert('Este produto não está disponível para compra.');
+        return;
+      }
+
+      comprarProduto(produtoId);
+    });
+  }
+}
+
+function toggleProductButtons(produto) {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const comprarButton = document.getElementById('comprar-produto');
+  const editarButton = document.querySelector('#editar-produto');
+  const eliminarButton = document.querySelector('#eliminar-produto');
+  const enviarMensagemButton = document.querySelector('#enviar-mensagem');
+
+  if (user && user.produtos) {
+    const isUserProduct = user.produtos.some(p => p.id === produto.id);
+
+    if (isUserProduct) {
+      enviarMensagemButton.classList.add('hidden');
+      comprarButton.classList.add('hidden');
+      editarButton.classList.remove('hidden');
+      eliminarButton.classList.remove('hidden');
+    } else {
+      enviarMensagemButton.classList.remove('hidden');
+      comprarButton.classList.remove('hidden');
+      editarButton.classList.add('hidden');
+      eliminarButton.classList.add('hidden');
+    }
+  } else {
+    enviarMensagemButton.classList.remove('hidden');
+    comprarButton.classList.remove('hidden');
+    editarButton.classList.add('hidden');
+    eliminarButton.classList.add('hidden');
   }
 }
 
@@ -418,63 +577,6 @@ async function displayUser() {
       const card = createCard(product);
       productsContainer.appendChild(card);
     });
-  }
-}
-
-/*async function toggleFormProductEdit() {
-  const formElements = document.querySelectorAll(
-    '.detalhes input, .detalhes textarea'
-  );
-  const saveButton = document.getElementById('save-changes');
-  let isReadOnly = true;
-
-  formElements.forEach(element => {
-    if (element.hasAttribute('readonly')) {
-      element.removeAttribute('readonly');
-      isReadOnly = false;
-    } else {
-      element.setAttribute('readonly', 'readonly');
-    }
-  });
-
-  if (isReadOnly) {
-    saveButton.classList.add('hidden');
-  } else {
-    saveButton.classList.remove('hidden');
-  }
-
-  const button = document.getElementById('toggle-edit');
-  if (isReadOnly) {
-    button.textContent = 'Editar';
-  } else {
-    button.textContent = 'Cancelar';
-  }
-}
-  */
-
-async function saveProductChanges(productId) {
-  const updatedProduct = {
-    titulo: document.getElementById('titulo').value,
-    local: document.getElementById('local').value,
-    categoria: document.getElementById('categoria').value,
-    preco: parseFloat(document.getElementById('preco').value.replace('€', '')),
-    descricao: document.getElementById('descricao').value,
-  };
-
-  const requestURL = `${rootPath}/products/${productId}`;
-  const response = await fetch(requestURL, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updatedProduct),
-  });
-
-  if (response.ok) {
-    alert('Produto atualizado com sucesso!');
-    window.location.reload();
-  } else {
-    alert('Erro ao atualizar o produto. Tente novamente.');
   }
 }
 
