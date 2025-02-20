@@ -233,12 +233,19 @@ async function gerarDetalhesDoProduto() {
           <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
             Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
           </button>
-          <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
+
+          <button type="button" title="Comprar" onclick="%COMPRAR_PRODUTO%('${
+            produto.id
+          }')">
+            Comprar <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          </button>
+
+          <button class="hidden" type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
             produto.id
           }')">
             Editar <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
-          <button type="button" title="Eliminar Produto" onclick="eliminarProduto('${
+          <button class="hidden" type="button" title="Eliminar Produto" onclick="eliminarProduto('${
             produto.id
           }')">
             Eliminar <i class="fa fa-times" aria-hidden="true"></i>
