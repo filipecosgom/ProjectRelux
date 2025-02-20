@@ -5,15 +5,26 @@
       <form class="conteudo_form" id="form-novo-produto">
         <h1>Adicionar Novo Produto</h1>
 
-        <div class="Título">
+        <div class="Título" id="titulo">
           <label for="text"><b>Título</b></label>
-          <input type="text" placeholder="Introduza um título para o seu produto" id="titulo" required />
+          <input
+            type="text"
+            placeholder="Introduza um título para o seu produto"
+            id="titulo"
+            required
+          />
         </div>
 
         <div class="Descrição">
           <label for="nome"><b>Descrição</b></label>
-          <input type="text" id="descricao" name="descricao" title="Descrição do produto"
-            placeholder="Introduza a descrição do produto" required />
+          <input
+            type="text"
+            id="descricao"
+            name="descricao"
+            title="Descrição do produto"
+            placeholder="Introduza a descrição do produto"
+            required
+          />
         </div>
 
         <div class="Categoria">
@@ -42,23 +53,36 @@
         <br />
         <div class="Preço">
           <label for="text"><b>Preço</b></label>
-          <input type="text" placeholder="Introduza o preço de venda" required />
+          <input
+            type="text"
+            placeholder="Introduza o preço de venda"
+            required
+          />
         </div>
 
         <div class="Foto">
           <label for="imagem"><b> Insira um link da imagem:</b></label>
-          <input type="text" id="imagem" placeholder="Cole o link da imagem aqui" required />
+          <input
+            type="text"
+            id="imagem"
+            placeholder="Cole o link da imagem aqui"
+            required
+          />
         </div>
 
         <div class="Localização">
           <label for="text"><b>Localização</b></label>
-          <input type="text" placeholder="Em que zona do país é que se encontra?" required />
+          <input
+            type="text"
+            placeholder="Em que zona do país é que se encontra?"
+            required
+          />
         </div>
 
-        <button type="submit" class="btn">Submeter produto</button>
-        <button type="button" class="btn cancel" id="cancelar">
-          Cancelar
+        <button type="submit" class="btn" id="submitBtn">
+          Submeter produto
         </button>
+        <button type="button" class="btn cancel" id="cancelar">Cancelar</button>
       </form>
     </div>
   </div>
