@@ -178,34 +178,73 @@ async function gerarDetalhesDoProduto() {
 
   if (produto) {
     containerDetalhes.innerHTML = `
-    <div class="imagem">
-      <img src="${produto.imagem}" alt="${produto.titulo}" />
-    </div>
-    <div class="detalhes">
-      <h1>${produto.titulo}</h1>
-      <h4>${produto.local}</h4>
-      <h2>${produto.categoria}</h2>
-      <a id="link-avaliacoes" href="#">
-      <h3>
-        ${produto.avaliacoes.length == 0 ? 'Sem avaliações' : rating.estrelas}
-        <span id="numero-avaliacoes">
-        (${produto.avaliacoes.length} avaliações)
-        </span>
-      </h3>
-      </a>
-      <h6>${parseFloat(produto.preco).toFixed(2)}€</h6>
-      <h2>Publicado por ${produto.userAutor} em ${produto.dataDePublicacao}<h2>
-      <p>${produto.descricao}</p>
-      <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
-    Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-    </button>
-    <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
-      produto.id
-    }')">Editar <i class="fa fa-pencil" aria-hidden="true"></i></button>
-      <button type="button" title="Eliminar Produto" onclick="eliminarProduto('${
-        produto.id
-      }')">Eliminar <i class="fa fa-times" aria-hidden="true"></i></button>
-    </div>
+      <div class="imagem">
+        <img src="${produto.imagem}" alt="${produto.titulo}" />
+      </div>
+      <form id="detalhes-produto-form">
+        <label for="nome-produto">Nome do Produto:</label>
+        <input type="text" id="nome-produto" value="${
+          produto.titulo
+        }" readonly />
+
+        <label for="localizacao">Localização:</label>
+        <input type="text" id="localizacao" value="${produto.local}" readonly />
+
+        <label for="categoria">Categoria:</label>
+        <input type="text" id="categoria" value="${
+          produto.categoria
+        }" readonly />
+
+        <label for="avaliacoes">Avaliações:</label>
+        <a id="link-avaliacoes" href="#" title="Ver avaliações">
+          <h3 id="estrelas">${
+            produto.avaliacoes.length == 0 ? 'Sem avaliações' : rating.estrelas
+          }
+          <span id="numero-avaliacoes">(${
+            produto.avaliacoes.length
+          } avaliações)</span></h3>
+        </a>
+
+        <label for="preco">Preço:</label>
+        <input type="text" id="preco" value="${parseFloat(
+          produto.preco
+        ).toFixed(2)}€" readonly />
+
+        <label for="publicado-por">Publicado por:</label>
+        <input type="text" id="publicado-por" value="${
+          produto.userAutor
+        }" readonly />
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" readonly>${produto.descricao}</textarea>
+
+        <label for="estado-produto-readonly">Estado:</label>
+        <input type="text" id="estado-produto-readonly" value="Disponível" readonly />
+
+        <label class="hidden" for="estado-produto">Estado:</label>
+        <select class="hidden" name="estado-produto" id="estado-produto" title="Estado do Produto">
+          <option value="rascunho">Rascunho</option>
+          <option value="disponível">Disponível</option>
+          <option value="reservado">Reservado</option>
+          <option value="comprado">Comprado</option>
+        </select>
+
+        <section class="detalhes-form-buttons">
+          <button type="button" title="Enviar Mensagem\nFuncionalidade não implementada">
+            Enviar Mensagem <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+          </button>
+          <button type="button" title="Editar Produto" onclick="mostrarFormularioEdicao('${
+            produto.id
+          }')">
+            Editar <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button type="button" title="Eliminar Produto" onclick="eliminarProduto('${
+            produto.id
+          }')">
+            Eliminar <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </section>
+      </form>
     `;
 
     let avaliacoesVisiveis = false;
