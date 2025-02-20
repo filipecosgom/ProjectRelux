@@ -106,7 +106,7 @@ async function addModalListeners() {
       document.querySelector("select[name='categoria']").value || 'N/A';
     const tamanho =
       document.querySelector("select[name='tamanho']").value || 'N/A';
-    /* const preco = document.getElementByID('preco').value;*/
+    const preco = document.getElementByID('preco').value;
     const imagem = document.getElementById('imagem').value;
     const localizacao = document.getElementById('localizacao').value;
 
@@ -115,7 +115,7 @@ async function addModalListeners() {
       descricao: descricao,
       categoria: categoria,
       tamanho: tamanho,
-      /* preco: preco, */
+      preco: preco,
       imagem: imagem,
       localizacao: localizacao,
     };
