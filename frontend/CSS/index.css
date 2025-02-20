@@ -526,14 +526,32 @@ aside {
   object-fit: cover;
 }
 
-.editar-pag-pessoal {
+.buttons-wrapper {
   display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.editar-pag-pessoal,
+.save-user-changes {
+  flex-grow: 1;
+  text-align: center;
   border-radius: 5px;
-  background-color: var(--secondary-400);
+  padding: 2px;
+  font-size: 1rem;
+}
+
+.editar-pag-pessoal {
+  background-color: var(--secondary-300);
   color: var(--white);
-  padding: 10px;
-  margin-bottom: 5px;
-  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.save-user-changes {
+  background-color: var(--primary-300);
+  color: var(--white);
+  margin-left: 10px;
 }
 
 /* rótulosEstilo geral para o formulário */
@@ -564,7 +582,8 @@ aside {
 /* Estilo para os campos de entrada */
 #perfil-form input[type="text"],
 #perfil-form input[type="email"],
-#perfil-form input[type="profile-pic"] {
+#perfil-form input[type="profile-pic"],
+#perfil-form input[type="password"] {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;

@@ -11,6 +11,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -72,5 +73,19 @@ public class UserResource {
         Map<String, Boolean> response = new HashMap<>();
         response.put("exists", exists);
         return Response.ok(response).build();
+    }
+
+    @PUT
+    @Path("/{username}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("username") String username, UserDto updatedUser) {
+        try {
+            UserDto user = userService.updateUser(username, updatedUser);
+            return Response.ok(user).build();
+        } catch (RuntimeException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao atualizar os dados do usuário.")
+                    .build();
+        }
     }
 }

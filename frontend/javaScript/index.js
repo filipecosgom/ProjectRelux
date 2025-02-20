@@ -227,12 +227,12 @@ async function gerarDetalhesDoProduto() {
   }
 }
 
-/* LOGIN */
 async function getProductsByIds(ids) {
   const products = await getAllProducts();
   return products.filter(product => ids.includes(product.id));
 }
 
+/* LOGIN */
 async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
@@ -288,7 +288,7 @@ async function displayUser() {
 
   const productsContainer = document.querySelector('.card-container');
   productsContainer.innerHTML = '';
-  const products = user.products;
+  const products = user.produtos || [];
   if (products.length === 0) {
     productsContainer.innerHTML =
       '<h2>Ainda não adicionou nenhum produto para venda!</h2>';
@@ -309,6 +309,8 @@ async function toggleFormUserEdit() {
       const confirmPasswordWrapper = document.querySelector(
         '.confirm-password-wrapper'
       );
+      const saveChangesToUser = document.querySelector('.save-user-changes');
+
       let isReadOnly = true;
 
       formElements.forEach(element => {
@@ -325,23 +327,26 @@ async function toggleFormUserEdit() {
       if (isReadOnly) {
         passwordWrapper.classList.add('hidden');
         confirmPasswordWrapper.classList.add('hidden');
+        saveChangesToUser.classList.add('hidden');
       } else {
         passwordWrapper.classList.remove('hidden');
         confirmPasswordWrapper.classList.remove('hidden');
+        saveChangesToUser.classList.remove('hidden');
+        updateExistentUser();
       }
 
       const button = document.getElementById('toggle-readonly');
       if (isReadOnly) {
         button.textContent = 'Editar';
       } else {
-        button.textContent = 'Guardar';
+        button.textContent = 'Cancelar';
       }
     });
 }
 
 async function addNewUser() {
   const passwordInput = document.getElementById('password');
-  const confirmPasswordInput = document.getElementById('confirm_password');
+  const confirmPasswordInput = document.getElementById('confirm-password');
 
   passwordInput.addEventListener('input', validatePasswords);
   confirmPasswordInput.addEventListener('input', validatePasswords);
@@ -396,7 +401,7 @@ async function addNewUser() {
         });
 
         if (response.ok) {
-          alert('Utilizador registado! Bem-vindo/a, ' + newUser.username);
+          alert('Utilizador registado! Bem-vindo/a, ' + newUser.nome);
           window.location.href = 'pagina-login.html';
         } else {
           alert('Erro ao registar utilizador. Tente novamente.');
@@ -410,7 +415,7 @@ async function addNewUser() {
 
 function validateFormPassword() {
   const password = document.getElementById('password').value;
-  const confirmPassword = document.getElementById('confirm_password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   if (!passwordRegex.test(password)) {
@@ -439,4 +444,65 @@ async function checkUsernameExists(username) {
     console.error('Erro ao verificar username:', response.statusText);
     return false;
   }
+}
+
+async function updateExistentUser() {
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const updatedUser = {
+    nome: document.getElementById('nome').value,
+    username: user.username, // Username não pode ser alterado
+    email: document.getElementById('email').value,
+    telefone: document.getElementById('telefone').value,
+    imagem: document.getElementById('profile-pic').value,
+  };
+
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirm-password');
+
+  passwordInput.addEventListener('input', validatePasswords);
+  confirmPasswordInput.addEventListener('input', validatePasswords);
+
+  function validatePasswords() {
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      confirmPasswordInput.setCustomValidity(
+        'A password deve ter pelo menos 8 caracteres, incluindo números e letras.'
+      );
+    } else if (password !== confirmPassword) {
+      confirmPasswordInput.setCustomValidity('As passwords não coincidem.');
+    } else {
+      confirmPasswordInput.setCustomValidity('');
+      updatedUser.password = password;
+      console.log('As passwords foram validadas');
+    }
+  }
+
+  document
+    .getElementById('perfil-form')
+    .addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      if (validateFormPassword() == true) {
+        const requestURL = `${rootPath}/users/${user.username}`;
+        const response = await fetch(requestURL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedUser),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          alert('Dados atualizados com sucesso!');
+          sessionStorage.setItem('user', JSON.stringify(result));
+          window.location.reload();
+        } else {
+          alert('Erro ao atualizar os dados. Tente novamente.');
+        }
+      }
+    });
 }

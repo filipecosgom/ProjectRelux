@@ -93,4 +93,21 @@ public class UserService {
     public boolean checkUsernameExists(String username) {
         return users.containsKey(username);
     }
+
+    public UserDto updateUser(String username, UserDto updatedUser) {
+        UserDto existingUser = users.get(username);
+        if (existingUser == null) {
+            throw new RuntimeException("Utilizador não encontrado.");
+        }
+        existingUser.setNome(updatedUser.getNome());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setTelefone(updatedUser.getTelefone());
+        existingUser.setImagem(updatedUser.getImagem());
+        if (updatedUser.getPassword() != null) {
+            existingUser.setPassword(updatedUser.getPassword());
+        }
+        users.put(username, existingUser);
+        saveUsersToFile();
+        return existingUser;
+    }
 }
