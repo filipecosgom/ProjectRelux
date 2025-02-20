@@ -137,6 +137,10 @@ function createCard(product) {
 
 // Gera o rating de cada produto conforme definido no ficheiro .json.
 function gerarRating(avaliacoes) {
+  if (!avaliacoes) {
+    avaliacoes = [];
+  }
+
   let totalEstrelas = 0;
   for (let avaliacao of avaliacoes) {
     totalEstrelas += avaliacao.estrelas;
@@ -263,7 +267,7 @@ async function submitLoginForm() {
         telefone: result.telefone,
         localizacao: result.localizacao,
         imagem: result.imagem,
-        products: userProducts,
+        produtos: userProducts,
       })
     );
     window.location.href = 'index.html';
@@ -497,6 +501,8 @@ async function updateExistentUser() {
 
         if (response.ok) {
           const result = await response.json();
+          const userProducts = await getProductsByIds(result.produtos);
+          result.produtos = userProducts;
           alert('Dados atualizados com sucesso!');
           sessionStorage.setItem('user', JSON.stringify(result));
           window.location.reload();
