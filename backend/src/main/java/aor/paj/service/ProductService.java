@@ -1,11 +1,15 @@
 package aor.paj.service;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import aor.paj.dto.ProductDto;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,7 +31,8 @@ public class ProductService {
         if (file.exists()) {
             try (FileReader fileReader = new FileReader(file)) {
                 Jsonb jsonb = JsonbBuilder.create();
-                Type productListType = new ArrayList<ProductDto>() {}.getClass().getGenericSuperclass();
+                Type productListType = new ArrayList<ProductDto>() {
+                }.getClass().getGenericSuperclass();
                 List<ProductDto> products = jsonb.fromJson(fileReader,
                         productListType);
                 productMap = new HashMap<>();
@@ -51,9 +56,29 @@ public class ProductService {
         saveProductsToFile();
     }
 
-    public void updateProduct(ProductDto product) {
-        productMap.put(product.getId(), product);
-        saveProductsToFile();
+    public void updateProduct(ProductDto productDto) {
+        if (productMap.containsKey(productDto.getId())) {
+            ProductDto existingProduct = productMap.get(productDto.getId());
+            existingProduct.setTitulo(productDto.getTitulo());
+            existingProduct.setCategoria(productDto.getCategoria());
+            existingProduct.setPreco(productDto.getPreco());
+            existingProduct.setImagem(productDto.getImagem());
+            existingProduct.setLocal(productDto.getLocal());
+            existingProduct.setDescricao(productDto.getDescricao());
+            existingProduct.setDataDePublicacao(productDto.getDataDePublicacao());
+            existingProduct.setUserAutor(productDto.getUserAutor());
+            existingProduct.setAvaliacoes(productDto.getAvaliacoes());
+            existingProduct.setEstado(productDto.getEstado());
+            saveProductsToFile();
+        } else {
+            throw new IllegalArgumentException("Product not found with id: " + productDto.getId());
+        }
+
+        /*
+         * productMap.put(product.getId(), product);
+         * saveProductsToFile();
+         */
+
     }
 
     public void deleteProduct(String id) {

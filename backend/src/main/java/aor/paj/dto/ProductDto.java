@@ -21,15 +21,17 @@ public class ProductDto {
     private String dataDePublicacao;
     private String userAutor;
     private List<AvaliacaoDto> avaliacoes;
+    private EstadosDoProduto estado;
 
     public ProductDto() {
         this.id = generateTimestampId();
         this.avaliacoes = new ArrayList<>();
+        this.estado = EstadosDoProduto.DISPONIVEL;
     }
 
     public ProductDto(String titulo, String categoria, double preco,
             String imagem, String local, String descricao, String dataDePublicacao, String userAutor,
-            List<AvaliacaoDto> avaliacoes) {
+            List<AvaliacaoDto> avaliacoes, int stateId) {
         this.titulo = titulo;
         this.categoria = categoria;
         this.preco = preco;
@@ -40,6 +42,7 @@ public class ProductDto {
         this.userAutor = userAutor;
         this.avaliacoes = (avaliacoes != null) ? avaliacoes : new ArrayList<>();
         this.id = generateTimestampId();
+        this.estado = EstadosDoProduto.fromStateId(stateId);
     }
 
     private String generateTimestampId() {
@@ -136,5 +139,18 @@ public class ProductDto {
 
     public void setAvaliacoes(List<AvaliacaoDto> avaliacoes) {
         this.avaliacoes = avaliacoes;
+    }
+
+    @XmlElement
+    public EstadosDoProduto getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadosDoProduto estado) {
+        this.estado = estado;
+    }
+
+    public void setEstadoById(int stateId) {
+        this.estado = EstadosDoProduto.fromStateId(stateId);
     }
 }
