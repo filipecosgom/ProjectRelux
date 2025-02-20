@@ -451,15 +451,8 @@ async function checkUsernameExists(username) {
 }
 
 async function updateExistentUser() {
-  const user = JSON.parse(sessionStorage.getItem('user'));
-  const updatedUser = {
-    nome: document.getElementById('nome').value,
-    username: user.username, // Username não pode ser alterado
-    email: document.getElementById('email').value,
-    telefone: document.getElementById('telefone').value,
-    imagem: document.getElementById('profile-pic').value,
-  };
-
+  let updatedUser = {};
+  const loggedInUser = JSON.parse(sessionStorage.getItem('user'));
   const passwordInput = document.getElementById('password');
   const confirmPasswordInput = document.getElementById('confirm-password');
 
@@ -479,8 +472,16 @@ async function updateExistentUser() {
       confirmPasswordInput.setCustomValidity('As passwords não coincidem.');
     } else {
       confirmPasswordInput.setCustomValidity('');
-      updatedUser.password = password;
+      updatedUser = {
+        nome: document.getElementById('nome').value,
+        username: loggedInUser.username, // Username não pode ser alterado
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        imagem: document.getElementById('profile-pic').value,
+        password: password,
+      };
       console.log('As passwords foram validadas');
+      console.log(updatedUser);
     }
   }
 
@@ -490,7 +491,7 @@ async function updateExistentUser() {
       event.preventDefault();
 
       if (validateFormPassword() == true) {
-        const requestURL = `${rootPath}/users/${user.username}`;
+        const requestURL = `${rootPath}/users/${loggedInUser.username}`;
         const response = await fetch(requestURL, {
           method: 'PUT',
           headers: {
@@ -501,8 +502,12 @@ async function updateExistentUser() {
 
         if (response.ok) {
           const result = await response.json();
-          const userProducts = await getProductsByIds(result.produtos);
-          result.produtos = userProducts;
+          if (result.produtos && result.produtos.length > 0) {
+            const userProducts = await getProductsByIds(result.produtos);
+            result.produtos = userProducts;
+          } else {
+            result.produtos = [];
+          }
           alert('Dados atualizados com sucesso!');
           sessionStorage.setItem('user', JSON.stringify(result));
           window.location.reload();
