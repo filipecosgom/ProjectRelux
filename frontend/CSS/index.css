@@ -573,7 +573,8 @@ aside {
 }
 
 /* Estilo para os rótulos */
-#perfil-form label {
+#perfil-form label,
+#detalhes-produto-form label {
   font-weight: 600;
   margin-bottom: 5px;
   color: #333;
@@ -583,7 +584,9 @@ aside {
 #perfil-form input[type="text"],
 #perfil-form input[type="email"],
 #perfil-form input[type="profile-pic"],
-#perfil-form input[type="password"] {
+#perfil-form input[type="password"],
+#detalhes-produto-form input[type="text"],
+#detalhes-produto-form textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -593,7 +596,8 @@ aside {
 }
 
 /* Estilo para os campos de entrada em modo somente leitura */
-#perfil-form input[readonly] {
+#perfil-form input[readonly],
+#detalhes-produto-form input[readonly] #detalhes-produto-form textarea[readonly] {
   background-color: #e9ecef;
   cursor: not-allowed;
 }
@@ -693,4 +697,14 @@ aside {
 #numero-avaliacoes {
   font-size: 0.8rem;
   font-style: italic;
+}
+
+#detalhes-produto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#detalhes-produto-form section {
+  margin-top: 15px;
 }
