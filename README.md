@@ -20,8 +20,8 @@
 | Interface Funcional - Frontend  |               R6 - List products of a user (Client Rest API)               |       Todos        |         Jorge          |
 | Interface Funcional - Frontend  |                  R7 - List all products (Client Rest API)                  |       Todos        |         Jorge          |
 | Interface Funcional - Frontend  |            R8 - Add product to user products (Client Rest API)             |       Todos        |         Jorge          |
-| Interface Funcional - Frontend  |                   R9 - Update product (Client Rest API)                    |       Todos        |      NAO APLICADO      |
-| Interface Funcional - Frontend  |                   R10 - Delete product (Client Rest API)                   |       Todos        |      NAO APLICADO      |
+| Interface Funcional - Frontend  |                   R9 - Update product (Client Rest API)                    |       Todos        |         Jorge          |
+| Interface Funcional - Frontend  |                   R10 - Delete product (Client Rest API)                   |       Todos        |        Mariana         |
 | Interface Funcional - Frontend  |                     R11 - Add review (Client Rest API)                     | Grupos de 3 alunos |         Jorge          |
 | Interface Funcional - Frontend  |                  R12 - List all reviews (Client Rest API)                  | Grupos de 3 alunos |         Jorge          |
 | Interface Funcional - Frontend  |                   R13 - Update review (Client Rest API)                    | Grupos de 3 alunos |          N/A           |
