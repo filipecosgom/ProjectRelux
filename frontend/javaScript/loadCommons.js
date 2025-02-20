@@ -92,40 +92,39 @@ async function addModalListeners() {
     }
   };
 
-  form.addEventListener('submit', function (event) {
+  form.addEventListener('submit', async function (event) {
     event.preventDefault();
-    console.log('Formulário de novo produto submetido');
+    console.log('New product form submitted');
+
+    const titulo = document.getElementById('titulo').value;
+    const descricao = document.getElementById('descricao').value;
+    const categoria =
+      document.querySelector("select[name='categoria']").value || 'N/A';
+    const tamanho =
+      document.querySelector("select[name='tamanho']").value || 'N/A';
+    const preco = document.querySelector('.Preço input').value;
+    const imagem = document.getElementById('imagem').value;
+    const localizacao = document.querySelector('.Localização input').value;
+
+    const novoProduto = {
+      titulo: titulo,
+      descricao: descricao,
+      categoria: categoria,
+      tamanho: tamanho,
+      preco: preco,
+      imagem: imagem,
+      localizacao: localizacao,
+    };
+
+    try {
+      const result = await sendNewProductReq(novoProduto);
+      console.log('Produto enviado com sucesso:', result);
+      modal.style.display = 'none';
+      form.reset();
+    } catch (error) {
+      console.error('Erro ao enviar o produto:', error);
+    }
   });
-
-  const titulo = document.getElementById('titulo').value;
-  const descricao = document.getElementById('descricao').value;
-  const categoria =
-    document.querySelector("select[name='categoria']").value || 'N/A';
-  const tamanho =
-    document.querySelector("select[name='tamanho']").value || 'N/A';
-  const preco = document.querySelector('.Preço input').value;
-  const imagem = document.getElementById('imagem').value;
-  const localizacao = document.querySelector('.Localização input').value;
-
-  const novoProduto = {
-    id: novoId,
-    titulo: titulo,
-    descricao: descricao,
-    categoria: categoria,
-    tamanho: tamanho,
-    preco: preco,
-    imagem: imagem,
-    localizacao: localizacao,
-  };
-
-  try {
-    const result = await sendNewProductReq(novoProduto);
-    console.log('Produto enviado com sucesso:', result);
-    modal.style.display = 'none';
-    form.reset();
-  } catch (error) {
-    console.error('Erro ao enviar o produto:', error);
-  }
 }
 async function sendNewProductReq(product) {
   try {
