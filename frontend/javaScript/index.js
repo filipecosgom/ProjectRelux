@@ -2,7 +2,7 @@
 
 import { loadCommonElements, updateUser } from './loadCommons.js';
 
-const rootPath = 'http://localhost:8080/mariana-jorge-proj2/rest';
+const rootPath = 'http://localhost:8080/mariana-filipe-proj3/rest';
 const productsPath = `${rootPath}/products`;
 const getAllProductsURL = `${rootPath}/products/all`;
 const loginRequestURL = `${rootPath}/users/login`; // URL para o pedido de login
