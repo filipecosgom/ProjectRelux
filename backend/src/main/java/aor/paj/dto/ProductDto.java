@@ -12,7 +12,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class ProductDto {
     public static int incremento = 0;
     private String titulo;
-    private String categoria;
+    private Category categoria;
     private double preco;
     private String imagem;
     private String local;
@@ -20,27 +20,23 @@ public class ProductDto {
     private String id;
     private String dataDePublicacao;
     private String userAutor;
-    private List<AvaliacaoDto> avaliacoes;
     private EstadosDoProduto estado;
 
     public ProductDto() {
         this.id = generateTimestampId();
-        this.avaliacoes = new ArrayList<>();
         this.estado = EstadosDoProduto.DISPONIVEL;
     }
 
-    public ProductDto(String titulo, String categoria, double preco,
-            String imagem, String local, String descricao, String dataDePublicacao, String userAutor,
-            List<AvaliacaoDto> avaliacoes, int stateId) {
+    public ProductDto(String titulo, Category categoria, double preco,
+            String imagem, String local, String descricao, String dataDePublicacao, String userAutor, int stateId) {
         this.titulo = titulo;
-        this.categoria = categoria;
+        this.categoria=categoria;
         this.preco = preco;
         this.imagem = imagem;
         this.local = local;
         this.descricao = descricao;
         this.dataDePublicacao = dataDePublicacao;
         this.userAutor = userAutor;
-        this.avaliacoes = (avaliacoes != null) ? avaliacoes : new ArrayList<>();
         this.id = generateTimestampId();
         this.estado = EstadosDoProduto.fromStateId(stateId);
     }
@@ -61,11 +57,11 @@ public class ProductDto {
     }
 
     @XmlElement
-    public String getCategoria() {
+    public Category getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Category categoria) {
         this.categoria = categoria;
     }
 
@@ -132,14 +128,6 @@ public class ProductDto {
         this.userAutor = userAutor;
     }
 
-    @XmlElement
-    public List<AvaliacaoDto> getAvaliacoes() {
-        return new ArrayList<>(avaliacoes);
-    }
-
-    public void setAvaliacoes(List<AvaliacaoDto> avaliacoes) {
-        this.avaliacoes = avaliacoes;
-    }
 
     @XmlElement
     public EstadosDoProduto getEstado() {
