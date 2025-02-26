@@ -1,9 +1,7 @@
 package aor.paj.dto;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -12,7 +10,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class ProductDto {
     public static int incremento = 0;
     private String titulo;
-    private Category categoria;
+    private CategoryDto categoria;
     private double preco;
     private String imagem;
     private String local;
@@ -27,8 +25,8 @@ public class ProductDto {
         this.estado = EstadosDoProduto.DISPONIVEL;
     }
 
-    public ProductDto(String titulo, Category categoria, double preco,
-            String imagem, String local, String descricao, String dataDePublicacao, String userAutor, int stateId) {
+    public ProductDto(String titulo, CategoryDto categoria, double preco,
+                      String imagem, String local, String descricao, String dataDePublicacao, String userAutor, int stateId) {
         this.titulo = titulo;
         this.categoria=categoria;
         this.preco = preco;
@@ -57,11 +55,11 @@ public class ProductDto {
     }
 
     @XmlElement
-    public Category getCategoria() {
+    public CategoryDto getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Category categoria) {
+    public void setCategoria(CategoryDto categoria) {
         this.categoria = categoria;
     }
 
