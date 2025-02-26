@@ -11,8 +11,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Product")
-@NamedQuery(name = "Products.findProductsById", query = "SELECT a FROM ProductsEntity a WHERE a.id= :id")
-@NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductsEntity a WHERE a.owner= :owner")
+@NamedQuery(name = "Products.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
+@NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.owner= :owner")
 public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
