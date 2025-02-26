@@ -4,14 +4,14 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Categoria {
+public class Category {
 private int id;
 private String nome;
 
-public Categoria() {
+public Category() {
 
 }
-public Categoria(int id, String nome) {
+public Category(int id, String nome) {
    this.id = id;
    this.nome = nome;
 
@@ -22,7 +22,7 @@ public Categoria(int id, String nome) {
         return id;
     }
 
-    public Categoria setId(int id) {
+    public Category setId(int id) {
         this.id = id;
         return this;
     }
@@ -32,7 +32,7 @@ public Categoria(int id, String nome) {
         return nome;
     }
 
-    public Categoria setNome(String nome) {
+    public Category setNome(String nome) {
         this.nome = nome;
         return this;
     }

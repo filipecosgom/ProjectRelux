@@ -15,13 +15,14 @@ public class UserDto {
     private String telefone;
     private String imagem;
     private List<String> produtos;
+    private int id;
 
     public UserDto() {
         this.produtos = new ArrayList<>();
     }
 
     public UserDto(String username, String password, String nome, String email,
-            String telefone, String imagem, List<String> produtos) {
+            String telefone, String imagem, List<String> produtos, int id) {
         this.username = username;
         this.password = password;
         this.nome = nome;
@@ -29,6 +30,7 @@ public class UserDto {
         this.telefone = telefone;
         this.imagem = imagem;
         this.produtos = (produtos != null) ? produtos : new ArrayList<>();
+        this.id = id;
     }
 
     @XmlElement
@@ -93,4 +95,9 @@ public class UserDto {
     public void setProdutos(List<String> produtos) {
         this.produtos = produtos;
     }
+
+    @XmlElement
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 }
+
