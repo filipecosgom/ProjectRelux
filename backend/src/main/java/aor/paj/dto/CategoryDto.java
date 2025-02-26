@@ -5,17 +5,18 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class CategoryDto {
-private int id;
-private String nome;
+    private int id;
+    private String nome;
 
-public CategoryDto() {
+    public CategoryDto() {
 
-}
-public CategoryDto(int id, String nome) {
-   this.id = id;
-   this.nome = nome;
+    }
 
-}
+    public CategoryDto(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+
+    }
 
     @XmlElement
     public int getId() {

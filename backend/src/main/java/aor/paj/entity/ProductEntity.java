@@ -25,8 +25,8 @@ public class ProductEntity implements Serializable {
     @Column(name = "titulo", nullable = false, unique = true)
     private String titulo;
 
-@ManyToOne
-    private CategoryEntity categoria;
+    @ManyToOne  // Removida a anotação @Column porque não é
+    private CategoryEntity categoria; // Trocado CategoryDto para Category Entity
 
     @Column(name = "preco", nullable = false, unique = true)
     private double preco;
@@ -53,11 +53,17 @@ public class ProductEntity implements Serializable {
     @Column(name = "estado")
     private EstadosDoProduto estado;
 
-    public ProductEntity(){
+    public ProductEntity() {
 
     }
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitulo() {
         return titulo;
