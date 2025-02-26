@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import aor.paj.dto.ProductDto;
-import aor.paj.service.ProductService;
+import aor.paj.bean.ProductBean;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -18,17 +18,18 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+//Gere os endpoints do produto
 @Path("/products")
 public class ProductResource {
 
     @Inject
-    ProductService productService;
+    ProductBean productBean;
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts() {
-        List<ProductDto> products = productService.getAllProducts();
+        List<ProductDto> products = productBean.getAllProducts();
         return Response.ok(products).build();
     }
 
@@ -36,7 +37,7 @@ public class ProductResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") String id) {
-        ProductDto productDto = productService.getProductById(id);
+        ProductDto productDto = productBean.getProductById(id);
         return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
     }
@@ -51,7 +52,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addProduct(ProductDto productDto) {
-        productService.addProduct(productDto);
+        productBean.addProduct(productDto);
         return Response.status(Response.Status.CREATED).entity(productDto).build();
     }
 
@@ -60,12 +61,12 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
-        ProductDto existingProduct = productService.getProductById(id);
+        ProductDto existingProduct = productBean.getProductById(id);
         if (existingProduct == null) {
             return Response.status(404).entity("Product not found!").build();
         }
         productDto.setId(id);
-        productService.updateProduct(productDto);
+        productBean.updateProduct(productDto);
         return Response.ok(productDto).build();
     }
 
@@ -73,11 +74,11 @@ public class ProductResource {
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteProduct(@PathParam("id") String id) {
-        ProductDto existingProduct = productService.getProductById(id);
+        ProductDto existingProduct = productBean.getProductById(id);
         if (existingProduct == null) {
             return Response.status(404).entity("Product not found!").build();
         }
-        productService.deleteProduct(id);
+        productBean.deleteProduct(id);
         return Response.noContent().build();
     }
 }

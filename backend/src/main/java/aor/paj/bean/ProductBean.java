@@ -1,4 +1,4 @@
-package aor.paj.service;
+package aor.paj.bean;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,7 +17,7 @@ import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 
 @ApplicationScoped
-public class ProductService {
+public class ProductBean {
     private final String filename = "../database/products.json";
     private Map<String, ProductDto> productMap;
 
