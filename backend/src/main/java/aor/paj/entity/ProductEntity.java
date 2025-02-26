@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "Product")
 @NamedQuery(name = "Products.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
-@NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.owner= :owner")
+@NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,8 +25,8 @@ public class ProductEntity implements Serializable {
     @Column(name = "titulo", nullable = false, unique = true)
     private String titulo;
 
-    @Column(name = "categoria", nullable = false, unique = true)
-    private CategoryDto categoria;
+@ManyToOne
+    private CategoryEntity categoria;
 
     @Column(name = "preco", nullable = false, unique = true)
     private double preco;
