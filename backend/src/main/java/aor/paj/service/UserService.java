@@ -1,4 +1,4 @@
-package aor.paj.resource;
+package aor.paj.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.Response;
 
 //Gere os nossos edpoints de utilizadores
 @Path("/users")
-public class UserResource {
+public class UserService {
 
     @Inject
     UserBean userBean;

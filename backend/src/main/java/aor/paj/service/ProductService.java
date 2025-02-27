@@ -1,4 +1,4 @@
-package aor.paj.resource;
+package aor.paj.service;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.Response;
 
 //Gere os endpoints do produto
 @Path("/products")
-public class ProductResource {
+public class ProductService {
 
     @Inject
     ProductBean productBean;

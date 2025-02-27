@@ -84,10 +84,7 @@ public class ProductBean {
             if (productDto.getUserAutor() != null) {
                 existingProduct.setUserAutor(productDto.getUserAutor());
             }
-            if (productDto.getAvaliacoes() != null && !productDto.getAvaliacoes().isEmpty() &&
-                    productDto.getAvaliacoes().size() > existingProduct.getAvaliacoes().size()) {
-                existingProduct.setAvaliacoes(new ArrayList<>(productDto.getAvaliacoes()));
-            }
+
             if (productDto.getEstado() != null) {
                 existingProduct.setEstado(productDto.getEstado());
             }
