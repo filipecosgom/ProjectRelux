@@ -58,7 +58,7 @@ public class UserBean implements Serializable {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
-
+/*
     public UserDto getUserByUsername(String username) {
         UserDto userDto = users.get(username);
         if (userDto == null) {
@@ -94,5 +94,5 @@ public class UserBean implements Serializable {
         users.put(username, existingUser);
         // saveUsersToFile();
         return existingUser;
-    }
+    }*/
 }

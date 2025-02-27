@@ -18,7 +18,7 @@ public abstract class AbstratDao <T extends Serializable> implements Serializabl
     private static final long serialVersionUID = 1L; // define um identificador de versão da classe para garantir a compatibilidade
     private final Class<T> clazz; // vai armazenar a classe da entidade
 
-    @PersistenceContext(unitName = "proj3") //injeta a persitência associada à unid. persistencia
+    @PersistenceContext(unitName = "playAula") //injeta a persitência associada à unid. persistencia
     protected EntityManager em; //Define uma variável em do tipo EntityManager que será usada para interagir com o contexto de persistência.
 
     public AbstratDao(Class<T> clazz) {
