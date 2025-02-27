@@ -1,67 +1,62 @@
 package aor.paj.bean;
 
+import java.io.Serializable;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import aor.paj.dao.UserDao;
 import aor.paj.dto.UserDto;
+import aor.paj.entity.UserEntity;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 
-@ApplicationScoped
-public class UserBean {
+@Stateless
+public class UserBean implements Serializable {
 
-    private Map<String, UserDto> users = new HashMap<>();
-    private static final String USERS_FILE = "../database/users.json";
+    @EJB //injeção de dependência- neste caso significa que a variável abaixo vai ser injetada automaticamente no container
+    UserDao userDao;
 
-//    @PostConstruct
-//    public void init() {
-//        loadUsersFromFile();
-//    }
-//
-//    private void loadUsersFromFile() {
-//        File file = new File(USERS_FILE);
-//        if (file.exists()) {
-//            try (FileReader fileReader = new FileReader(file)) {
-//                Jsonb jsonb = JsonbBuilder.create();
-//                Type userListType = new ArrayList<UserDto>() {
-//                }.getClass().getGenericSuperclass();
-//                List<UserDto> userList = jsonb.fromJson(fileReader, userListType);
-//                users = new HashMap<>();
-//                for (UserDto user : userList) {
-//                    users.put(user.getUsername(), user);
-//                }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        } else {
-//            users = new HashMap<>();
-//        }
-//    }
+    public String loginUser(String username, String password) {
+        UserEntity userEntity = userDao.findUserByUsername(username);
 
-//    private void saveUsersToFile() {
-//        try (FileWriter fileWriter = new FileWriter(USERS_FILE)) {
-//            Jsonb jsonb = JsonbBuilder.create();
-//            List<UserDto> userList = new ArrayList<>(users.values());
-//            jsonb.toJson(userList, fileWriter);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    public UserDto registerUser(UserDto userDto) {
-        if (users.containsKey(userDto.getUsername())) {
-            throw new RuntimeException("Username já existente!");
+        if (userEntity != null) {
+            if (userEntity.getPassword().equals(password)) {
+                String token = generateNewToken();
+                userEntity.setToken(token);
+                return token;
+            }
         }
-        users.put(userDto.getUsername(), userDto);
-        //saveUsersToFile();
-        return userDto;
+        throw new RuntimeException("Credenciais inválidas!");
     }
 
-    public UserDto loginUser(String username, String password) {
-        UserDto existingUser = users.get(username);
-        if (existingUser == null || !existingUser.getPassword().equals(password)) {
-            throw new RuntimeException("Credenciais inválidas!");
+    public boolean registerUser(UserDto user) {
+        UserEntity u_temp = userDao.findUserByUsername(user.getUsername());
+        if (u_temp == null) {
+            userDao.persist(convertUserDtotoUserEntity(user));
+            return true;
+        } else {
+            throw new RuntimeException("Já existe um utilizador com esse username");
         }
-        return existingUser;
+    }
+
+    private UserEntity convertUserDtotoUserEntity(UserDto user) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(user.getUsername());
+        userEntity.setPassword(user.getPassword());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setNome(user.getNome());
+        return userEntity;
+    }
+
+    private String generateNewToken() {
+        SecureRandom secureRandom = new SecureRandom(); //threadsafe
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
     }
 
     public UserDto getUserByUsername(String username) {
@@ -97,7 +92,7 @@ public class UserBean {
             existingUser.setPassword(updatedUser.getPassword());
         }
         users.put(username, existingUser);
-       // saveUsersToFile();
+        // saveUsersToFile();
         return existingUser;
     }
 }

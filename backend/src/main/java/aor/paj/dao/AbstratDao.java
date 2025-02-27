@@ -12,14 +12,14 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.util.List;
 
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+@TransactionAttribute(TransactionAttributeType.REQUIRED) //todos os métodos dentro desta classe vão ter um atributo de transação
 public abstract class AbstratDao <T extends Serializable> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private final Class<T> clazz;
+    private static final long serialVersionUID = 1L; // define um identificador de versão da classe para garantir a compatibilidade
+    private final Class<T> clazz; // vai armazenar a classe da entidade
 
-    @PersistenceContext(unitName = "proj3")
-    protected EntityManager em; //fornece um conjunto de métodos que nos permite interagir com a base de dados
+    @PersistenceContext(unitName = "proj3") //injeta a persitência associada à unid. persistencia
+    protected EntityManager em; //Define uma variável em do tipo EntityManager que será usada para interagir com o contexto de persistência.
 
     public AbstratDao(Class<T> clazz) {
         this.clazz = clazz;
@@ -34,7 +34,7 @@ public abstract class AbstratDao <T extends Serializable> implements Serializabl
     }
 
     public void merge(final T entity) {
-        em.merge(entity);
+        em.merge(entity); //vai atualizar uma entidade existente na base de dados
     }
 
     public void remove(final T entity) {
@@ -55,6 +55,6 @@ public abstract class AbstratDao <T extends Serializable> implements Serializabl
     }
 
     public void flush(){
-        em.flush();
+        em.flush(); //metodo que sincroniza o contexto de persistência da base de dados
     }
 }

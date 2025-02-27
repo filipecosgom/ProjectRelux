@@ -4,12 +4,7 @@ package aor.paj.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -19,6 +14,17 @@ import jakarta.persistence.Table;
 @NamedQuery(name = "", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
 public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    private int id;
+
+    @Column(name = "name", nullable = false, unique = false, updatable = true)
+    private String nome;
+
+    @OneToMany (mappedBy = "category")
+    private Set <ProductEntity>  products;
 
 
 }

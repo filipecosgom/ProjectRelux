@@ -1,54 +1,49 @@
 package aor.paj.bean;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LogManager;
 
 import aor.paj.dto.ProductDto;
+import aor.paj.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.persistence.PersistenceContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@ApplicationScoped
-public class ProductBean {
-    private final String filename = "../database/products.json";
-    private Map<String, ProductDto> productMap;
+@Stateless
+public class ProductBean  implements Serializable {
 
-    @PostConstruct
-    public void init() {
-        loadProductsFromFile();
-    }
+    private static final Logger logger= LogManager.getLogger(ProductBean.class);
+    ProductBean productBean;
+    UserBean userBean;
+    CategoryBean categoryBean;
 
-    public void loadProductsFromFile() {
-        File file = new File(filename);
-        if (file.exists()) {
-            try (FileReader fileReader = new FileReader(file)) {
-                Jsonb jsonb = JsonbBuilder.create();
-                Type productListType = new ArrayList<ProductDto>() {
-                }.getClass().getGenericSuperclass();
-                List<ProductDto> products = jsonb.fromJson(fileReader,
-                        productListType);
-                productMap = new HashMap<>();
-                for (ProductDto product : products) {
-                    productMap.put(product.getId(), product);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            productMap = new HashMap<>();
-        }
+
+@Inject
+public ProductBean(final ProductBean productBean, final UserBean userBean, final CategoryBean categoryBean) {
+    this.productBean = productBean;
+    this.userBean = userBean;
+    this.categoryBean = categoryBean;
+}
+
+public ProductBean() {}
+
+    public boolean addProduct (String token, ProductDto p){
+        UserEntity userEntity= userDao.findUserByToken(token);
     }
 
     public ProductDto getProductById(String id) {
-        return productMap.get(id);
+        return em.find(ProductDto.class, id);
     }
 
     public void addProduct(ProductDto product) {

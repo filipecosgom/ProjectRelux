@@ -1,6 +1,18 @@
 package aor.paj.dao;
 
+import aor.paj.entity.CategoryEntity;
+import jakarta.ejb.Stateless;
+
+
 import java.util.Locale;
 
-public class CategoryDao extends AbstratDao<Locale.CategoryEntity>{
+
+@Stateless
+public class CategoryDao extends AbstratDao<CategoryEntity>{
+    private static final long serialVersionUID = 1L;
+
+    public CategoryDao() {
+        super(CategoryEntity.class);
+    }
+
 }

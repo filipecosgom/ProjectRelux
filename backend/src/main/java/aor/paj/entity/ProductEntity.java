@@ -1,7 +1,6 @@
 package aor.paj.entity;
 
 
-import aor.paj.dto.CategoryDto;
 import aor.paj.dto.EstadosDoProduto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
@@ -24,9 +23,6 @@ public class ProductEntity implements Serializable {
 
     @Column(name = "titulo", nullable = false, unique = true)
     private String titulo;
-
-    @ManyToOne  // Removida a anotação @Column porque não é
-    private CategoryEntity categoria; // Trocado CategoryDto para Category Entity
 
     @Column(name = "preco", nullable = false, unique = true)
     private double preco;
@@ -71,15 +67,6 @@ public class ProductEntity implements Serializable {
 
     public ProductEntity setTitulo(String titulo) {
         this.titulo = titulo;
-        return this;
-    }
-
-    public CategoryDto getCategoria() {
-        return categoria;
-    }
-
-    public ProductEntity setCategoria(CategoryDto categoria) {
-        this.categoria = categoria;
         return this;
     }
 
