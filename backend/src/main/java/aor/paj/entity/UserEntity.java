@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "user")
-@NamedQuery(name = "User.findUserByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
-@NamedQuery(name = "User.findUserByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
-@NamedQuery(name = "User.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
+@Table(name = "utilizador")
+@NamedQuery(name = "Utilizador.findUserByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
+@NamedQuery(name = "Utilizador.findUserByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
+@NamedQuery(name = "Utilizador.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
 
 public class UserEntity implements Serializable {
 

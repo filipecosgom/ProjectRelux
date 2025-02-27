@@ -12,7 +12,7 @@ public class UserDao extends AbstratDao<UserEntity>{
 
     public UserEntity findByToken(String token) {
         try {
-            return (UserEntity) em.createNamedQuery("User.findUserByToken").setParameter("token", token)
+            return (UserEntity) em.createNamedQuery("Utilizador.findUserByToken").setParameter("token", token)
                     .getSingleResult();
 
         } catch (NoResultException e) {
@@ -22,7 +22,7 @@ public class UserDao extends AbstratDao<UserEntity>{
 
     public UserEntity findUserByUsername(String username) {
         try {
-            return (UserEntity) em.createNamedQuery("User.findUserByUsername").setParameter("username", username)
+            return (UserEntity) em.createNamedQuery("Utilizador.findUserByUsername").setParameter("username", username)
                     .getSingleResult();
 
         } catch (NoResultException e) {

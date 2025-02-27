@@ -9,9 +9,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="category")
-@NamedQuery(name = "", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
-@NamedQuery(name = "", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
-@NamedQuery(name = "", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
+
 public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
