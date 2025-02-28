@@ -30,5 +30,14 @@ public class UserDao extends AbstratDao<UserEntity>{
         }
     }
 
+    public UserEntity findUserByToken(String token) {
+        try {
+            return (UserEntity) em.createNamedQuery("Utilizador.findUserByToken").setParameter("token", token)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
 }

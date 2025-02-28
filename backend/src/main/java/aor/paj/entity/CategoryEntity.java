@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="category")
+@NamedQuery(name = "Category.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
+@NamedQuery(name = "Category.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 
 public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;

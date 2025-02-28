@@ -19,17 +19,13 @@ public class UserBean implements Serializable {
     @EJB //injeção de dependência- neste caso significa que a variável abaixo vai ser injetada automaticamente no container
     UserDao userDao;
 
-    public String loginUser(String username, String password) {
-        UserEntity userEntity = userDao.findUserByUsername(username);
+    public String loginUser(String token) {
+        UserEntity userEntity = userDao.findUserByToken(token);
 
         if (userEntity != null) {
-            if (userEntity.getPassword().equals(password)) {
-                String token = generateNewToken();
-                userEntity.setToken(token);
                 return token;
             }
-        }
-        throw new RuntimeException("Credenciais inválidas!");
+        throw new RuntimeException("Token inválido!");
     }
 
     public boolean registerUser(UserDto user) {
@@ -58,15 +54,15 @@ public class UserBean implements Serializable {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
-/*
-    public UserDto getUserByUsername(String username) {
-        UserDto userDto = users.get(username);
-        if (userDto == null) {
-            throw new RuntimeException("Utilizador não encontrado!");
-        }
-        return userDto;
-    }
 
+//    public UserDto getUserByUsername(String username) {
+//        UserDto userDto = users.get(username);
+//        if (userDto == null) {
+//            throw new RuntimeException("Utilizador não encontrado!");
+//        }
+//        return userDto;
+//    }
+/*
     public void deleteUserByUsername(String username) {
         if (!users.containsKey(username)) {
             throw new RuntimeException("User not found");
