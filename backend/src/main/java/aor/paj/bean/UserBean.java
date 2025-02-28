@@ -50,9 +50,6 @@ public class UserBean implements Serializable {
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
         userEntity.setName(user.getName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPhone(user.getPhone());
-        userEntity.setImagem(user.getImagem());
         return userEntity;
     }
 
