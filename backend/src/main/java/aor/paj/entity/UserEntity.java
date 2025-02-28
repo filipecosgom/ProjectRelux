@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-import static jdk.nio.zipfs.ZipFileAttributeView.AttrID.owner;
 
 @Entity
 @Table(name = "utilizador")
@@ -45,15 +44,9 @@ public class UserEntity implements Serializable {
     @Column(name = "isAdmin", nullable = false, unique = false)
     private boolean isAdmin;
 
-    @OneToMany (mappedBy = "owner")
+    @OneToMany (mappedBy = "userAutor")
     private List<ProductEntity> products;
 
-    public UserEntity getOwner() {
-        return owner;
-    }
-    public void setOwner(UserEntity owner) {
-        this.owner=owner;
-    }
     public UserEntity() {   // Public empty constructor
 
     }
@@ -117,12 +110,13 @@ public class UserEntity implements Serializable {
     public String getImagem() {
         return imagem;
     }
-
     public UserEntity setImagem(String imagem) {
         this.imagem = imagem;
         return this;
     }
-
+    public boolean isAdmin() {
+        return isAdmin;
+    }
     public UserEntity setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;

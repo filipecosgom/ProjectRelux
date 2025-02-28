@@ -40,6 +40,7 @@ public class ProductEntity implements Serializable {
     private String dataDePublicacao;
 
     @ManyToOne
+    @JoinColumn (name="user_id")
     private UserEntity userAutor;
 
     @ManyToOne
