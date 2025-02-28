@@ -31,7 +31,7 @@ public class UserBean implements Serializable {
     public boolean registerUser(UserDto user) {
         UserEntity u_temp = userDao.findUserByUsername(user.getUsername());
         if (u_temp == null) {
-            userDao.persist(convertUserDtotoUserEntity(user));
+            userDao.persist(convertUserDtotoUserEntity(user)); // Momento onde escreve
             return true;
         } else {
             throw new RuntimeException("Já existe um utilizador com esse username");
