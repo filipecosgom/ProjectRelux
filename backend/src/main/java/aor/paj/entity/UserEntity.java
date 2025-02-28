@@ -3,17 +3,20 @@ package aor.paj.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
+
+import static jdk.nio.zipfs.ZipFileAttributeView.AttrID.owner;
 
 @Entity
 @Table(name = "utilizador")
 @NamedQuery(name = "Utilizador.findUserByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
-@NamedQuery(name = "Utilizador.findUserByEmail", query = "SELECT u FROM UserEntity u WHERE u.email = :email")
 @NamedQuery(name = "Utilizador.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
 
 public class UserEntity implements Serializable {
 
     //user unique id has ID - not updatable, unique, not null
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private int id;
 
@@ -42,6 +45,15 @@ public class UserEntity implements Serializable {
     @Column(name = "isAdmin", nullable = false, unique = false)
     private boolean isAdmin;
 
+    @OneToMany (mappedBy = "owner")
+    private List<ProductEntity> products;
+
+    public UserEntity getOwner() {
+        return owner;
+    }
+    public void setOwner(UserEntity owner) {
+        this.owner=owner;
+    }
     public UserEntity() {   // Public empty constructor
 
     }
@@ -114,5 +126,11 @@ public class UserEntity implements Serializable {
     public UserEntity setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
+    }
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
     }
 }

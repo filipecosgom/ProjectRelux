@@ -10,8 +10,8 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "product")
-@NamedQuery(name = "Products.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
-@NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
+@NamedQuery(name = "Product.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
+@NamedQuery(name = "Product.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 public class ProductEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

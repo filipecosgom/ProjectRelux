@@ -26,21 +26,21 @@ public class ProductBean  implements Serializable {
     public ProductBean() {
     }
 
-//    public boolean addProduct(String token, ProductDto p) {
-//        UserEntity userEntity = userDao.findByToken(token);
-//
-//        if(userEntity != null) {
-//            ProductEntity productEntity = convertProductDtoToProductEntity(p);
-//            productEntity.setUserAutor(userEntity);
-//            productDao.persist(productEntity);
-//            return true;
-//        }
-//        return false;
-//    }
+    public boolean addProduct(String token, ProductDto p) {
+        UserEntity userEntity = userDao.findByToken(token);
 
-//    public ProductDto getProductById(String id) {
-//        return em.find(ProductDto.class, id);
-//    }
+        if(userEntity != null) {
+            ProductEntity productEntity = convertProductDtoToProductEntity(p);
+            productEntity.setUserAutor(userEntity);
+            productDao.persist(productEntity);
+            return true;
+        }
+        return false;
+    }
+
+    public ProductDto getProductById(String id) {
+        return em.find(ProductDto.class, id);
+    }
 //
 //    public void addProduct(ProductDto product) {
 //        productMap.put(product.getId(), product);
