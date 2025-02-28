@@ -4,8 +4,6 @@ import aor.paj.dao.ProductDao;
 import jakarta.inject.Inject;
 
 import java.io.Serializable;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 
 public class CategoryBean implements Serializable {
 

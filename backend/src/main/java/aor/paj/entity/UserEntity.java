@@ -69,7 +69,7 @@ public class UserEntity implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setName(String nome) {
         this.nome = nome;
     }
 

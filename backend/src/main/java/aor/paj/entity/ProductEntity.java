@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "Product")
+@Table(name = "product")
 @NamedQuery(name = "Products.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
 @NamedQuery(name = "Products.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 public class ProductEntity implements Serializable {

@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 
-//Gere os nossos edpoints de utilizadores
+//Gere os nossos endpoints de utilizadores
 @Path("/users")
 public class UserService {
 
@@ -34,9 +34,8 @@ public class UserService {
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
-
     public Response registerUser(UserDto userDto) {
-        if(userBean.registerUser(userDto)) {
+        if (userBean.registerUser(userDto)) {
             return Response.status(200).entity("Novo utilizador registado com sucesso!").build();
         }
 
@@ -47,51 +46,11 @@ public class UserService {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response loginUser(String token){
-        UserEntity utilizador= userDao.findUserByToken(token);
+    public Response loginUser(UserDto user) {
+        String token = userBean.loginUser(user);
         if (token != null) {
             return Response.status(200).entity(token).build();
         }
-        return Response.status(200).entity("Token inválido").build();
-    }
-
-    @GET
-    @Path("/{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam("username") String username) {
-        UserDto userDto = userBean.getUserByUsername(username);
-        return Response.ok(userDto).build();
-    }
-
-    @DELETE
-    @Path("/{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUser(@PathParam("username") String username) {
-        userBean.deleteUserByUsername(username);
-        return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/check-username")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response checkUsernameExists(@QueryParam("username") String username) {
-        boolean exists = userBean.checkUsernameExists(username);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("exists", exists);
-        return Response.ok(response).build();
-    }
-
-    @PUT
-    @Path("/{username}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@PathParam("username") String username, UserDto updatedUser) {
-        try {
-            UserDto user = userBean.updateUser(username, updatedUser);
-            return Response.ok(user).build();
-        } catch (RuntimeException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao atualizar os dados do usuário.")
-                    .build();
-        }
+        return Response.status(200).entity("Token invalido").build();
     }
 }

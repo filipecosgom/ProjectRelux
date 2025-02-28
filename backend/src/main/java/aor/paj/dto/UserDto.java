@@ -10,9 +10,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class UserDto {
     private String username;
     private String password;
-    private String nome;
+    private String name;
     private String email;
-    private String telefone;
+    private String phone;
     private String imagem;
     private List<String> produtos;
     private int id;
@@ -21,13 +21,13 @@ public class UserDto {
         this.produtos = new ArrayList<>();
     }
 
-    public UserDto(String username, String password, String nome, String email,
-            String telefone, String imagem, List<String> produtos, int id) {
+    public UserDto(String username, String password, String name, String email,
+                   String phone, String imagem, List<String> produtos, int id) {
         this.username = username;
         this.password = password;
-        this.nome = nome;
+        this.name = name;
         this.email = email;
-        this.telefone = telefone;
+        this.phone = phone;
         this.imagem = imagem;
         this.produtos = (produtos != null) ? produtos : new ArrayList<>();
         this.id = id;
@@ -52,12 +52,12 @@ public class UserDto {
     }
 
     @XmlElement
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.name = name;
     }
 
     @XmlElement
@@ -70,12 +70,12 @@ public class UserDto {
     }
 
     @XmlElement
-    public String getTelefone() {
-        return telefone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @XmlElement
@@ -99,5 +99,6 @@ public class UserDto {
     @XmlElement
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+
 }
 

@@ -3,15 +3,12 @@ package aor.paj.bean;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 import aor.paj.dao.UserDao;
 import aor.paj.dto.UserDto;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
-import jakarta.enterprise.context.ApplicationScoped;
 
 @Stateless
 public class UserBean implements Serializable {
@@ -19,13 +16,16 @@ public class UserBean implements Serializable {
     @EJB //injeção de dependência- neste caso significa que a variável abaixo vai ser injetada automaticamente no container
     UserDao userDao;
 
-    public String loginUser(String token) {
-        UserEntity userEntity = userDao.findUserByToken(token);
-
+    public String loginUser(UserDto user) {
+        UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
         if (userEntity != null) {
-                return token;
+                if(userEntity.getPassword().equals(user.getPassword())) {
+                    String token = generateNewToken();
+                    userEntity.setToken(token);
+                    return token;
+                }
             }
-        throw new RuntimeException("Token inválido!");
+        return null;
     }
 
     public boolean registerUser(UserDto user) {
@@ -42,14 +42,13 @@ public class UserBean implements Serializable {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setNome(user.getNome());
+        userEntity.setName(user.getName());
         return userEntity;
     }
 
     private String generateNewToken() {
-        SecureRandom secureRandom = new SecureRandom(); //threadsafe
-        Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
+        SecureRandom secureRandom = new SecureRandom();
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder();
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);

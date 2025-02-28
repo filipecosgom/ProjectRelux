@@ -1,28 +1,12 @@
 package aor.paj.bean;
 
 import java.io.*;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.LogManager;
 
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.ProductDao;
 import aor.paj.dao.UserDao;
-import aor.paj.dto.ProductDto;
-import aor.paj.entity.ProductEntity;
-import aor.paj.entity.UserEntity;
-import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-import jakarta.persistence.PersistenceContext;
-//import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Stateless
 public class ProductBean  implements Serializable {
@@ -42,17 +26,17 @@ public class ProductBean  implements Serializable {
     public ProductBean() {
     }
 
-    public boolean addProduct(String token, ProductDto p) {
-        UserEntity userEntity = userDao.findByToken(token);
-
-        if(userEntity != null) {
-            ProductEntity productEntity = convertProductDtoToProductEntity(p);
-            productEntity.setUserAutor(userEntity);
-            productDao.persist(productEntity);
-            return true;
-        }
-        return false;
-    }
+//    public boolean addProduct(String token, ProductDto p) {
+//        UserEntity userEntity = userDao.findByToken(token);
+//
+//        if(userEntity != null) {
+//            ProductEntity productEntity = convertProductDtoToProductEntity(p);
+//            productEntity.setUserAutor(userEntity);
+//            productDao.persist(productEntity);
+//            return true;
+//        }
+//        return false;
+//    }
 
 //    public ProductDto getProductById(String id) {
 //        return em.find(ProductDto.class, id);
