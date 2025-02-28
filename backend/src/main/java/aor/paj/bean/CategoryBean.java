@@ -1,6 +1,8 @@
 package aor.paj.bean;
 
 import aor.paj.dao.ProductDao;
+import aor.paj.dto.CategoryDto;
+import aor.paj.entity.CategoryEntity;
 import jakarta.inject.Inject;
 
 import java.io.Serializable;
@@ -18,4 +20,12 @@ ProductDao productDao;
     this.productDao=productDao;
 }
 public CategoryBean (){}
-}
+
+ public CategoryEntity convertCategoryDtoToCategoryEntity(CategoryDto categoryDto){
+         CategoryEntity categoryEntity = new CategoryEntity();
+         categoryEntity.setId(categoryDto.getId());
+         categoryEntity.setName(categoryDto.getNome());
+         return categoryEntity;
+     }
+ }
+

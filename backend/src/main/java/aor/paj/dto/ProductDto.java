@@ -9,34 +9,34 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ProductDto {
     public static int incremento = 0;
-    private String titulo;
-    private CategoryDto categoria;
-    private double preco;
+    private String title;
+    private CategoryDto category;
+    private double price;
     private String imagem;
     private String local;
-    private String descricao;
+    private String description;
     private String id;
-    private String dataDePublicacao;
+    private String postDate;
     private String userAutor;
-    private EstadosDoProduto estado;
+    private EstadosDoProduto state;
 
     public ProductDto() {
         this.id = generateTimestampId();
-        this.estado = EstadosDoProduto.DISPONIVEL;
+        this.state = EstadosDoProduto.DISPONIVEL;
     }
 
-    public ProductDto(String titulo, CategoryDto categoria, double preco,
-                      String imagem, String local, String descricao, String dataDePublicacao, String userAutor, int stateId) {
-        this.titulo = titulo;
-        this.categoria=categoria;
-        this.preco = preco;
+    public ProductDto(String title, CategoryDto category, double price,
+                      String imagem, String local, String description, String postDate, String userAutor, int stateId) {
+        this.title = title;
+        this.category=category;
+        this.price = price;
         this.imagem = imagem;
         this.local = local;
-        this.descricao = descricao;
-        this.dataDePublicacao = dataDePublicacao;
+        this.description = description;
+        this.postDate = postDate;
         this.userAutor = userAutor;
         this.id = generateTimestampId();
-        this.estado = EstadosDoProduto.fromStateId(stateId);
+        this.state = EstadosDoProduto.fromStateId(stateId);
     }
 
     private String generateTimestampId() {
@@ -46,30 +46,30 @@ public class ProductDto {
     }
 
     @XmlElement
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    @XmlElement
-    public CategoryDto getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(CategoryDto categoria) {
-        this.categoria = categoria;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @XmlElement
-    public double getPreco() {
-        return preco;
+    public CategoryDto getCategory() {
+        return category;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
+    public void setCategory(CategoryDto category) {
+        this.category = category;
+    }
+
+    @XmlElement
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @XmlElement
@@ -82,12 +82,12 @@ public class ProductDto {
     }
 
     @XmlElement
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlElement
@@ -109,12 +109,12 @@ public class ProductDto {
     }
 
     @XmlElement
-    public String getDataDePublicacao() {
-        return dataDePublicacao;
+    public String getPostDate() {
+        return postDate;
     }
 
-    public void setDataDePublicacao(String dataDePublicacao) {
-        this.dataDePublicacao = dataDePublicacao;
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
     }
 
     @XmlElement
@@ -128,15 +128,15 @@ public class ProductDto {
 
 
     @XmlElement
-    public EstadosDoProduto getEstado() {
-        return estado;
+    public EstadosDoProduto getState() {
+        return state;
     }
 
-    public void setEstado(EstadosDoProduto estado) {
-        this.estado = estado;
+    public void setState(EstadosDoProduto state) {
+        this.state = state;
     }
 
     public void setEstadoById(int stateId) {
-        this.estado = EstadosDoProduto.fromStateId(stateId);
+        this.state = EstadosDoProduto.fromStateId(stateId);
     }
 }

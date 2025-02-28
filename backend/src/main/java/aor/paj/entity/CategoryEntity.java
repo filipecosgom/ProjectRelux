@@ -21,10 +21,35 @@ public class CategoryEntity implements Serializable {
     private int id;
 
     @Column(name = "name", nullable = false, unique = false, updatable = true)
-    private String nome;
+    private String name;
 
     @OneToMany (mappedBy = "category")
     private Set <ProductEntity>  products;
 
+    public int getId() {
+        return id;
+    }
 
+    public CategoryEntity setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CategoryEntity setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Set<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public CategoryEntity setProducts(Set<ProductEntity> products) {
+        this.products = products;
+        return this;
+    }
 }

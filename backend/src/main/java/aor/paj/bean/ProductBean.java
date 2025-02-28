@@ -5,15 +5,23 @@ import java.io.*;
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.ProductDao;
 import aor.paj.dao.UserDao;
+import aor.paj.dto.ProductDto;
+import aor.paj.entity.ProductEntity;
+import aor.paj.entity.UserEntity;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 @Stateless
 public class ProductBean  implements Serializable {
    // private static final Logger logger= LogManager.getLogger(ProductBean.class);
-    ProductDao productDao;
+   ProductDao productDao;
     UserDao userDao;
     CategoryDao categoryDao;
+
+
+    @EJB
+    private CategoryBean categoryBean;
 
 
     @Inject
@@ -27,7 +35,7 @@ public class ProductBean  implements Serializable {
     }
 
     public boolean addProduct(String token, ProductDto p) {
-        UserEntity userEntity = userDao.findByToken(token);
+        UserEntity userEntity= userDao.findByToken(token);
 
         if(userEntity != null) {
             ProductEntity productEntity = convertProductDtoToProductEntity(p);
@@ -38,8 +46,19 @@ public class ProductBean  implements Serializable {
         return false;
     }
 
-    public ProductDto getProductById(String id) {
-        return em.find(ProductDto.class, id);
+
+    private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setTitulo(a.getTitle());
+        productEntity.setDescricao(a.getDescription());
+        productEntity.setPreco(a.getPrice());
+        productEntity.setImagem(a.getImagem());
+        productEntity.setLocal(a.getLocal());
+        productEntity.setDataDePublicacao(a.getPostDate());
+        productEntity.setEstado(a.getState());
+        productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(a.getCategory()));
+
+        return productEntity;
     }
 //
 //    public void addProduct(ProductDto product) {
@@ -95,10 +114,5 @@ public class ProductBean  implements Serializable {
 //        return new ArrayList<>(productMap.values());
 //    }
 //
-//    private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
-//        ProductEntity productEntity = new ProductEntity();
-//        productEntity.setTitulo(a.getTitulo());
-//        //falta converter todos os outros atributos
-//         return productEntity;
-//    }
+
 }
