@@ -25,17 +25,19 @@ public class UserEntity implements Serializable {
 
     //user's name
     @Column(name = "name", nullable = false, unique = false, updatable = true)
-    private String nome;
+    private String name;
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String email;
 
-    @Column(name = "telefone", nullable = false, unique = true, updatable = false)
-    private String telefone;
+    @Column(name = "telefone", nullable = false, unique = false, updatable = false)
+    private String phone;
 
     @Column(name = "token", nullable = true, unique = true, updatable = true)
     private String token;
 
+    @Column(name="imagem", nullable = true, unique = false, updatable = true)
+private String imagem;
 
     public UserEntity() {   // Public empty constructor
 
@@ -65,12 +67,12 @@ public class UserEntity implements Serializable {
         this.password = password;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setName(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -81,12 +83,12 @@ public class UserEntity implements Serializable {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getToken() {
@@ -95,5 +97,14 @@ public class UserEntity implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public UserEntity setImagem(String imagem) {
+        this.imagem = imagem;
+        return this;
     }
 }

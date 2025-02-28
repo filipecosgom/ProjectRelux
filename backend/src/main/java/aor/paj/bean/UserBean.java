@@ -31,7 +31,14 @@ public class UserBean implements Serializable {
     public boolean registerUser(UserDto user) {
         UserEntity u_temp = userDao.findUserByUsername(user.getUsername());
         if (u_temp == null) {
-            userDao.persist(convertUserDtotoUserEntity(user));
+            UserEntity userEntity = convertUserDtotoUserEntity(user);
+            try {
+                userDao.persist(userEntity);
+            }
+            catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+
             return true;
         } else {
             throw new RuntimeException("Já existe um utilizador com esse username");
@@ -43,6 +50,9 @@ public class UserBean implements Serializable {
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
         userEntity.setName(user.getName());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPhone(user.getPhone());
+        userEntity.setImagem(user.getImagem());
         return userEntity;
     }
 
