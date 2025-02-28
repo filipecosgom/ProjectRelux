@@ -16,13 +16,14 @@ public class UserDto {
     private String imagem;
     private List<String> produtos;
     private int id;
+    private boolean isAdmin;
 
     public UserDto() {
         this.produtos = new ArrayList<>();
     }
 
     public UserDto(String username, String password, String name, String email,
-                   String phone, String imagem, List<String> produtos, int id) {
+                   String phone, String imagem, List<String> produtos, int id,boolean isAdmin) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -31,6 +32,7 @@ public class UserDto {
         this.imagem = imagem;
         this.produtos = (produtos != null) ? produtos : new ArrayList<>();
         this.id = id;
+        this.isAdmin = isAdmin;
     }
 
     @XmlElement
@@ -56,7 +58,7 @@ public class UserDto {
         return name;
     }
 
-    public void setNome(String nome) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -99,6 +101,10 @@ public class UserDto {
     @XmlElement
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+
+    @XmlElement
+    public boolean getIsAdmin() { return isAdmin; }
+    public void setAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
 }
 

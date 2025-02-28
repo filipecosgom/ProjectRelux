@@ -53,4 +53,16 @@ public class UserService {
         }
         return Response.status(200).entity("Token invalido").build();
     }
+
+    @PUT
+    @Path ("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(UserDto userDto) {
+        if(userBean.updateUser(userDto)) {
+            return Response.status(200).entity("Dados atualizados").build();
+        }
+        return Response.status(404).entity("Utilizador não encontrado").build();
+    }
+
 }

@@ -50,6 +50,10 @@ public class UserBean implements Serializable {
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
         userEntity.setName(user.getName());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setPhone(user.getPhone());
+        userEntity.setImagem(user.getImagem());
+        userEntity.setIsAdmin(user.getIsAdmin());
         return userEntity;
     }
 
@@ -60,7 +64,20 @@ public class UserBean implements Serializable {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
-
+    public boolean updateUser(UserDto userDto) {
+        UserEntity userEntity = userDao.findUserByUsername(userDto.getUsername());
+        if (userEntity != null) {
+            userEntity.setPassword(userDto.getPassword());
+            userEntity.setName(userDto.getName());
+            userEntity.setEmail(userDto.getEmail());
+            userEntity.setPhone(userDto.getPhone());
+            userEntity.setImagem(userDto.getImagem());
+            userEntity.setIsAdmin(userDto.getIsAdmin());
+            userDao.merge(userEntity);
+            return true;
+        }
+        return false;
+    }
 //    public UserDto getUserByUsername(String username) {
 //        UserDto userDto = users.get(username);
 //        if (userDto == null) {
@@ -81,20 +98,6 @@ public class UserBean implements Serializable {
         return users.containsKey(username);
     }
 
-    public UserDto updateUser(String username, UserDto updatedUser) {
-        UserDto existingUser = users.get(username);
-        if (existingUser == null) {
-            throw new RuntimeException("Utilizador não encontrado.");
-        }
-        existingUser.setNome(updatedUser.getNome());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setTelefone(updatedUser.getTelefone());
-        existingUser.setImagem(updatedUser.getImagem());
-        if (updatedUser.getPassword() != null) {
-            existingUser.setPassword(updatedUser.getPassword());
-        }
-        users.put(username, existingUser);
-        // saveUsersToFile();
-        return existingUser;
+
     }*/
 }

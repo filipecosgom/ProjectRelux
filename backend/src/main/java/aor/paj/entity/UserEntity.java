@@ -36,8 +36,11 @@ public class UserEntity implements Serializable {
     @Column(name = "token", nullable = true, unique = true, updatable = true)
     private String token;
 
-    @Column(name="imagem", nullable = true, unique = false, updatable = true)
-private String imagem;
+    @Column(name = "imagem", nullable = true, unique = false, updatable = true)
+    private String imagem;
+
+    @Column(name = "isAdmin", nullable = false, unique = false)
+    private boolean isAdmin;
 
     public UserEntity() {   // Public empty constructor
 
@@ -105,6 +108,11 @@ private String imagem;
 
     public UserEntity setImagem(String imagem) {
         this.imagem = imagem;
+        return this;
+    }
+
+    public UserEntity setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
         return this;
     }
 }
