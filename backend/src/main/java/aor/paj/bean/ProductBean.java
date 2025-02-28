@@ -1,6 +1,7 @@
 package aor.paj.bean;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.ProductDao;
@@ -49,17 +50,47 @@ public class ProductBean  implements Serializable {
 
     private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
-        productEntity.setTitulo(a.getTitle());
-        productEntity.setDescricao(a.getDescription());
-        productEntity.setPreco(a.getPrice());
+        productEntity.setTitle(a.getTitle());
+        productEntity.setDescription(a.getDescription());
+        productEntity.setPrice(a.getPrice());
         productEntity.setImagem(a.getImagem());
         productEntity.setLocal(a.getLocal());
-        productEntity.setDataDePublicacao(a.getPostDate());
-        productEntity.setEstado(a.getState());
+        productEntity.setPostDate(a.getPostDate());
+        productEntity.setState(a.getState());
         productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(a.getCategory()));
 
         return productEntity;
     }
+
+    public ArrayList<ProductDto> getAllProducts(String token) {
+        UserEntity userEntity = userDao.findByToken(token);
+        if (userEntity != null) {
+            ArrayList<ProductEntity> products = ProductDao.findProductByUser(userEntity);
+            if (products != null)
+                return convertProductDtoToProductEntity();
+        }
+        return null;
+    }
+
+
+    private ArrayList<ProductDto> convertProductEntityListtoProductDtoList(ArrayList<ProductEntity> productEntity) {
+        ArrayList<ProductDto> productDtos = new ArrayList<ProductDto>();
+        for (ProductEntity a : productEntity) {
+            productDtos.add(convertProductEntityToProductDto(a));
+        }
+        return productDtos;
+    }
+
+    private ProductDto convertProductEntityToProductDto(ProductEntity a) {
+        ProductDto productDto = new ProductDto();
+        productDto.setTitle(a.getTitle());
+        productDto.setDescription(a.getDescription());
+        productDto.setId(a.getId());
+        productDto.setUserAutor(a.getUserAutor());
+        return productDto;
+    }
+
+}
 //
 //    public void addProduct(ProductDto product) {
 //        productMap.put(product.getId(), product);

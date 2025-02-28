@@ -64,6 +64,13 @@ public class UserBean implements Serializable {
         secureRandom.nextBytes(randomBytes);
         return base64Encoder.encodeToString(randomBytes);
     }
+
+    public boolean tokenExist(String token){
+        if (userDao.findByToken(token) != null)
+            return true;
+        return false;
+
+    }
     public boolean updateUser(UserDto userDto) {
         UserEntity userEntity = userDao.findUserByUsername(userDto.getUsername());
         if (userEntity != null) {

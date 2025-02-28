@@ -5,7 +5,6 @@ import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -26,7 +25,7 @@ public class ProductDao extends AbstratDao<ProductEntity> {
             return null;
         }
     }
-    public List<ProductEntity> findActivityByUser(UserEntity userEntity) {
+    public List<ProductEntity> findProductByUser(UserEntity userEntity) {
         try {
             return em.createNamedQuery("Product.findProductByUser", ProductEntity.class).setParameter("owner", userEntity).getResultList();
         } catch (Exception e) {

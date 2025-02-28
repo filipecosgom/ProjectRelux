@@ -22,10 +22,10 @@ public class ProductEntity implements Serializable {
     private int id;
 
     @Column(name = "titulo", nullable = false, unique = true)
-    private String titulo;
+    private String title;
 
     @Column(name = "preco", nullable = false, unique = true)
-    private double preco;
+    private double price;
 
     @Column(name = "imagem")
     private String imagem;
@@ -34,10 +34,10 @@ public class ProductEntity implements Serializable {
     private String local;
 
     @Column(name = "descricao")
-    private String descricao;
+    private String description;
 
     @Column(name = "dataDePublicacao")
-    private String dataDePublicacao;
+    private String postDate;
 
     @ManyToOne
     @JoinColumn (name="user_id")
@@ -48,7 +48,7 @@ public class ProductEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado")
-    private EstadosDoProduto estado;
+    private EstadosDoProduto state;
 
     public ProductEntity() {
 
@@ -62,21 +62,21 @@ public class ProductEntity implements Serializable {
         this.id = id;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public ProductEntity setTitulo(String titulo) {
-        this.titulo = titulo;
+    public ProductEntity setTitle(String titulo) {
+        this.title = titulo;
         return this;
     }
 
-    public double getPreco() {
-        return preco;
+    public double getPrice() {
+        return price;
     }
 
-    public ProductEntity setPreco(double preco) {
-        this.preco = preco;
+    public ProductEntity setPrice(double preco) {
+        this.price = preco;
         return this;
     }
 
@@ -98,21 +98,21 @@ public class ProductEntity implements Serializable {
         return this;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescription() {
+        return description;
     }
 
-    public ProductEntity setDescricao(String descricao) {
-        this.descricao = descricao;
+    public ProductEntity setDescription(String descricao) {
+        this.description = descricao;
         return this;
     }
 
-    public String getDataDePublicacao() {
-        return dataDePublicacao;
+    public String getPostDate() {
+        return postDate;
     }
 
-    public ProductEntity setDataDePublicacao(String dataDePublicacao) {
-        this.dataDePublicacao = dataDePublicacao;
+    public ProductEntity setPostDate(String dataDePublicacao) {
+        this.postDate = dataDePublicacao;
         return this;
     }
 
@@ -134,12 +134,12 @@ public class ProductEntity implements Serializable {
         return this;
     }
 
-    public EstadosDoProduto getEstado() {
-        return estado;
+    public EstadosDoProduto getState() {
+        return state;
     }
 
-    public ProductEntity setEstado(EstadosDoProduto estado) {
-        this.estado = estado;
+    public ProductEntity setState(EstadosDoProduto estado) {
+        this.state = estado;
         return this;
     }
 }
