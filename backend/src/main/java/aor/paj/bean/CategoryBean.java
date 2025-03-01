@@ -27,5 +27,12 @@ public CategoryBean (){}
          categoryEntity.setName(categoryDto.getNome());
          return categoryEntity;
      }
+
+     public CategoryDto convertCategoryEntityToCategoryDto(CategoryEntity categoryEntity){
+    CategoryDto categoryDto = new CategoryDto();
+    categoryDto.setId(categoryEntity.getId());
+    categoryDto.setNome(categoryEntity.getName());
+    return categoryDto;
+     }
  }
 

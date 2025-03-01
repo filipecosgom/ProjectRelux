@@ -19,7 +19,7 @@ public class ProductEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
-    private int id;
+    private String id;
 
     @Column(name = "titulo", nullable = false, unique = true)
     private String title;
@@ -54,11 +54,11 @@ public class ProductEntity implements Serializable {
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -2,6 +2,7 @@ package aor.paj.bean;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.ProductDao;
@@ -15,12 +16,14 @@ import jakarta.inject.Inject;
 
 @Stateless
 public class ProductBean  implements Serializable {
+    private static final long serialVersionUID = 1L;
    // private static final Logger logger= LogManager.getLogger(ProductBean.class);
+    @EJB
    ProductDao productDao;
+    @EJB
     UserDao userDao;
+    @EJB
     CategoryDao categoryDao;
-
-
     @EJB
     private CategoryBean categoryBean;
 
@@ -47,6 +50,23 @@ public class ProductBean  implements Serializable {
         return false;
     }
 
+    public List<ProductDto> getAllProducts(String token) {
+        UserEntity userEntity = userDao.findByToken(token);
+        if (userEntity != null) {
+            List<ProductEntity> products = productDao.findProductByUser(userEntity);
+            if (products != null)
+                return convertProductEntityListtoProductDtoList(products);
+        }
+        return null;
+    }
+
+    public ProductDto getProductById(String id) {
+        ProductEntity p = productDao.findById(Integer.parseInt(id));
+        if (p  != null) {
+            return convertProductEntityToProductDto(p);
+        }
+        return null;
+    }
 
     private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
@@ -62,19 +82,10 @@ public class ProductBean  implements Serializable {
         return productEntity;
     }
 
-    public ArrayList<ProductDto> getAllProducts(String token) {
-        UserEntity userEntity = userDao.findByToken(token);
-        if (userEntity != null) {
-            ArrayList<ProductEntity> products = ProductDao.findProductByUser(userEntity);
-            if (products != null)
-                return convertProductDtoToProductEntity();
-        }
-        return null;
-    }
 
 
-    private ArrayList<ProductDto> convertProductEntityListtoProductDtoList(ArrayList<ProductEntity> productEntity) {
-        ArrayList<ProductDto> productDtos = new ArrayList<ProductDto>();
+    private List<ProductDto> convertProductEntityListtoProductDtoList(List<ProductEntity> productEntity) {
+        List<ProductDto> productDtos = new ArrayList();
         for (ProductEntity a : productEntity) {
             productDtos.add(convertProductEntityToProductDto(a));
         }
@@ -86,8 +97,15 @@ public class ProductBean  implements Serializable {
         productDto.setTitle(a.getTitle());
         productDto.setDescription(a.getDescription());
         productDto.setId(a.getId());
-        productDto.setUserAutor(a.getUserAutor());
+        productDto.setUserAutor(a.getUserAutor().getUsername());
+        productDto.setPrice(a.getPrice());
+        productDto.setImagem(a.getImagem());
+        productDto.setLocal(a.getLocal());
+        productDto.setPostDate(a.getPostDate());
+        productDto.setState(a.getState());
+        productDto.setCategory(categoryBean.convertCategoryEntityToCategoryDto(a.getCategory()));
         return productDto;
+
     }
 
 }
@@ -146,4 +164,3 @@ public class ProductBean  implements Serializable {
 //    }
 //
 
-}

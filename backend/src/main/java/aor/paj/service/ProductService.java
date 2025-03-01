@@ -25,10 +25,15 @@ public class ProductService {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllProducts() {
-      //  List<ProductDto> products = productBean.getAllProducts();
-      //  return Response.ok(products).build();
+    public Response getAllProducts(@HeaderParam("token") String token) {
+        if (userBean.tokenExist(token)) {
+            List<ProductDto> products = productBean.getAllProducts(token);
+            return Response.ok(products).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
     }
+
 
     @GET
     @Path("/{id}")
@@ -49,35 +54,41 @@ public class ProductService {
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addProduct(@HeaderParam("token") String token, ProductDto productDto) {
-        if(userBean.tokenExist(token)) {
-            ArrayList<ProductDto> products= productBean.getProducts(token);
+        if (userBean.tokenExist(token)) {
+            boolean sucess = productBean.addProduct(token, productDto);
+            if (sucess) {
+                return Response.status(200).entity("Produto criado com sucesso!").build();
+            } else {
+                return Response.status(401).entity("Erro ao adicionar produto.").build();
+            }
         }
-        return Response.status(Response.Status.CREATED).entity(productDto).build();
+        return Response.status(404).entity("Token inválido").build();
     }
 
-    @PUT
-    @Path("/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
-        ProductDto existingProduct = productBean.getProductById(id);
-        if (existingProduct == null) {
-            return Response.status(404).entity("Product not found!").build();
-        }
-        productDto.setId(id);
-        productBean.updateProduct(productDto);
-        return Response.ok(productDto).build();
-    }
 
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteProduct(@PathParam("id") String id) {
-        ProductDto existingProduct = productBean.getProductById(id);
-        if (existingProduct == null) {
-            return Response.status(404).entity("Product not found!").build();
-        }
-        productBean.deleteProduct(id);
-        return Response.noContent().build();
-    }
+//    @PUT
+//    @Path("/{id}")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
+//        ProductDto existingProduct = productBean.getProductById(id);
+//        if (existingProduct == null) {
+//            return Response.status(404).entity("Produto não encontrado!").build();
+//        }
+//        productDto.setId(id);
+//        productBean.updateProduct(productDto);
+//        return Response.ok(productDto).build();
+//    }
+//
+//    @DELETE
+//    @Path("/{id}")
+//    @Produces(MediaType.TEXT_PLAIN)
+//    public Response deleteProduct(@PathParam("id") String id) {
+//        ProductDto existingProduct = productBean.getProductById(id);
+//        if (existingProduct == null) {
+//            return Response.status(404).entity("Product not found!").build();
+//        }
+//        productBean.deleteProduct(id);
+//        return Response.noContent().build();
+//    }
 }
