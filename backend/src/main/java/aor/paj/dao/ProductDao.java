@@ -32,5 +32,10 @@ public class ProductDao extends AbstratDao<ProductEntity> {
             return null;
         }
     }
+
+    public void remove(ProductEntity productEntity) {
+        em.remove(em.contains(productEntity) ? productEntity : em.merge(productEntity));
+    }
 }
+
 

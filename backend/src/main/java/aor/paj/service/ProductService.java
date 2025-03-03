@@ -65,20 +65,20 @@ public class ProductService {
         return Response.status(404).entity("Token inválido").build();
     }
 
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteProduct(@HeaderParam("token") String token, @PathParam("id") String id) {
+        if(!userBean.tokenExist(token)) {
+            return Response.status(200).entity("Não autorizado. Só é permitido a administradores").build();
+        }
+        else{
+            return Response.status(401).entity("Produto não encontrado").build();
+        }
+    }
 
-//    @PUT
-//    @Path("/{id}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response updateProduct(@PathParam("id") String id, ProductDto productDto) {
-//        ProductDto existingProduct = productBean.getProductById(id);
-//        if (existingProduct == null) {
-//            return Response.status(404).entity("Produto não encontrado!").build();
-//        }
-//        productDto.setId(id);
-//        productBean.updateProduct(productDto);
-//        return Response.ok(productDto).build();
-//    }
+
+
 //
 //    @DELETE
 //    @Path("/{id}")
