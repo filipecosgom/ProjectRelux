@@ -62,7 +62,7 @@ public class ProductBean  implements Serializable {
     }
 
     public ProductDto getProductById(int id) {
-        ProductEntity p = productDao.findById(Integer.parseInt(id));
+        ProductEntity p = productDao.findById(id);
         if (p != null) {
             return convertProductEntityToProductDto(p);
         }
