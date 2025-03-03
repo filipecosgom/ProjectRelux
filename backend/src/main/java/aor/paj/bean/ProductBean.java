@@ -61,8 +61,8 @@ public class ProductBean  implements Serializable {
         return new ArrayList<>();
     }
 
-    public ProductDto getProductById(int id) {
-        ProductEntity p = productDao.findById(id);
+    public ProductDto getProductById(String id) {
+        ProductEntity p = productDao.findById(Integer.parseInt(id));
         if (p != null) {
             return convertProductEntityToProductDto(p);
         }
@@ -108,8 +108,8 @@ public class ProductBean  implements Serializable {
 
     }
 
-    public boolean deleteProduct(int id) {
-        ProductEntity productEntity = productDao.findById(id);
+    public boolean deleteProduct(String id) {
+        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
         if (productEntity != null) {
             productDao.remove(productEntity);
             return true;
