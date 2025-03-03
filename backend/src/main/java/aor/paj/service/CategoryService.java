@@ -1,7 +1,9 @@
 package aor.paj.service;
 
 import aor.paj.dao.CategoryDao;
+import aor.paj.dao.UserDao;
 import aor.paj.entity.CategoryEntity;
+import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -19,18 +21,25 @@ public class CategoryService {
     @Inject
     private CategoryDao categoryDao;
 
+    @Inject
+    private UserDao userDao;
+
     @POST
-    @Path("new")
-    public Response createCategory(CategoryEntity category) {
-        CategoryEntity c1 = categoryDao.createCategory(category.getName());
-        return Response.status(200).entity("Nova Categoria criada").build();
+    @Path("/new")
+    public Response createCategory(@HeaderParam("Authorization") String token, CategoryEntity category) {
+        UserEntity user= userDao.findByToken(token);
+        if(user==null || !user.isAdmin()){
+            return Response.status(200).entity("Não tem permissões para esta ação").build();
+        }
+        CategoryEntity c = categoryDao.createCategory(category.getName());
+        return Response.status(200).entity("Categoria criada com sucesso!").build();
+
     }
 
     @GET
-    @Path("all")
-    public Response allCategories(CategoryEntity category) {
-        CategoryEntity c1 = categoryDao.createCategory(category.getName());
-        return Response.status(200).entity("Nova Categoria criada").build();
+    @Path("/all")
+    public Response allCategories() {
+        return Response.status(200).entity(categoryDao.findAll()).build();
     }
 }
 
