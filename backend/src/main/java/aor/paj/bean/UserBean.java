@@ -22,6 +22,7 @@ public class UserBean implements Serializable {
                 if(userEntity.getPassword().equals(user.getPassword())) {
                     String token = generateNewToken();
                     userEntity.setToken(token);
+                    userDao.merge(userEntity);
                     return token;
                 }
             }
@@ -86,6 +87,10 @@ public class UserBean implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public UserEntity getUserByToken(String token) {
+        return userDao.findByToken(token);
     }
 //    public UserDto getUserByUsername(String username) {
 //        UserDto userDto = users.get(username);

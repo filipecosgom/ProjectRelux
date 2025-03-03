@@ -8,6 +8,8 @@ import aor.paj.bean.ProductBean;
 import aor.paj.bean.UserBean;
 import aor.paj.dto.ProductDto;
 //import aor.paj.bean.ProductBean;
+import aor.paj.entity.ProductEntity;
+import aor.paj.entity.UserEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -39,7 +41,7 @@ public class ProductService {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") String id) {
-        ProductDto productDto = productBean.getProductById(id);
+        ProductDto productDto = productBean.getProductById(Integer.parseInt(id));
         return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
     }
@@ -87,6 +89,31 @@ public class ProductService {
             return Response.status(200).entity("Não autorizado. Só é permitido a administradores").build();
         } else {
             return Response.status(401).entity("Produto não encontrado").build();
+        }
+    }
+
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProduct(@HeaderParam("token") String token, @PathParam("id") String id, ProductDto productDto) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+
+        UserEntity user = userBean.getUserByToken(token);
+        ProductDto product = productBean.getProductById(Integer.parseInt(id));
+
+        if (product == null || !product.getUserAutor().equals(user)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para atualizar este produto.").build();
+        }
+
+        boolean success = productBean.updateProduct(id, productDto);
+        if (success) {
+            return Response.status(Response.Status.OK).entity("Produto atualizado com sucesso!").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
         }
     }
 }
