@@ -166,7 +166,8 @@ export async function addNewUser() {
         }
 
         const newUser = {
-          nome: document.getElementById('nome').value,
+          firstName: document.getElementById('nome').value,
+          lastName: document.getElementById('apelido').value,
           username: document.getElementById('username').value,
           email: document.getElementById('email').value,
           password: document.getElementById('password').value,
@@ -176,7 +177,7 @@ export async function addNewUser() {
 
         try {
           await userAPI.registerUser(newUser);
-          alert('Utilizador registado! Bem-vindo/a, ' + newUser.nome);
+          alert('Utilizador registado! Bem-vindo/a, ' + newUser.firstName);
           window.location.href = 'pagina-login.html';
         } catch (error) {
           alert('Erro ao registar utilizador. Tente novamente.');
