@@ -64,31 +64,31 @@ public class ProductService {
         }
         return Response.status(404).entity("Token inválido").build();
     }
+    @DELETE
+    @Path("/soft-delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response softDeleteProduct(@HeaderParam("token") String token, @PathParam("id") String id) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
 
+        boolean success = productBean.softDeleteProduct(id);
+        if (success) {
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
+        }
+    }
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteProduct(@HeaderParam("token") String token, @PathParam("id") String id) {
-        if(!userBean.tokenExist(token)) {
+        if (!userBean.tokenExist(token)) {
             return Response.status(200).entity("Não autorizado. Só é permitido a administradores").build();
-        }
-        else{
+        } else {
             return Response.status(401).entity("Produto não encontrado").build();
         }
     }
-
-
-
-//
-//    @DELETE
-//    @Path("/{id}")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Response deleteProduct(@PathParam("id") String id) {
-//        ProductDto existingProduct = productBean.getProductById(id);
-//        if (existingProduct == null) {
-//            return Response.status(404).entity("Product not found!").build();
-//        }
-//        productBean.deleteProduct(id);
-//        return Response.noContent().build();
-//    }
 }
+
+

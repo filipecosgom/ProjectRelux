@@ -7,6 +7,7 @@ import java.util.List;
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.ProductDao;
 import aor.paj.dao.UserDao;
+import aor.paj.dto.EstadosDoProduto;
 import aor.paj.dto.ProductDto;
 import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
@@ -112,6 +113,16 @@ public class ProductBean  implements Serializable {
         ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
         if (productEntity != null) {
             productDao.remove(productEntity);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean softDeleteProduct(String id) {
+        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
+        if (productEntity != null) {
+            productEntity.setState(EstadosDoProduto.APAGADO);
+            productDao.merge(productEntity);
             return true;
         }
         return false;

@@ -4,7 +4,9 @@ public enum EstadosDoProduto {
   RASCUNHO(1),
   DISPONIVEL(2),
   RESERVADO(3),
-  COMPRADO(4);
+  COMPRADO(4),
+  APAGADO(5);
+
 
   private final int stateId;
 
