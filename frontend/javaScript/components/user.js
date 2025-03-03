@@ -35,7 +35,6 @@ export async function submitLoginForm() {
   }
 }
 
-
 export async function displayUser() {
   const user = JSON.parse(sessionStorage.getItem('user')) || [];
   if (!user) {

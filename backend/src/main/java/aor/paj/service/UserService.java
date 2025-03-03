@@ -65,4 +65,14 @@ public class UserService {
         return Response.status(404).entity("Utilizador não encontrado").build();
     }
 
+    @GET
+    @Path("/checkUsername")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkUsernameExists(@QueryParam("username") String username) {
+        UserEntity user = userDao.findUserByUsername(username);
+        boolean exists = user != null;
+        return Response.status(200).entity("{\"exists\": " + exists + "}").build();
+    }
 }
+
+
