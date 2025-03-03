@@ -47,11 +47,16 @@ public class UserService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response loginUser(UserDto user) {
-        String token = userBean.loginUser(user);
-        if (token != null) {
-            return Response.status(200).entity(token).build();
+        if (user == null || user.getUsername() == null || user.getPassword() == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Dados de login inválidos").build();
         }
-        return Response.status(200).entity("Token invalido").build();
+
+        String token = userBean.loginUser(user);
+        if (token == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+
+        return Response.status(Response.Status.OK).entity(token).build();
     }
 
     @PUT
