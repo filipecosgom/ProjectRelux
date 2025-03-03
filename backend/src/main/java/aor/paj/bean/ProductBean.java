@@ -18,9 +18,9 @@ import jakarta.inject.Inject;
 @Stateless
 public class ProductBean  implements Serializable {
     private static final long serialVersionUID = 1L;
-   // private static final Logger logger= LogManager.getLogger(ProductBean.class);
+    // private static final Logger logger= LogManager.getLogger(ProductBean.class);
     @EJB
-   ProductDao productDao;
+    ProductDao productDao;
     @EJB
     UserDao userDao;
     @EJB
@@ -40,9 +40,9 @@ public class ProductBean  implements Serializable {
     }
 
     public boolean addProduct(String token, ProductDto p) {
-        UserEntity userEntity= userDao.findByToken(token);
+        UserEntity userEntity = userDao.findByToken(token);
 
-        if(userEntity != null) {
+        if (userEntity != null) {
             ProductEntity productEntity = convertProductDtoToProductEntity(p);
             productEntity.setUserAutor(userEntity);
             productDao.persist(productEntity);
@@ -61,9 +61,9 @@ public class ProductBean  implements Serializable {
         return new ArrayList<>();
     }
 
-    public ProductDto getProductById(String id) {
+    public ProductDto getProductById(int id) {
         ProductEntity p = productDao.findById(Integer.parseInt(id));
-        if (p  != null) {
+        if (p != null) {
             return convertProductEntityToProductDto(p);
         }
         return null;
@@ -82,7 +82,6 @@ public class ProductBean  implements Serializable {
 
         return productEntity;
     }
-
 
 
     private List<ProductDto> convertProductEntityListtoProductDtoList(List<ProductEntity> productEntity) {
@@ -127,47 +126,25 @@ public class ProductBean  implements Serializable {
         }
         return false;
     }
+
+    public boolean updateProduct(String id, ProductDto productDto) {
+        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
+        if (productEntity != null) {
+            productEntity.setTitle(productDto.getTitle());
+            productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(productDto.getCategory()));
+            productEntity.setPrice(productDto.getPrice());
+            productEntity.setImagem(productDto.getImagem());
+            productEntity.setLocal(productDto.getLocal());
+            productEntity.setDescription(productDto.getDescription());
+            productEntity.setPostDate(productDto.getPostDate());
+            productEntity.setState(productDto.getState());
+            productDao.merge(productEntity);
+            return true;
+        }
+        return false;
+    }
 }
 
-//
-//    public void updateProduct(ProductDto productDto) {
-//        if (productMap.containsKey(productDto.getId())) {
-//            ProductDto existingProduct = productMap.get(productDto.getId());
-//
-//            if (productDto.getTitulo() != null) {
-//                existingProduct.setTitulo(productDto.getTitulo());
-//            }
-//            if (productDto.getCategoria() != null) {
-//                existingProduct.setCategoria(productDto.getCategoria());
-//            }
-//            if (productDto.getPreco() != 0) {
-//                existingProduct.setPreco(productDto.getPreco());
-//            }
-//            if (productDto.getImagem() != null) {
-//                existingProduct.setImagem(productDto.getImagem());
-//            }
-//            if (productDto.getLocal() != null) {
-//                existingProduct.setLocal(productDto.getLocal());
-//            }
-//            if (productDto.getDescricao() != null) {
-//                existingProduct.setDescricao(productDto.getDescricao());
-//            }
-//            if (productDto.getDataDePublicacao() != null) {
-//                existingProduct.setDataDePublicacao(productDto.getDataDePublicacao());
-//            }
-//            if (productDto.getUserAutor() != null) {
-//                existingProduct.setUserAutor(productDto.getUserAutor());
-//            }
-//
-//            if (productDto.getEstado() != null) {
-//                existingProduct.setEstado(productDto.getEstado());
-//            }
-//
-//
-//        } else {
-//            throw new IllegalArgumentException("Product not found with id: " + productDto.getId());
-//        }
-//    }
 //
 //    public void deleteProduct(String id) {
 //        productMap.remove(id);
