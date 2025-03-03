@@ -57,7 +57,7 @@ public class ProductBean  implements Serializable {
             if (products != null)
                 return convertProductEntityListtoProductDtoList(products);
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ProductDto getProductById(String id) {
@@ -85,7 +85,7 @@ public class ProductBean  implements Serializable {
 
 
     private List<ProductDto> convertProductEntityListtoProductDtoList(List<ProductEntity> productEntity) {
-        List<ProductDto> productDtos = new ArrayList();
+        List<ProductDto> productDtos = new ArrayList<>();
         for (ProductEntity a : productEntity) {
             productDtos.add(convertProductEntityToProductDto(a));
         }
