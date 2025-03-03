@@ -10,9 +10,9 @@ export async function submitLoginForm() {
 
   try {
     const result = await userAPI.loginUser(username, password);
-    const result = await response.json();
-    if (response.ok) {
-      alert('Login bem sucedido! Bem- vindo/a, ' + result.nome);
+    if (result) {
+      const name = `${result.primeiroNome} ${result.ultimoNome}`;
+      alert(`Login bem sucedido! Bem- vindo/a, ${name} `);
       console.log('login successful', result);
 
       const userProducts = await productComponent.getProductsByIds(

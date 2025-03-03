@@ -9,9 +9,9 @@ export async function loginUser(username, password) {
       method: 'POST',
       headers: {
         ...DEFAULT_OPTIONS.headers,
-        Username: username,
-        Password: password,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ username, password }),
     });
 
     if (!response.ok) {
