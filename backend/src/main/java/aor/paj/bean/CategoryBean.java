@@ -9,7 +9,7 @@ import jakarta.inject.Inject;
 import java.io.Serializable;
 
 @Stateless
-//teste para ver se o git fica aualizado
+
 public class CategoryBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private ProductDao productDao;

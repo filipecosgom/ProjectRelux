@@ -27,7 +27,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "preco", nullable = false, unique = true)
     private double price;
 
-    @Column(name = "imagem")
+    @Column(name = "imagem", columnDefinition = "TEXT")// no postman estava a dar um erro 500 e era porque os dados de url de uma imagem eram muito grandes. pus este paramentro para me aceitar na base de dados
     private String imagem;
 
     @Column(name = "local")

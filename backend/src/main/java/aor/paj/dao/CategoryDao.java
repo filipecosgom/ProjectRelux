@@ -8,11 +8,17 @@ import java.util.Locale;
 
 
 @Stateless
-public class CategoryDao extends AbstratDao<CategoryEntity>{
+public class CategoryDao extends AbstratDao<CategoryEntity> {
     private static final long serialVersionUID = 1L;
 
     public CategoryDao() {
         super(CategoryEntity.class);
     }
 
+    public CategoryEntity createCategory(String name) {
+        CategoryEntity category = new CategoryEntity();
+        category.setName(name);
+        categoryDao.persist(category);
+        return category;
+    }
 }
