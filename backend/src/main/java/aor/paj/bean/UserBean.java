@@ -49,7 +49,8 @@ public class UserBean implements Serializable {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
-        userEntity.setName(user.getFirstName());
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
         userEntity.setEmail(user.getEmail());
         userEntity.setPhone(user.getPhone());
         userEntity.setImagem(user.getImagem());
@@ -75,7 +76,8 @@ public class UserBean implements Serializable {
         UserEntity userEntity = userDao.findUserByUsername(userDto.getUsername());
         if (userEntity != null) {
             userEntity.setPassword(userDto.getPassword());
-            userEntity.setName(userDto.getFirstName());
+            userEntity.setFirstName(userDto.getFirstName());
+            userEntity.setLastName(userDto.getLastName());
             userEntity.setEmail(userDto.getEmail());
             userEntity.setPhone(userDto.getPhone());
             userEntity.setImagem(userDto.getImagem());

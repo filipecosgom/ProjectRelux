@@ -26,8 +26,11 @@ public class UserEntity implements Serializable {
     private String password;
 
     //user's name
-    @Column(name = "name", nullable = false, unique = false, updatable = true)
-    private String name;
+    @Column(name = "firstName", nullable = false, unique = false, updatable = true)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false, unique = false, updatable = true)
+    private String lastName;
 
     @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String email;
@@ -75,12 +78,20 @@ public class UserEntity implements Serializable {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

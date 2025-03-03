@@ -65,6 +65,14 @@ public class UserDto {
     }
 
     @XmlElement
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @XmlElement
     public String getEmail() {
         return email;
     }
