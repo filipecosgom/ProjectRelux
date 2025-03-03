@@ -5,19 +5,22 @@ import { API_ENDPOINTS, DEFAULT_OPTIONS } from '../config/apiConfig.js';
 // User API functions
 export async function loginUser(username, password) {
   try {
-    const response = await fetch(API_ENDPOINTS.users.login, {
-      method: 'POST',
-      headers: {
-        ...DEFAULT_OPTIONS.headers,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await fetch(
+      'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Login falhou: ${response.statusText}`);
     }
 
+    const data = await response.json();
     return await response.json();
   } catch (error) {
     console.error('Erro ao fazer login:', error);
