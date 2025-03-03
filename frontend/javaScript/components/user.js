@@ -9,37 +9,29 @@ export async function submitLoginForm() {
   var password = document.getElementById('password').value;
 
   try {
-    const result = await userAPI.loginUser(username, password);
-    if (result) {
-      const name = `${result.primeiroNome} ${result.ultimoNome}`;
-      alert(`Login bem sucedido! Bem- vindo/a, ${name} `);
-      console.log('login successful', result);
+    const response = await fetch(
+      'http://localhost:8080/mariana-filipe-proj3/rest/users/login?username=' +
+        username +
+        '&password=' +
+        password,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-      const userProducts = await productComponent.getProductsByIds(
-        result.produtos
-      );
-      sessionStorage.setItem(
-        'user',
-        JSON.stringify({
-          username: result.username,
-          password: result.password,
-          primeiroNome: result.primeiroNome,
-          ultimoNome: result.ultimoNome,
-          email: result.email,
-          telefone: result.telefone,
-          localizacao: result.localizacao,
-          imagem: result.imagem,
-          produtos: userProducts,
-          isAdmin: result.user.isAdmin,
-        })
-      );
+    if (response.ok) {
+      const result = await response.text();
+      //alert('Login bem sucedido! Token: ' + result);
       window.location.href = 'index.html';
     } else {
       alert('Login falhou! Por favor verifique as suas credenciais.');
     }
   } catch (error) {
-    alert('Login falhou! Por favor verifique as suas credenciais.');
-    console.error(error);
+    alert('Erro ao fazer login. Tente novamente.');
+    console.error('Erro no login:', error);
   }
 }
 
