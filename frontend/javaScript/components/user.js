@@ -10,26 +10,33 @@ export async function submitLoginForm() {
 
   try {
     const result = await userAPI.loginUser(username, password);
-    alert('Login bem sucedido! Bem- vindo/a, ' + result.nome);
-    console.log('login successful', result);
+    const result = await response.json();
+    if (response.ok) {
+      alert('Login bem sucedido! Bem- vindo/a, ' + result.nome);
+      console.log('login successful', result);
 
-    const userProducts = await productComponent.getProductsByIds(
-      result.produtos
-    );
-    sessionStorage.setItem(
-      'user',
-      JSON.stringify({
-        username: result.username,
-        password: result.password,
-        nome: result.nome,
-        email: result.email,
-        telefone: result.telefone,
-        localizacao: result.localizacao,
-        imagem: result.imagem,
-        produtos: userProducts,
-      })
-    );
-    window.location.href = 'index.html';
+      const userProducts = await productComponent.getProductsByIds(
+        result.produtos
+      );
+      sessionStorage.setItem(
+        'user',
+        JSON.stringify({
+          username: result.username,
+          password: result.password,
+          primeiroNome: result.primeiroNome,
+          ultimoNome: result.ultimoNome,
+          email: result.email,
+          telefone: result.telefone,
+          localizacao: result.localizacao,
+          imagem: result.imagem,
+          produtos: userProducts,
+          isAdmin: result.user.isAdmin,
+        })
+      );
+      window.location.href = 'index.html';
+    } else {
+      alert('Login falhou! Por favor verifique as suas credenciais.');
+    }
   } catch (error) {
     alert('Login falhou! Por favor verifique as suas credenciais.');
     console.error(error);
@@ -43,7 +50,8 @@ export async function displayUser() {
       '<p>Utilizador não encontrado</p>';
     return;
   }
-  document.getElementById('nome').value = user.nome;
+  document.getElementById('primeiroNome').value = user.primeiroNome;
+  document.getElementById('ultimoNome').value = user.ultimoNome;
   document.getElementById('username').value = user.username;
   document.getElementById('telefone').value = user.telefone;
   document.getElementById('email').value = user.email;
@@ -61,6 +69,14 @@ export async function displayUser() {
       const card = productComponent.createCard(product);
       productsContainer.appendChild(card);
     });
+  }
+
+  //Para verificar se o utilizador é ou não é administrador
+
+  if (user.isAdmin) {
+    document.getElementById('admin-section').style.display = 'block';
+  } else {
+    document.getElementById('admin-section').style.display = 'none';
   }
 }
 
