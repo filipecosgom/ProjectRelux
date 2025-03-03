@@ -108,12 +108,16 @@ public class ProductBean  implements Serializable {
 
     }
 
+    public boolean deleteProduct(String id) {
+        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
+        if (productEntity != null) {
+            productDao.remove(productEntity);
+            return true;
+        }
+        return false;
+    }
 }
-//
-//    public void addProduct(ProductDto product) {
-//        productMap.put(product.getId(), product);
-//
-//    }
+
 //
 //    public void updateProduct(ProductDto productDto) {
 //        if (productMap.containsKey(productDto.getId())) {
