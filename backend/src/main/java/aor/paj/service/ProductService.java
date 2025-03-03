@@ -41,7 +41,7 @@ public class ProductService {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") String id) {
-        ProductDto productDto = productBean.getProductById(Integer.parseInt(id));
+        ProductDto productDto = productBean.getProductById(id);
         return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
     }
@@ -103,7 +103,7 @@ public class ProductService {
         }
 
         UserEntity user = userBean.getUserByToken(token);
-        ProductDto product = productBean.getProductById(Integer.parseInt(id));
+        ProductDto product = productBean.getProductById(id);
 
         if (product == null || !product.getUserAutor().equals(user)) {
             return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para atualizar este produto.").build();
