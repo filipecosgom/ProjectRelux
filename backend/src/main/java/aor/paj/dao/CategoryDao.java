@@ -18,7 +18,7 @@ public class CategoryDao extends AbstratDao<CategoryEntity> {
     public CategoryEntity createCategory(String name) {
         CategoryEntity category = new CategoryEntity();
         category.setName(name);
-        categoryDao.persist(category);
+        em.createNamedQuery("CategoryEntity.createCategory").setParameter("id", id).getSingleResult();
         return category;
     }
 }
