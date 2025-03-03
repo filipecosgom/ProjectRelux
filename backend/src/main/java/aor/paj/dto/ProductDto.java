@@ -15,13 +15,13 @@ public class ProductDto {
     private String imagem;
     private String local;
     private String description;
-    private String id;
+    private int id;
     private String postDate;
     private String userAutor;
     private EstadosDoProduto state;
 
     public ProductDto() {
-        this.id = generateTimestampId();
+        this.id = id;
         this.state = EstadosDoProduto.DISPONIVEL;
     }
 
@@ -35,15 +35,10 @@ public class ProductDto {
         this.description = description;
         this.postDate = postDate;
         this.userAutor = userAutor;
-        this.id = generateTimestampId();
+        this.id = id;
         this.state = EstadosDoProduto.fromStateId(stateId);
     }
 
-    private String generateTimestampId() {
-        String timeStamp = new SimpleDateFormat("yyMMddHHmm").format(new Date());
-        String result = String.format("%s%03d", timeStamp, ++incremento);
-        return result;
-    }
 
     @XmlElement
     public String getTitle() {
@@ -100,11 +95,11 @@ public class ProductDto {
     }
 
     @XmlElement
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

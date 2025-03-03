@@ -13,52 +13,49 @@ import java.io.Serializable;
 @NamedQuery(name = "Product.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
 @NamedQuery(name = "Product.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 public class ProductEntity implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
-    private String id;
+    private int id;
 
-    @Column(name = "titulo", nullable = false, unique = true)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "preco", nullable = false, unique = true)
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
+
+    @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "imagem", columnDefinition = "TEXT")// no postman estava a dar um erro 500 e era porque os dados de url de uma imagem eram muito grandes. pus este paramentro para me aceitar na base de dados
+    @Column(name = "imagem", columnDefinition = "TEXT")
     private String imagem;
 
-    @Column(name = "local")
+    @Column(name = "local", nullable = false)
     private String local;
 
-    @Column(name = "descricao")
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "dataDePublicacao")
+    @Column(name = "postDate", nullable = false)
     private String postDate;
 
     @ManyToOne
-    @JoinColumn (name="user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userAutor;
 
-    @ManyToOne
-    private CategoryEntity category;
-
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado")
+    @Column(name = "state", nullable = false)
     private EstadosDoProduto state;
 
-    public ProductEntity() {
 
-    }
-
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -66,81 +63,71 @@ public class ProductEntity implements Serializable {
         return title;
     }
 
-    public ProductEntity setTitle(String titulo) {
-        this.title = titulo;
-        return this;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public ProductEntity setPrice(double preco) {
-        this.price = preco;
-        return this;
-    }
-
-    public String getImagem() {
-        return imagem;
-    }
-
-    public ProductEntity setImagem(String imagem) {
-        this.imagem = imagem;
-        return this;
-    }
-
-    public String getLocal() {
-        return local;
-    }
-
-    public ProductEntity setLocal(String local) {
-        this.local = local;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public ProductEntity setDescription(String descricao) {
-        this.description = descricao;
-        return this;
-    }
-
-    public String getPostDate() {
-        return postDate;
-    }
-
-    public ProductEntity setPostDate(String dataDePublicacao) {
-        this.postDate = dataDePublicacao;
-        return this;
-    }
-
-    public UserEntity getUserAutor() {
-        return userAutor;
-    }
-
-    public ProductEntity setUserAutor(UserEntity userAutor) {
-        this.userAutor = userAutor;
-        return this;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public CategoryEntity getCategory() {
         return category;
     }
 
-    public ProductEntity setCategory(CategoryEntity category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
-        return this;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
+    }
+
+    public UserEntity getUserAutor() {
+        return userAutor;
+    }
+
+    public void setUserAutor(UserEntity userAutor) {
+        this.userAutor = userAutor;
     }
 
     public EstadosDoProduto getState() {
         return state;
     }
 
-    public ProductEntity setState(EstadosDoProduto estado) {
-        this.state = estado;
-        return this;
+    public void setState(EstadosDoProduto state) {
+        this.state = state;
     }
 }
-
