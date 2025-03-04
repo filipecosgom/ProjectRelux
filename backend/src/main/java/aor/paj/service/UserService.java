@@ -172,6 +172,18 @@ public class UserService {
         return Response.status(200).entity(deletedUsers).build();
     }
 
+    @GET
+    @Path("/me")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserInfo(@HeaderParam("Authorization") String token) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+
+        UserDto userDto = userBean.convertUserEntityToUserDto(loggedInUser);
+        return Response.status(Response.Status.OK).entity(userDto).build();
+    }
 
 }
 
