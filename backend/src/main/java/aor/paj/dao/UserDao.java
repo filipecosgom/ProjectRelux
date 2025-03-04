@@ -3,9 +3,13 @@ import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 
+import java.util.List;
+
 @Stateless
 public class UserDao extends AbstratDao<UserEntity>{
     private static final long serialVersionUID = 1L;
+
+
     public UserDao() {
         super(UserEntity.class);
     }
@@ -28,6 +32,10 @@ public class UserDao extends AbstratDao<UserEntity>{
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<UserEntity> findDeletedUsers() {
+        return em.createQuery("SELECT u FROM UserEntity u WHERE u.isDeleted = true", UserEntity.class).getResultList();
     }
 
 

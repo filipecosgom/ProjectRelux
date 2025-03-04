@@ -2,7 +2,9 @@ package aor.paj.bean;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import aor.paj.dao.UserDao;
 import aor.paj.dto.UserDto;
@@ -139,4 +141,15 @@ public class UserBean implements Serializable {
         return userDao.findUserByUsername(username);
     }
 
+    public List<UserDto> getDeletedUsers() {
+        List<UserEntity> users = userDao.findDeletedUsers();
+        return convertUserEntityListToUserDtoList(users);
+    }
+    private List<UserDto> convertUserEntityListToUserDtoList(List<UserEntity> userEntities) {
+        List<UserDto> userDtos = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            userDtos.add(convertUserEntityToUserDto(userEntity));
+        }
+        return userDtos;
+    }
 }

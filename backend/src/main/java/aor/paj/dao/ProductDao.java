@@ -1,5 +1,6 @@
 package aor.paj.dao;
 
+import aor.paj.dto.EstadosDoProduto;
 import aor.paj.entity.CategoryEntity;
 import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
@@ -41,6 +42,12 @@ public class ProductDao extends AbstratDao<ProductEntity> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<ProductEntity> findDeletedProducts() {
+        return em.createQuery("SELECT p FROM ProductEntity p WHERE p.state = :state", ProductEntity.class)
+                .setParameter("state", EstadosDoProduto.APAGADO)
+                .getResultList();
     }
 
     public void remove(ProductEntity productEntity) {

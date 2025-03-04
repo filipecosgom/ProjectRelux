@@ -120,6 +120,11 @@ public class ProductBean implements Serializable {
         return convertProductEntityListtoProductDtoList(products);
     }
 
+    public List<ProductDto> getDeletedProducts() {
+        List<ProductEntity> products = productDao.findDeletedProducts();
+        return convertProductEntityListtoProductDtoList(products);
+    }
+
 
     private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
