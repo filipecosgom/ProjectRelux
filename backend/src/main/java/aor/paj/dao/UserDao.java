@@ -1,7 +1,9 @@
 package aor.paj.dao;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 
@@ -14,12 +16,15 @@ public class UserDao extends AbstratDao<UserEntity>{
         super(UserEntity.class);
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public UserEntity findByToken(String token) {
         try {
-            return (UserEntity) em.createNamedQuery("Utilizador.findUserByToken").setParameter("token", token)
+            return entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.token = :token", UserEntity.class)
+                    .setParameter("token", token)
                     .getSingleResult();
-
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             return null;
         }
     }
