@@ -4,6 +4,12 @@ import * as userAPI from './api/userAPI.js';
 import * as productAPI from './api/productAPI.js';
 
 export async function loadCommonElements() {
+  const token = sessionStorage.getItem('token');
+  if (!token) {
+    console.log('Nenhum usuário logado');
+    return;
+  }
+
   fetch('common/header.html')
     .then(response => response.text())
     .then(data => {
@@ -17,7 +23,7 @@ export async function loadCommonElements() {
       addModalListeners();
     })
     .catch(error => console.error('Erro ao carregar o cabeçalho:', error));
-  // Wait for 1 second
+
   fetch('common/newProductModal.html')
     .then(response => response.text())
     .then(data => {
@@ -42,9 +48,12 @@ async function welcomeMessage() {
   const loginButton = document.getElementById('botao-login');
 
   try {
-    user = JSON.parse(sessionStorage.getItem('user'));
+    user = await userAPI.getUserInfo(); // Fetch user info from the database using the token
   } catch (error) {
-    console.error('Erro a ler user da sessionStorage', error);
+    console.error(
+      'Erro ao buscar informações do usuário da base de dados',
+      error
+    );
   }
 
   if (user) {

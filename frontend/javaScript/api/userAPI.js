@@ -21,13 +21,13 @@ export async function loginUser(username, password) {
     }
 
     const data = await response.json();
-    return await response.json();
+    sessionStorage.setItem('token', data.token); // Armazena o token na sessionStorage
+    return data;
   } catch (error) {
     console.error('Erro ao fazer login:', error);
     throw error;
   }
 }
-
 export async function registerUser(newUser) {
   try {
     const response = await fetch(API_ENDPOINTS.users.register, {
@@ -81,5 +81,35 @@ export async function checkUsernameExists(username) {
   } catch (error) {
     console.error('Erro ao verificar username:', error);
     return false;
+  }
+}
+
+export async function getUserInfo() {
+  try {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token não encontrado');
+    }
+
+    const response = await fetch(
+      'http://localhost:8080/mariana-filipe-proj3/rest/users/me',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar informações do usuário');
+    }
+
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error('Erro ao buscar informações do usuário:', error);
+    throw error;
   }
 }
