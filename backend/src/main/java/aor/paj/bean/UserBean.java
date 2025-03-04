@@ -58,9 +58,10 @@ public class UserBean implements Serializable {
         userEntity.setPhone(user.getPhone());
         userEntity.setImagem(user.getImagem());
         userEntity.setIsAdmin(user.getIsAdmin());
+        userEntity.setDeleted(user.getIsDeleted());
         return userEntity;
     }
-    private UserDto convertUserEntityToUserDto(UserEntity user) {
+    public UserDto convertUserEntityToUserDto(UserEntity user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
         userDto.setPassword(user.getPassword());
@@ -71,7 +72,7 @@ public class UserBean implements Serializable {
         userDto.setImagem(user.getImagem());
         userDto.setAdmin(user.isAdmin());
         userDto.setId(user.getId());
-        // Adicione outros campos conforme necessário
+        userDto.setDeleted(user.isDeleted());
         return userDto;
     }
 
@@ -152,4 +153,6 @@ public class UserBean implements Serializable {
         }
         return userDtos;
     }
+
+
 }
