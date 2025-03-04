@@ -16,7 +16,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 @Stateless
-public class ProductBean  implements Serializable {
+public class ProductBean implements Serializable {
     private static final long serialVersionUID = 1L;
     // private static final Logger logger= LogManager.getLogger(ProductBean.class);
     @EJB
@@ -85,6 +85,42 @@ public class ProductBean  implements Serializable {
         }
         return false;
     }
+
+    public boolean deleteProduct(int id) {
+        ProductEntity productEntity = productDao.findById(id);
+        if (productEntity != null) {
+            productDao.remove(productEntity);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean softDeleteProduct(int id) {
+        ProductEntity productEntity = productDao.findById(id);
+        if (productEntity != null) {
+            productEntity.setState(EstadosDoProduto.APAGADO);
+            productDao.merge(productEntity);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateProductState(int id, EstadosDoProduto state) {
+        ProductEntity productEntity = productDao.findById(id);
+        if (productEntity != null) {
+            productEntity.setState(state);
+            productDao.merge(productEntity);
+            return true;
+        }
+        return false;
+    }
+
+    public List<ProductDto> getProductsByCategory(int categoryId) {
+        List<ProductEntity> products = productDao.findProductByCategory(categoryId);
+        return convertProductEntityListtoProductDtoList(products);
+    }
+
+
     private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setTitle(a.getTitle());
@@ -124,36 +160,7 @@ public class ProductBean  implements Serializable {
 
     }
 
-    public boolean deleteProduct(int id) {
-        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
-        if (productEntity != null) {
-            productDao.remove(productEntity);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean softDeleteProduct(int id) {
-        ProductEntity productEntity = productDao.findById(id);
-        if (productEntity != null) {
-            productEntity.setState(EstadosDoProduto.APAGADO);
-            productDao.merge(productEntity);
-            return true;
-        }
-        return false;
-    }
-
 
 }
 
-//
-//    public void deleteProduct(String id) {
-//        productMap.remove(id);
-//
-//    }
-//
-//    public List<ProductDto> getAllProducts() {
-//        return new ArrayList<>(productMap.values());
-//    }
-//
 

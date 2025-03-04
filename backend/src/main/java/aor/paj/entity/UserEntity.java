@@ -47,6 +47,9 @@ public class UserEntity implements Serializable {
     @Column(name = "isAdmin", nullable = false, unique = false)
     private boolean isAdmin;
 
+    @Column(name ="isDeleted", nullable= false, unique = false)
+    private boolean isDeleted;
+
     @OneToMany (mappedBy = "userAutor")
     private List<ProductEntity> products;
 
@@ -137,5 +140,19 @@ public class UserEntity implements Serializable {
     }
     public void setProducts(List<ProductEntity> products) {
         this.products = products;
+    }
+
+    public UserEntity setAdmin(boolean admin) {
+        isAdmin = admin;
+        return this;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public UserEntity setDeleted(boolean deleted) {
+        isDeleted = deleted;
+        return this;
     }
 }

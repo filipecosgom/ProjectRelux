@@ -18,13 +18,14 @@ public class UserDto {
     private List<String> produtos;
     private int id;
     private boolean isAdmin;
+    private boolean isDeleted;
 
     public UserDto() {
         this.produtos = new ArrayList<>();
     }
 
     public UserDto(String username, String password, String firstName,String lastName, String email,
-                   String phone, String imagem, List<String> produtos, int id, boolean isAdmin) {
+                   String phone, String imagem, List<String> produtos, int id, boolean isAdmin, boolean isDeleted) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -35,6 +36,8 @@ public class UserDto {
         this.produtos = (produtos != null) ? produtos : new ArrayList<>();
         this.id = id;
         this.isAdmin = isAdmin;
+        this.isDeleted = isDeleted;
+
     }
 
     @XmlElement
@@ -116,5 +119,13 @@ public class UserDto {
     public boolean getIsAdmin() { return isAdmin; }
     public void setAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 
+    @XmlElement
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }
 

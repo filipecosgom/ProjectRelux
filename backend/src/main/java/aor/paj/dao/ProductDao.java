@@ -1,5 +1,6 @@
 package aor.paj.dao;
 
+import aor.paj.entity.CategoryEntity;
 import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
@@ -28,6 +29,15 @@ public class ProductDao extends AbstratDao<ProductEntity> {
     public List<ProductEntity> findProductByUser(UserEntity userEntity) {
         try {
             return em.createNamedQuery("Product.findProductByUser", ProductEntity.class).setParameter("owner", userEntity).getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    public List<ProductEntity> findProductByCategory(int categoryId) {
+        try {
+            return em.createNamedQuery("Product.findProductByCategory", ProductEntity.class)
+                    .setParameter("categoryId", categoryId)
+                    .getResultList();
         } catch (Exception e) {
             return null;
         }

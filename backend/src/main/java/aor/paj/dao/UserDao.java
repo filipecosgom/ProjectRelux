@@ -29,4 +29,6 @@ public class UserDao extends AbstratDao<UserEntity>{
             return null;
         }
     }
+
+
 }

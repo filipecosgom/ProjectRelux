@@ -60,11 +60,20 @@ public class UserService {
     }
 
     @PUT
-    @Path ("/update")
+    @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(UserDto userDto) {
-        if(userBean.updateUser(userDto)) {
+    public Response updateUser(@HeaderParam("Authorization") String token, UserDto userDto) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null) {
+            return Response.status(404).entity("Token inválido").build();
+        }
+
+        if (!loggedInUser.isAdmin() && !loggedInUser.getUsername().equals(userDto.getUsername())) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Não pode alterar dados deste utilizador.").build();
+        }
+
+        if (userBean.updateUser(userDto)) {
             return Response.status(200).entity("Dados atualizados").build();
         }
         return Response.status(404).entity("Utilizador não encontrado").build();
@@ -78,6 +87,92 @@ public class UserService {
         boolean exists = user != null;
         return Response.status(200).entity("{\"exists\": " + exists + "}").build();
     }
+
+    @POST
+    @Path("/logout")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response logoutUser(@HeaderParam("Authorization") String token) {
+        if (userBean.logoutUser(token)) {
+            return Response.status(Response.Status.OK).entity("Logout realizado com sucesso!").build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+    }
+
+    @GET
+    @Path("/profile/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserProfile(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(401).entity("Você não tem permissão para acessar este recurso.").build();
+        }
+
+        UserEntity user = userDao.findUserByUsername(username);
+        if (user == null) {
+            return Response.status(404).entity("Utilizador não encontrado").build();
+        }
+
+        UserDto userDto = convertUserEntityToUserDto(user);
+        return Response.status(200).entity(userDto).build();
+    }
+    @DELETE
+    @Path("/delete/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+        }
+
+        if (loggedInUser.getUsername().equals(username)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não pode apagar a si próprio.").build();
+        }
+
+        boolean success = userBean.deleteUser(username);
+        if (success) {
+            return Response.status(Response.Status.OK).entity("Utilizador apagado com sucesso!").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+    }
+
+    @DELETE
+    @Path("/soft-delete/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response softDeleteUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+        }
+
+        if (loggedInUser.getUsername().equals(username)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não pode apagar a si próprio.").build();
+        }
+
+        boolean success = userBean.softDeleteUser(username);
+        if (success) {
+            return Response.status(Response.Status.OK).entity("Utilizador apagado com sucesso!").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+    }
+
+    private UserDto convertUserEntityToUserDto(UserEntity user) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
+        userDto.setImagem(user.getImagem());
+        userDto.setAdmin(user.isAdmin());
+        userDto.setId(user.getId());
+        return userDto;
+    }
 }
+
+
 
 

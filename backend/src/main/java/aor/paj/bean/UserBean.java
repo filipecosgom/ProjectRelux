@@ -58,6 +58,20 @@ public class UserBean implements Serializable {
         userEntity.setIsAdmin(user.getIsAdmin());
         return userEntity;
     }
+    private UserDto convertUserEntityToUserDto(UserEntity user) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
+        userDto.setImagem(user.getImagem());
+        userDto.setAdmin(user.isAdmin());
+        userDto.setId(user.getId());
+        // Adicione outros campos conforme necessário
+        return userDto;
+    }
 
     private String generateNewToken() {
         SecureRandom secureRandom = new SecureRandom();
@@ -83,6 +97,7 @@ public class UserBean implements Serializable {
             userEntity.setPhone(userDto.getPhone());
             userEntity.setImagem(userDto.getImagem());
             userEntity.setIsAdmin(userDto.getIsAdmin());
+            userEntity.setDeleted(userDto.getIsDeleted());
             userDao.merge(userEntity);
             return true;
         }
@@ -92,26 +107,36 @@ public class UserBean implements Serializable {
     public UserEntity getUserByToken(String token) {
         return userDao.findByToken(token);
     }
-//    public UserDto getUserByUsername(String username) {
-//        UserDto userDto = users.get(username);
-//        if (userDto == null) {
-//            throw new RuntimeException("Utilizador não encontrado!");
-//        }
-//        return userDto;
-//    }
-/*
-    public void deleteUserByUsername(String username) {
-        if (!users.containsKey(username)) {
-            throw new RuntimeException("User not found");
+
+    public boolean logoutUser(String token) {
+        UserEntity userEntity = userDao.findByToken(token);
+        if (userEntity != null) {
+            userEntity.setToken(null);
+            userDao.merge(userEntity);
+            return true;
         }
-        users.remove(username);
-        //saveUsersToFile();
+        return false;
+    }
+    public boolean deleteUser(String username) {
+        UserEntity userEntity = userDao.findUserByUsername(username);
+        if (userEntity != null) {
+            userDao.remove(userEntity);
+            return true;
+        }
+        return false;
     }
 
-    public boolean checkUsernameExists(String username) {
-        return users.containsKey(username);
+    public boolean softDeleteUser(String username) {
+        UserEntity userEntity = userDao.findUserByUsername(username);
+        if (userEntity != null) {
+            userEntity.setDeleted(true); // Supondo que você tem um campo isDeleted para soft delete
+            userDao.merge(userEntity);
+            return true;
+        }
+        return false;
+    }
+    public UserEntity getUserByUsername(String username) {
+        return userDao.findUserByUsername(username);
     }
 
-
-    }*/
 }

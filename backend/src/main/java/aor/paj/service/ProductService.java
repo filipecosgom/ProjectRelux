@@ -53,7 +53,7 @@ public class ProductService {
 
     @GET
     @Path("/details")
-    public Response getProductDetails(@PathParam("id") String productId) {
+    public Response getProductDetails(@QueryParam("id") String productId) {
         return Response.seeOther(URI.create("/detalhes-produto.html?id=" + productId)).build();
     }
 
@@ -136,6 +136,58 @@ UserEntity user= userBean.getUserByToken(token);
         } else {
             return Response.status(401).entity("Produto não encontrado!").build();
         }
+    }
+    @PUT
+    @Path("/update-state/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateProductState(@HeaderParam("Authorization") String token, @PathParam("id") int id, ProductDto productDto) {
+        if (!userBean.tokenExist(token)) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+
+        UserEntity user = userBean.getUserByToken(token);
+        ProductDto product = productBean.getProductById(id);
+
+        if (product == null || !product.getUserAutor().equals(user.getUsername())) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para alterar o estado deste produto.").build();
+        }
+
+        boolean success = productBean.updateProductState(id, productDto.getState());
+        if (success) {
+            return Response.status(Response.Status.OK).entity("Estado do produto atualizado com sucesso!").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
+        }
+    }
+    @GET
+    @Path("/user-products/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsByUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+        }
+
+        UserEntity user = userBean.getUserByUsername(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+
+        List<ProductDto> products = productBean.getProductsByUser(user);
+        return Response.status(Response.Status.OK).entity(products).build();
+    }
+    @GET
+    @Path("/category/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductsByCategory(@HeaderParam("Authorization") String token, @PathParam("categoryId") int categoryId) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+        }
+
+        List<ProductDto> products = productBean.getProductsByCategory(categoryId);
+        return Response.status(Response.Status.OK).entity(products).build();
     }
 }
 
