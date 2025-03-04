@@ -6,7 +6,7 @@ import * as productAPI from './api/productAPI.js';
 export async function loadCommonElements() {
   const token = sessionStorage.getItem('token');
   if (!token) {
-    console.log('Nenhum usuário logado');
+    console.log('Nenhum utilizador logado');
     return;
   }
 
@@ -60,21 +60,8 @@ async function welcomeMessage() {
     openModalBtn.classList.remove('hidden');
     welcomeMessage.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
-    loginButton.classList.add('hidden');
-    profilePicture.classList.remove('hidden');
-    profilePicture.src = user.imagem;
-    welcomeMessage.innerHTML = `<a href="perfil-utilizador.html">Bem-vindo/a ${user.nome}</a>!`;
-
-    logoutButton.addEventListener('click', () => {
-      sessionStorage.clear();
-      window.location.href = 'index.html';
-    });
   } else {
-    openModalBtn.classList.add('hidden');
     loginButton.classList.remove('hidden');
-    logoutButton.classList.add('hidden');
-    welcomeMessage.classList.add('hidden');
-    profilePicture.classList.add('hidden');
   }
 }
 

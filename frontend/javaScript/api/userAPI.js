@@ -87,6 +87,7 @@ export async function checkUsernameExists(username) {
 export async function getUserInfo() {
   try {
     const token = sessionStorage.getItem('token');
+    console.log('Token:', token);
     if (!token) {
       throw new Error('Token não encontrado');
     }
@@ -103,10 +104,11 @@ export async function getUserInfo() {
     );
 
     if (!response.ok) {
-      throw new Error('Erro ao buscar informações do usuário');
+      throw new Error('Erro ao buscar informações de utilizador');
     }
 
     const user = await response.json();
+    console.log('User Info:', user);
     return user;
   } catch (error) {
     console.error('Erro ao buscar informações do usuário:', error);
