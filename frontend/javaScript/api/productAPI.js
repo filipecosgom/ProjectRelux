@@ -11,13 +11,15 @@ export async function getAllProducts() {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch products: ${errorText}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    return [];
+    throw error;
   }
 }
 
