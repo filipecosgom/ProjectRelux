@@ -1,6 +1,7 @@
 package aor.paj.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import aor.paj.dao.UserDao;
@@ -113,20 +114,21 @@ public class UserService {
             return Response.status(404).entity("Utilizador não encontrado").build();
         }
 
-        UserDto userDto = convertUserEntityToUserDto(user);
+        UserDto userDto = userBean.convertUserEntityToUserDto(user);
         return Response.status(200).entity(userDto).build();
     }
+
     @DELETE
     @Path("/delete/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
         if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Não pode fazer esta ação").build();
         }
 
         if (loggedInUser.getUsername().equals(username)) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não pode apagar a si próprio.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Não é permitido apagar o seu próprio perfil").build();
         }
 
         boolean success = userBean.deleteUser(username);
@@ -143,11 +145,11 @@ public class UserService {
     public Response softDeleteUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
         if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação").build();
         }
 
         if (loggedInUser.getUsername().equals(username)) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não pode apagar a si próprio.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Não é possível apagar o seu próprio perfil").build();
         }
 
         boolean success = userBean.softDeleteUser(username);
@@ -157,20 +159,20 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
         }
     }
+    @GET
+    @Path("/deleted")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getDeletedUsers(@HeaderParam("Authorization") String token) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(404).entity("Sem permissões para esta funcionalidade").build();
+        }
 
-    private UserDto convertUserEntityToUserDto(UserEntity user) {
-        UserDto userDto = new UserDto();
-        userDto.setUsername(user.getUsername());
-        userDto.setPassword(user.getPassword());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setEmail(user.getEmail());
-        userDto.setPhone(user.getPhone());
-        userDto.setImagem(user.getImagem());
-        userDto.setAdmin(user.isAdmin());
-        userDto.setId(user.getId());
-        return userDto;
+        List<UserDto> deletedUsers = userBean.getDeletedUsers();
+        return Response.status(200).entity(deletedUsers).build();
     }
+
+
 }
 
 
