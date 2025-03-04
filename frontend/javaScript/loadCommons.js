@@ -2,13 +2,14 @@
 
 import * as userAPI from './api/userAPI.js';
 import * as productAPI from './api/productAPI.js';
+import { logout } from './components/user.js';
 
 export async function loadCommonElements() {
   const token = sessionStorage.getItem('token');
-  if (!token) {
+  /*if (!token) {
     console.log('Nenhum utilizador logado');
     return;
-  }
+  }*/
 
   fetch('common/header.html')
     .then(response => response.text())
@@ -47,21 +48,25 @@ async function welcomeMessage() {
   const logoutButton = document.getElementById('botao-logout');
   const loginButton = document.getElementById('botao-login');
 
-  try {
+  /* try {
     user = await userAPI.getUserInfo(); // Fetch user info from the database using the token
   } catch (error) {
     console.error(
-      'Erro ao buscar informações do usuário da base de dados',
+      'Erro ao buscar informações do utilizador da base de dados',
       error
     );
-  }
+  }*/
 
-  if (user) {
+  const isUserLoggedin = sessionStorage.getItem('isUserLoggedin');
+  if (isUserLoggedin === 'true') {
     openModalBtn.classList.remove('hidden');
     welcomeMessage.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
+    loginButton.classList.add('hidden');
   } else {
     loginButton.classList.remove('hidden');
+    openModalBtn.classList.add('hidden');
+    logoutButton.classList.add('hidden');
   }
 }
 
@@ -71,7 +76,11 @@ async function addModalListeners() {
   const span = document.getElementsByClassName('close')[0];
   const cancel = document.getElementById('cancelar');
   const form = document.getElementById('form-novo-produto');
+  const logoutButton = document.getElementById('botao-logout');
 
+  logoutButton.onclick = function () {
+    logout();
+  };
   btn.onclick = function () {
     modal.style.display = 'block';
     addNewProduct();

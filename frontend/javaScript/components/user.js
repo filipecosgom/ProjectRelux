@@ -21,7 +21,14 @@ export async function submitLoginForm() {
     );
 
     if (response.ok) {
-      const result = await response.text();
+      const token = await response.text();
+
+      console.log('estamos aqui', token);
+
+      sessionStorage.setItem('token', token);
+
+      sessionStorage.setItem('isUserLoggedin', true);
+
       window.location.href = 'index.html';
     } else {
       alert('Login falhou! Por favor verifique as suas credenciais.');
@@ -29,6 +36,32 @@ export async function submitLoginForm() {
   } catch (error) {
     alert('Erro ao fazer login. Tente novamente.');
     console.error('Erro no login:', error);
+  }
+}
+
+export async function logout() {
+  const token = sessionStorage.getItem('token');
+  try {
+    const response = await fetch(
+      'http://localhost:8080/mariana-filipe-proj3/rest/users/logout',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.ok) {
+      sessionStorage.clear();
+      window.location.href = 'pagina-login.html';
+    } else {
+      alert('Logout falhou!');
+    }
+  } catch (error) {
+    alert('Erro ao fazer logou. Tente novamente.');
+    console.error('Erro no logout:', error);
   }
 }
 

@@ -97,7 +97,7 @@ export async function getUserInfo() {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
           'Content-Type': 'application/json',
         },
       }

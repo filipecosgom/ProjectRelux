@@ -177,6 +177,7 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserInfo(@HeaderParam("Authorization") String token) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
+        System.out.println("get user info token!!!!!!!!!" + token);
         if (loggedInUser == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
         }
