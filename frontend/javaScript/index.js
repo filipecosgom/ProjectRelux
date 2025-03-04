@@ -21,7 +21,7 @@ function init() {
         .getElementById('submitLoginForm')
         .addEventListener('click', userComponent.submitLoginForm);
       document
-        .getElementById('login-form')
+        .getElementById('formulario-login')
         .addEventListener('keypress', function (event) {
           if (event.key === 'Enter') {
             event.preventDefault();
