@@ -10,21 +10,18 @@ export async function submitLoginForm() {
 
   try {
     const response = await fetch(
-      'http://localhost:8080/mariana-filipe-proj3/rest/users/login?username=' +
-        username +
-        '&password=' +
-        password,
+      'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ username, password }),
       }
     );
 
     if (response.ok) {
       const result = await response.text();
-      //alert('Login bem sucedido! Token: ' + result);
       window.location.href = 'index.html';
     } else {
       alert('Login falhou! Por favor verifique as suas credenciais.');
