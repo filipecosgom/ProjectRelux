@@ -51,24 +51,40 @@ public class ProductBean  implements Serializable {
         return false;
     }
 
-    public List<ProductDto> getAllProducts(String token) {
-        UserEntity userEntity = userDao.findByToken(token);
-        if (userEntity != null) {
-            List<ProductEntity> products = productDao.findProductByUser(userEntity);
-            if (products != null)
-                return convertProductEntityListtoProductDtoList(products);
-        }
-        return new ArrayList<>();
+    public List<ProductDto> getAllProducts() {
+        List<ProductEntity> products = productDao.findAll();
+        return convertProductEntityListtoProductDtoList(products);
     }
 
-    public ProductDto getProductById(String id) {
-        ProductEntity p = productDao.findById(Integer.parseInt(id));
+    public ProductDto getProductById(int id) {
+        ProductEntity p = productDao.findById(id);
         if (p != null) {
             return convertProductEntityToProductDto(p);
         }
         return null;
     }
 
+    public List<ProductDto> getProductsByUser(UserEntity userEntity) {
+        List<ProductEntity> products = productDao.findProductByUser(userEntity);
+        return convertProductEntityListtoProductDtoList(products);
+    }
+
+    public boolean updateProduct(int id, ProductDto productDto) {
+        ProductEntity productEntity = productDao.findById(id);
+        if (productEntity != null) {
+            productEntity.setTitle(productDto.getTitle());
+            productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(productDto.getCategory()));
+            productEntity.setPrice(productDto.getPrice());
+            productEntity.setImagem(productDto.getImagem());
+            productEntity.setLocal(productDto.getLocal());
+            productEntity.setDescription(productDto.getDescription());
+            productEntity.setPostDate(productDto.getPostDate());
+            productEntity.setState(productDto.getState());
+            productDao.merge(productEntity);
+            return true;
+        }
+        return false;
+    }
     private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setTitle(a.getTitle());
@@ -108,7 +124,7 @@ public class ProductBean  implements Serializable {
 
     }
 
-    public boolean deleteProduct(String id) {
+    public boolean deleteProduct(int id) {
         ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
         if (productEntity != null) {
             productDao.remove(productEntity);
@@ -117,8 +133,8 @@ public class ProductBean  implements Serializable {
         return false;
     }
 
-    public boolean softDeleteProduct(String id) {
-        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
+    public boolean softDeleteProduct(int id) {
+        ProductEntity productEntity = productDao.findById(id);
         if (productEntity != null) {
             productEntity.setState(EstadosDoProduto.APAGADO);
             productDao.merge(productEntity);
@@ -127,22 +143,7 @@ public class ProductBean  implements Serializable {
         return false;
     }
 
-    public boolean updateProduct(String id, ProductDto productDto) {
-        ProductEntity productEntity = productDao.findById(Integer.parseInt(id));
-        if (productEntity != null) {
-            productEntity.setTitle(productDto.getTitle());
-            productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(productDto.getCategory()));
-            productEntity.setPrice(productDto.getPrice());
-            productEntity.setImagem(productDto.getImagem());
-            productEntity.setLocal(productDto.getLocal());
-            productEntity.setDescription(productDto.getDescription());
-            productEntity.setPostDate(productDto.getPostDate());
-            productEntity.setState(productDto.getState());
-            productDao.merge(productEntity);
-            return true;
-        }
-        return false;
-    }
+
 }
 
 //

@@ -27,12 +27,17 @@ public class ProductService {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllProducts(@HeaderParam("token") String token) {
-        if (userBean.tokenExist(token)) {
-            List<ProductDto> products = productBean.getAllProducts(token);
+    public Response getAllProducts(@HeaderParam("Authorization") String token) {
+        UserEntity user= userBean.getUserByToken(token);
+        if (user==null) {
+            return Response.status(200).entity("Token inválido").build();
+        } if(user.isAdmin()) {
+            List<ProductDto> products =productBean.getAllProducts();
             return Response.ok(products).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+        else{
+            List<ProductDto>products= productBean.getProductsByUser(user);
+            return Response.ok(products).build();
         }
     }
 
@@ -40,7 +45,7 @@ public class ProductService {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductById(@PathParam("id") String id) {
+    public Response getProductById(@PathParam("id") int id) {
         ProductDto productDto = productBean.getProductById(id);
         return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
@@ -48,14 +53,14 @@ public class ProductService {
 
     @GET
     @Path("/details")
-    public Response getProductDetails(@QueryParam("id") String productId) {
+    public Response getProductDetails(@PathParam("id") String productId) {
         return Response.seeOther(URI.create("/detalhes-produto.html?id=" + productId)).build();
     }
 
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addProduct(@HeaderParam("token") String token, ProductDto productDto) {
+    public Response addProduct(@HeaderParam("Authorization") String token, ProductDto productDto) {
         if (userBean.tokenExist(token)) {
             boolean sucess = productBean.addProduct(token, productDto);
             if (sucess) {
@@ -69,26 +74,42 @@ public class ProductService {
     @DELETE
     @Path("/soft-delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response softDeleteProduct(@HeaderParam("token") String token, @PathParam("id") String id) {
+    public Response softDeleteProduct(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
         if (!userBean.tokenExist(token)) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+            return Response.status(404).entity("Token inválido").build();
         }
+UserEntity user= userBean.getUserByToken(token);
+        ProductDto product= productBean.getProductById(id);
+       if( product == null || !product.getUserAutor().equals(user.getUsername()) ) {
+           return Response.status(404).entity("Não tem permissões para apagar este produto").build();
+       }
+            boolean success=productBean.softDeleteProduct(id);
+       if(success) {
+           return Response.noContent().build();
+       } else{
+           return   Response.status(404).entity("Produto não encontrado").build();
+       }
 
-        boolean success = productBean.softDeleteProduct(id);
-        if (success) {
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
-        }
     }
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteProduct(@HeaderParam("token") String token, @PathParam("id") String id) {
-        if (!userBean.tokenExist(token)) {
-            return Response.status(200).entity("Não autorizado. Só é permitido a administradores").build();
+    public Response deleteProduct(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
+        if(!userBean.tokenExist(token)) {
+            return Response.status(404).entity("Não tem permissões para essa ação").build();
+        }
+        UserEntity user = userBean.getUserByToken(token);
+        ProductDto product = productBean.getProductById(id);
+
+        if (product == null || !user.isAdmin()) {
+            return Response.status(401).entity("Só é permitido a administradores").build();
+        }
+
+        boolean success = productBean.deleteProduct(id);
+        if (success) {
+            return Response.noContent().build();
         } else {
-            return Response.status(401).entity("Produto não encontrado").build();
+            return Response.status(404).entity("Produto não encontrado!").build();
         }
     }
 
@@ -97,7 +118,7 @@ public class ProductService {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateProduct(@HeaderParam("token") String token, @PathParam("id") String id, ProductDto productDto) {
+    public Response updateProduct(@HeaderParam("Authorization") String token, @PathParam("id") int id, ProductDto productDto) {
         if (!userBean.tokenExist(token)) {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
         }
@@ -105,15 +126,15 @@ public class ProductService {
         UserEntity user = userBean.getUserByToken(token);
         ProductDto product = productBean.getProductById(id);
 
-        if (product == null || !product.getUserAutor().equals(user)) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para atualizar este produto.").build();
+        if (product == null || (!user.isAdmin() && product.getUserAutor().equals(user.getUsername()))) {
+            return Response.status(404).entity("Não tem permissões para alterar os dados.").build();
         }
 
         boolean success = productBean.updateProduct(id, productDto);
         if (success) {
-            return Response.status(Response.Status.OK).entity("Produto atualizado com sucesso!").build();
+            return Response.status(200).entity("Produto atualizado com sucesso!").build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
+            return Response.status(401).entity("Produto não encontrado!").build();
         }
     }
 }
