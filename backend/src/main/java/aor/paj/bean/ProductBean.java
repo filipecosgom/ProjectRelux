@@ -78,7 +78,6 @@ public class ProductBean implements Serializable {
             productEntity.setImagem(productDto.getImagem());
             productEntity.setLocal(productDto.getLocal());
             productEntity.setDescription(productDto.getDescription());
-            productEntity.setPostDate(productDto.getPostDate());
             productEntity.setState(productDto.getState());
             productDao.merge(productEntity);
             return true;
@@ -133,7 +132,6 @@ public class ProductBean implements Serializable {
         productEntity.setPrice(a.getPrice());
         productEntity.setImagem(a.getImagem());
         productEntity.setLocal(a.getLocal());
-        productEntity.setPostDate(a.getPostDate());
         productEntity.setState(a.getState());
         productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(a.getCategory()));
 
@@ -158,7 +156,6 @@ public class ProductBean implements Serializable {
         productDto.setPrice(a.getPrice());
         productDto.setImagem(a.getImagem());
         productDto.setLocal(a.getLocal());
-        productDto.setPostDate(a.getPostDate());
         productDto.setState(a.getState());
         productDto.setCategory(categoryBean.convertCategoryEntityToCategoryDto(a.getCategory()));
         return productDto;

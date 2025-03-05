@@ -40,8 +40,6 @@ public class ProductEntity implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "postDate", nullable = false)
-    private String postDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -108,13 +106,6 @@ public class ProductEntity implements Serializable {
         this.description = description;
     }
 
-    public String getPostDate() {
-        return postDate;
-    }
-
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
-    }
 
     public UserEntity getUserAutor() {
         return userAutor;

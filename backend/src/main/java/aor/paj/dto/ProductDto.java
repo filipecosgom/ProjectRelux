@@ -16,7 +16,6 @@ public class ProductDto {
     private String local;
     private String description;
     private int id;
-    private String postDate;
     private String userAutor;
     private EstadosDoProduto state;
 
@@ -26,14 +25,13 @@ public class ProductDto {
     }
 
     public ProductDto(String title, CategoryDto category, double price,
-                      String imagem, String local, String description, String postDate, String userAutor, int stateId) {
+                      String imagem, String local, String description, String userAutor, int stateId) {
         this.title = title;
         this.category=category;
         this.price = price;
         this.imagem = imagem;
         this.local = local;
         this.description = description;
-        this.postDate = postDate;
         this.userAutor = userAutor;
         this.id = id;
         this.state = EstadosDoProduto.fromStateId(stateId);
@@ -103,14 +101,6 @@ public class ProductDto {
         this.id = id;
     }
 
-    @XmlElement
-    public String getPostDate() {
-        return postDate;
-    }
-
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
-    }
 
     @XmlElement
     public String getUserAutor() {
