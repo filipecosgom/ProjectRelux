@@ -3,11 +3,21 @@
 import * as userAPI from '../api/userAPI.js';
 import * as productAPI from '../api/productAPI.js';
 import * as productComponent from './product.js';
+import { setTokenToLocalStorage, api } from '../config/apiConfig.js';
 
 export async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
 
+  const token = api.login(username, password);
+  setTokenToLocalStorage(token);
+  if (token) {
+    window.location.href = 'index.html';
+  } else {
+    alert('Erro ao fazer login. Tente novamente.');
+    console.error('Erro no login:', error);
+  }
+  /*
   try {
     const response = await fetch(
       'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
@@ -37,9 +47,12 @@ export async function submitLoginForm() {
     alert('Erro ao fazer login. Tente novamente.');
     console.error('Erro no login:', error);
   }
+    */
 }
 
 export async function logout() {
+  api.logout();
+  setTokenToLocalStorage(null);
   const token = sessionStorage.getItem('token');
   try {
     const response = await fetch(
