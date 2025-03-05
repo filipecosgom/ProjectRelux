@@ -2,15 +2,8 @@
 
 import * as userAPI from './api/userAPI.js';
 import * as productAPI from './api/productAPI.js';
-import { logout } from './components/user.js';
 
 export async function loadCommonElements() {
-  const token = sessionStorage.getItem('token');
-  /*if (!token) {
-    console.log('Nenhum utilizador logado');
-    return;
-  }*/
-
   fetch('common/header.html')
     .then(response => response.text())
     .then(data => {
@@ -65,13 +58,13 @@ async function welcomeMessage() {
     logoutButton.classList.remove('hidden');
     loginButton.classList.add('hidden');
     profileButton.classList.remove('hidden');
-    
+    profilePicture.classList.add('hidden');
   } else {
     loginButton.classList.remove('hidden');
     openModalBtn.classList.add('hidden');
     logoutButton.classList.add('hidden');
     profileButton.classList.add('hidden');
-    profilePicture.classList.add('hidden');
+    profilePicture.classList.remove('hidden');
   }
 }
 

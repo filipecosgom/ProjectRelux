@@ -4,14 +4,11 @@ import { loadCommonElements } from './loadCommons.js';
 import * as productComponent from './components/product.js';
 import * as userComponent from './components/user.js';
 import * as userAPI from './api/userAPI.js';
-import { loadTokenFromLocalStorage } from './config/apiConfig.js';
 
 init();
 
 function init() {
   document.addEventListener('DOMContentLoaded', async () => {
-    loadTokenFromLocalStorage();
-
     await loadCommonElements();
 
     // Route handling based on the current page
@@ -71,7 +68,7 @@ async function setupAdminSearch() {
 async function searchUser() {
   const username = document.getElementById('search-username').value;
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await fetch(
       `http://localhost:8080/mariana-filipe-proj3/rest/users/profile/${username}`,
       {

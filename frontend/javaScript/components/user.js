@@ -3,22 +3,11 @@
 import * as userAPI from '../api/userAPI.js';
 import * as productAPI from '../api/productAPI.js';
 import * as productComponent from './product.js';
-import { setTokenToLocalStorage, api } from '../config/apiConfig.js';
 
 export async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
 
-  const token = await api.login(username, password);
-  setTokenToLocalStorage(token);
-  if (token) {
-    console.log('método submitLoginForm do user.js');
-    window.location.href = 'index.html';
-  } else {
-    alert('Erro ao fazer login. Tente novamente.');
-    console.error('Erro no login: token não recebido', error);
-  }
-  /*
   try {
     const response = await fetch(
       'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
@@ -36,9 +25,9 @@ export async function submitLoginForm() {
 
       console.log('estamos aqui', token);
 
-      sessionStorage.setItem('token', token);
+      localStorage.setItem('token', token);
 
-      sessionStorage.setItem('isUserLoggedin', true);
+      localStorage.setItem('isUserLoggedin', true);
 
       window.location.href = 'index.html';
     } else {
@@ -48,13 +37,10 @@ export async function submitLoginForm() {
     alert('Erro ao fazer login. Tente novamente.');
     console.error('Erro no login:', error);
   }
-    */
 }
 
 export async function logout() {
-  api.logout();
-  setTokenToLocalStorage(null);
-  const token = sessionStorage.getItem('token');
+  const token = localStorage.getItem('token');
   try {
     const response = await fetch(
       'http://localhost:8080/mariana-filipe-proj3/rest/users/logout',
@@ -68,7 +54,7 @@ export async function logout() {
     );
 
     if (response.ok) {
-      sessionStorage.clear();
+      localStorage.clear();
       window.location.href = 'pagina-login.html';
     } else {
       alert('Logout falhou!');
@@ -80,7 +66,7 @@ export async function logout() {
 }
 
 export async function displayUser() {
-  const user = JSON.parse(sessionStorage.getItem('user')) || [];
+  const user = JSON.parse(localStorage.getItem('user')) || [];
   if (!user) {
     document.getElementById('perfil-utilizador').innerHTML =
       '<p>Utilizador não encontrado</p>';
@@ -248,7 +234,7 @@ export function validateFormPassword() {
 
 export async function updateExistentUser() {
   let updatedUser = {};
-  const loggedInUser = JSON.parse(sessionStorage.getItem('user'));
+  const loggedInUser = JSON.parse(localStorage.getItem('user'));
   const passwordInput = document.getElementById('password');
   const confirmPasswordInput = document.getElementById('confirm-password');
 
@@ -298,7 +284,7 @@ export async function updateExistentUser() {
             result.produtos = [];
           }
           alert('Dados atualizados com sucesso!');
-          sessionStorage.setItem('user', JSON.stringify(result));
+          localStorage.setItem('user', JSON.stringify(result));
           window.location.reload();
         } catch (error) {
           alert('Erro ao atualizar os dados. Tente novamente.');
