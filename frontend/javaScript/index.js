@@ -16,8 +16,7 @@ function init() {
 
     // Route handling based on the current page
     if (window.location.pathname.endsWith('index.html')) {
-      await productComponent.displayMostRecentProducts();
-      await productComponent.displayMostRatedProducts();
+      await productComponent.displayAllProducts();
     }
 
     if (window.location.pathname.endsWith('pagina-login.html')) {
