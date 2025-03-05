@@ -7,7 +7,7 @@
 
 // Base URL
 const API_BASE_URL = 'http://localhost:8080/mariana-filipe-proj3/rest';
-/*
+
 export async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
@@ -43,7 +43,6 @@ export async function submitLoginForm() {
   }
 }
 
-*/
 // HTTP request default options
 const DEFAULT_OPTIONS = {
   headers: {
@@ -80,7 +79,8 @@ class API {
       options.body = JSON.stringify(body);
     }
 
-    return await fetch(endpoint, options);
+    const response = await fetch(`${this.base_url}${endpoint}`, options);
+    return response;
   }
 
   async login(username, password) {

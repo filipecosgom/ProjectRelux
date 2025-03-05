@@ -7,12 +7,11 @@ export async function getAllProducts() {
   try {
     const response = await fetch(API_ENDPOINTS.products.all, {
       method: 'GET',
-      headers: DEFAULT_OPTIONS.headers,
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to fetch products: ${errorText}`);
+      throw new Error(`ERRO AO CARREGAR OS MEUS PRODUTOS: ${errorText}`);
     }
 
     const data = await response.json();

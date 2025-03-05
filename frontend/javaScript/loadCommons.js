@@ -57,7 +57,7 @@ async function welcomeMessage() {
     );
   }*/
 
-  const isUserLoggedin = sessionStorage.getItem('isUserLoggedin');
+  const isUserLoggedin = localStorage.getItem('isUserLoggedin');
   if (isUserLoggedin === 'true') {
     openModalBtn.classList.remove('hidden');
     welcomeMessage.classList.remove('hidden');

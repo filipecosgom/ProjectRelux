@@ -9,13 +9,14 @@ export async function submitLoginForm() {
   var username = document.getElementById('username').value;
   var password = document.getElementById('password').value;
 
-  const token = api.login(username, password);
+  const token = await api.login(username, password);
   setTokenToLocalStorage(token);
   if (token) {
+    console.log('método submitLoginForm do user.js');
     window.location.href = 'index.html';
   } else {
     alert('Erro ao fazer login. Tente novamente.');
-    console.error('Erro no login:', error);
+    console.error('Erro no login: token não recebido', error);
   }
   /*
   try {
