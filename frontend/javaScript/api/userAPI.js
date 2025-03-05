@@ -90,7 +90,7 @@ export async function checkUsernameExists(username) {
 
 export async function getUserInfo() {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     console.log('Token:', token);
     if (!token) {
       throw new Error('Token não encontrado');

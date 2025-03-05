@@ -4,11 +4,14 @@ import { loadCommonElements } from './loadCommons.js';
 import * as productComponent from './components/product.js';
 import * as userComponent from './components/user.js';
 import * as userAPI from './api/userAPI.js';
+import { loadTokenFromLocalStorage } from './config/apiConfig.js';
 
 init();
 
 function init() {
   document.addEventListener('DOMContentLoaded', async () => {
+    loadTokenFromLocalStorage();
+
     await loadCommonElements();
 
     // Route handling based on the current page
@@ -75,7 +78,7 @@ async function searchUser() {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
           'Content-Type': 'application/json',
         },
       }
