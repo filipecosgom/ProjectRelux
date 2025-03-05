@@ -47,6 +47,7 @@ export async function displayAllProducts() {
   });
 }
 
+/*
 export async function displayMostRecentProducts() {
   const mainContainer = document.querySelector('.recent-products');
   const products = await getAvailableProducts();
@@ -76,6 +77,7 @@ export async function displayMostRatedProducts() {
     mainContainer.appendChild(card);
   });
 }
+*/
 
 export async function gerarDetalhesDoProduto() {
   const produtos = await productAPI.getAllProducts();

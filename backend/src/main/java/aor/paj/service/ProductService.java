@@ -28,6 +28,10 @@ public class ProductService {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts(@HeaderParam("Authorization") String token) {
+        if( token==null || token.isEmpty()){
+            List<ProductDto> products= productBean.getAllProducts();
+            return Response.ok(products).build();
+        }
         UserEntity user= userBean.getUserByToken(token);
         if (user==null) {
             return Response.status(200).entity("Token inválido").build();

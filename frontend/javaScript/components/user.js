@@ -55,7 +55,6 @@ export async function logout() {
 
     if (response.ok) {
       localStorage.clear();
-      window.location.href = 'pagina-login.html';
     } else {
       alert('Logout falhou!');
     }
