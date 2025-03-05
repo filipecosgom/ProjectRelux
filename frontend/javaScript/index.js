@@ -3,6 +3,7 @@
 import { loadCommonElements } from './loadCommons.js';
 import * as productComponent from './components/product.js';
 import * as userComponent from './components/user.js';
+import * as userAPI from './api/userAPI.js';
 
 init();
 
@@ -47,4 +48,60 @@ function init() {
       await userComponent.addNewUser();
     }
   });
+}
+
+async function setupAdminSearch() {
+  try {
+    const user = await userAPI.getUserInfo();
+    if (user.isAdmin) {
+      document
+        .getElementById('admin-search-wrapper')
+        .classList.remove('hidden');
+      document
+        .getElementById('search-user-button')
+        .addEventListener('click', searchUser);
+    }
+  } catch (error) {
+    console.error('Erro ao verificar permissões do utilizador:', error);
+  }
+}
+
+async function searchUser() {
+  const username = document.getElementById('search-username').value;
+  try {
+    const token = sessionStorage.getItem('token');
+    const response = await fetch(
+      `http://localhost:8080/mariana-filipe-proj3/rest/users/profile/${username}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar perfil do utilizador');
+    }
+
+    const user = await response.json();
+    displaySearchResults(user);
+  } catch (error) {
+    console.error('Erro ao buscar perfil do utilizador:', error);
+    document.getElementById('search-results').innerText =
+      'Erro ao buscar perfil do utilizador';
+  }
+}
+
+function displaySearchResults(user) {
+  const resultsContainer = document.getElementById('search-results');
+  resultsContainer.innerHTML = `
+    <p>Nome: ${user.nome}</p>
+    <p>Username: ${user.username}</p>
+    <p>Email: ${user.email}</p>
+    <p>Telefone: ${user.telefone}</p>
+    <p>Foto de Perfil: <img src="${user.profilePic}" alt="Foto de Perfil" /></p>
+  `;
+  document.getElementById('search-results-wrapper').classList.remove('hidden');
 }

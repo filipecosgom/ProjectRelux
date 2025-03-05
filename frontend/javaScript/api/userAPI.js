@@ -3,7 +3,8 @@
 import { API_ENDPOINTS, DEFAULT_OPTIONS } from '../config/apiConfig.js';
 
 // User API functions
-export async function loginUser(username, password) {
+
+/*export async function loginUser(username, password) {
   try {
     const response = await fetch(
       'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
@@ -28,6 +29,9 @@ export async function loginUser(username, password) {
     throw error;
   }
 }
+  
+*/
+
 export async function registerUser(newUser) {
   try {
     const response = await fetch(API_ENDPOINTS.users.register, {
