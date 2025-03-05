@@ -47,6 +47,7 @@ async function welcomeMessage() {
   const welcomeMessage = document.getElementById('welcome-message');
   const logoutButton = document.getElementById('botao-logout');
   const loginButton = document.getElementById('botao-login');
+  const profileButton = document.getElementById('botao-perfil');
 
   /* try {
     user = await userAPI.getUserInfo(); // Fetch user info from the database using the token
@@ -63,10 +64,14 @@ async function welcomeMessage() {
     welcomeMessage.classList.remove('hidden');
     logoutButton.classList.remove('hidden');
     loginButton.classList.add('hidden');
+    profileButton.classList.remove('hidden');
+    
   } else {
     loginButton.classList.remove('hidden');
     openModalBtn.classList.add('hidden');
     logoutButton.classList.add('hidden');
+    profileButton.classList.add('hidden');
+    profilePicture.classList.add('hidden');
   }
 }
 
