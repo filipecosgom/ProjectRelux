@@ -16,18 +16,17 @@ public class UserDao extends AbstratDao<UserEntity>{
         super(UserEntity.class);
     }
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public UserEntity findByToken(String token) {
         try {
-            return entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.token = :token", UserEntity.class)
-                    .setParameter("token", token)
+            return (UserEntity) em.createNamedQuery("Utilizador.findUserByToken").setParameter("token", token)
                     .getSingleResult();
-        } catch (Exception e) {
+
+        } catch (NoResultException e) {
             return null;
         }
     }
+
 
     public UserEntity findUserByUsername(String username) {
         try {
