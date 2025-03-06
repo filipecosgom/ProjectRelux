@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 export function gerarRating(avaliacoes) {
   if (!avaliacoes) {
@@ -21,3 +21,4 @@ export function gerarRating(avaliacoes) {
   }
   return { mediaEstrelas, estrelas };
 }
+*/

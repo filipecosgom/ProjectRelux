@@ -9,13 +9,12 @@ export function createCard(product) {
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
-    <img src="${product.imagem}" alt="${product.titulo}" />
+    <img src="${product.imagem}" alt="${product.title}" />
     <div>
-      <h1>${product.titulo}</h1>
+      <h1>${product.title}</h1>
       <h4>${product.local}</h4>
-      <h2>${product.categoria}</h2>
-      <h3 class="rating">${rating.estrelas}</h3>
-      <span>${parseFloat(product.preco).toFixed(2)}€</span>
+      <h2>${product.category}</h2>
+      <span>${parseFloat(product.price).toFixed(2)}€</span>
       <button type="button" title="descricao">Saber mais</button>
     </div>
   `;
@@ -27,11 +26,15 @@ export function createCard(product) {
 }
 
 export async function getAvailableProducts() {
+  console.log(
+    'Estou a carregar os produtos disponíveis, função getAvailableProducts'
+  );
   const products = await productAPI.getAllProducts();
-  return products.filter(product => product.estado === 'DISPONIVEL');
+  return products.filter(product => product.state === 'DISPONIVEL');
 }
 
 export async function displayAllProducts() {
+  console.log('entrei na função displayAllProducts');
   const container = document.querySelector('.product-list');
   const products = await getAvailableProducts();
 
@@ -92,34 +95,24 @@ export async function gerarDetalhesDoProduto() {
     return;
   }
 
-  const rating = helpers.gerarRating(produto.avaliacoes);
-
   containerDetalhes.innerHTML = `
     <div class="imagem">
-      <img src="${produto.imagem}" alt="${produto.titulo}" />
+      <img src="${produto.imagem}" alt="${produto.title}" />
     </div>
     <form id="detalhes-produto-form">
       <label for="nome-produto">Nome do Produto:</label>
-      <input type="text" id="nome-produto" value="${produto.titulo}" readonly />
+      <input type="text" id="nome-produto" value="${produto.title}" readonly />
 
       <label for="localizacao">Localização:</label>
       <input type="text" id="localizacao" value="${produto.local}" readonly />
 
       <label for="categoria">Categoria:</label>
-      <input type="text" id="categoria" value="${produto.categoria}" readonly />
+      <input type="text" id="categoria" value="${produto.category}" readonly />
 
-      <label for="avaliacoes">Avaliações:</label>
-      <a id="link-avaliacoes" href="#" title="Ver avaliações">
-        <h3 id="estrelas">${
-          produto.avaliacoes.length == 0 ? 'Sem avaliações' : rating.estrelas
-        }
-        <span id="numero-avaliacoes">(${
-          produto.avaliacoes.length
-        } avaliações)</span></h3>
-      </a>
+  
 
       <label for="preco">Preço:</label>
-      <input type="text" id="preco" value="${parseFloat(produto.preco).toFixed(
+      <input type="text" id="preco" value="${parseFloat(produto.pr).toFixed(
         2
       )}€" readonly />
 
@@ -129,11 +122,11 @@ export async function gerarDetalhesDoProduto() {
       }" readonly />
 
       <label for="descricao">Descrição:</label>
-      <textarea id="descricao" readonly>${produto.descricao}</textarea>
+      <textarea id="descricao" readonly>${produto.description}</textarea>
 
       <label for="estado-produto-readonly">Estado:</label>
       <input type="text" id="estado-produto-readonly" value="${
-        produto.estado
+        produto.state
       }" readonly />
 
       <label class="hidden" for="estado-produto">Estado:</label>
@@ -164,7 +157,7 @@ export async function gerarDetalhesDoProduto() {
       </section>
     </form>
   `;
-
+  /*
   let avaliacoesVisiveis = false;
   document
     .getElementById('link-avaliacoes')
@@ -191,6 +184,7 @@ export async function gerarDetalhesDoProduto() {
       }
       avaliacoesVisiveis = !avaliacoesVisiveis;
     });
+    */
 
   toggleProductButtons(produto);
   setupComprarButton();
