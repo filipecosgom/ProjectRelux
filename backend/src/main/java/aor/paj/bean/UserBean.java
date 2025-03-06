@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import aor.paj.dao.ProductDao;
 import aor.paj.dao.UserDao;
 import aor.paj.dto.UserDto;
+import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
@@ -17,6 +19,9 @@ public class UserBean implements Serializable {
 
     @EJB //injeção de dependência- neste caso significa que a variável abaixo vai ser injetada automaticamente no container
     UserDao userDao;
+
+    @EJB
+    ProductDao productDao;
 
     public String loginUser(UserDto user) {
         UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
@@ -128,6 +133,12 @@ public class UserBean implements Serializable {
     public boolean deleteUser(String username) {
         UserEntity userEntity = userDao.findUserByUsername(username);
         if (userEntity != null) {
+            // Apagar produtos do utilizador
+            List<ProductEntity> products = userEntity.getProducts();
+            for (ProductEntity product : products) {
+                productDao.remove(product);
+            }
+            // Apagar utilizador
             userDao.remove(userEntity);
             return true;
         }
