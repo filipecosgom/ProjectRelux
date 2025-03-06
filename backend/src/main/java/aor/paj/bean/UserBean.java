@@ -47,6 +47,11 @@ public class UserBean implements Serializable {
             throw new RuntimeException("Já existe um utilizador com esse username");
         }
     }
+    public List<UserDto> getAllUsers() {
+        List<UserEntity> users = userDao.findAll();
+        return convertUserEntityListToUserDtoList(users);
+    }
+
 
     private UserEntity convertUserDtotoUserEntity(UserDto user) {
         UserEntity userEntity = new UserEntity();

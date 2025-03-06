@@ -39,8 +39,18 @@ public class UserDao extends AbstratDao<UserEntity>{
     }
 
     public List<UserEntity> findDeletedUsers() {
-        return em.createQuery("SELECT u FROM UserEntity u WHERE u.isDeleted = true", UserEntity.class).getResultList();
+        try {
+            return em.createNamedQuery("Utilizador.findDeeletedUseres", UserEntity.class).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
-
+    public List<UserEntity> findAll() {
+        try {
+            return em.createNamedQuery("Utilizador.findAllUsers", UserEntity.class).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

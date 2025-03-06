@@ -190,3 +190,17 @@ public class UserService {
     }
 
 }
+
+@GET
+@Path("/all")
+@Produces(MediaType.APPLICATION_JSON)
+public Response getAllUsers(@HeaderParam("Authorization") String token) {
+    UserEntity loggedInUser = userBean.getUserByToken(token);
+    if (loggedInUser == null || !loggedInUser.isAdmin()) {
+        return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação.").build();
+    }
+
+    List<UserDto> allUsers = userBean.getAllUsers();
+    return Response.status(Response.Status.OK).entity(allUsers).build();
+}
+}

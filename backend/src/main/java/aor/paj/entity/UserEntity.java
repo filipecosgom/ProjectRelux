@@ -10,6 +10,9 @@ import java.util.List;
 @Table(name = "utilizador")
 @NamedQuery(name = "Utilizador.findUserByUsername", query = "SELECT u FROM UserEntity u WHERE u.username = :username")
 @NamedQuery(name = "Utilizador.findUserByToken", query = "SELECT DISTINCT u FROM UserEntity u WHERE u.token = :token")
+@NamedQuery(name= "Utilizador.getAllUsers", query= "SELECT u FROM UserEntity u WHERE u.isDeleted = false")
+@NamedQuery(name= "Utilizador.getDeletedUsers", query= "SELECT u FROM UserEntity u WHERE u.isDeleted = true")
+
 
 public class UserEntity implements Serializable {
 
