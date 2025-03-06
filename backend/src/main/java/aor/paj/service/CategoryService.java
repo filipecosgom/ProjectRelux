@@ -10,6 +10,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Stateless
 
 
@@ -39,7 +41,8 @@ public class CategoryService {
     @GET
     @Path("/all")
     public Response allCategories() {
-        return Response.status(200).entity(categoryDao.findAll()).build();
+        List<CategoryDao> categories = categoryDao.findAll();
+        return Response.status(200).entity(categories).build();
     }
 }
 

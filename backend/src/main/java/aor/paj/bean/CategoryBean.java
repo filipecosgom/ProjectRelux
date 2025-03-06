@@ -38,5 +38,6 @@ public CategoryBean (){}
     categoryDto.setNome(categoryEntity.getName());
     return categoryDto;
      }
+
  }
 
