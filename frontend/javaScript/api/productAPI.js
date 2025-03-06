@@ -95,3 +95,90 @@ export async function sendNewProductReq(product) {
     throw error;
   }
 }
+
+export async function getProductsByUser(username) {
+  try {
+    const response = await fetch(API_ENDPOINTS.products.byUser(username), {
+      method: 'GET',
+      headers: DEFAULT_OPTIONS.headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao buscar produtos do usuário: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao buscar produtos do usuário:', error);
+    return null;
+  }
+}
+
+export async function getProductsByCategory(categoryId) {
+  try {
+    const response = await fetch(
+      API_ENDPOINTS.products.byCategory(categoryId),
+      {
+        method: 'GET',
+        headers: DEFAULT_OPTIONS.headers,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao buscar produtos por categoria: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao buscar produtos por categoria:', error);
+    return null;
+  }
+}
+
+export async function softDeleteProduct(produtoId) {
+  try {
+    const response = await fetch(API_ENDPOINTS.products.softDelete(produtoId), {
+      method: 'DELETE',
+      headers: DEFAULT_OPTIONS.headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao realizar a exclusão lógica do produto: ${response.statusText}`
+      );
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Erro ao realizar a exclusão lógica do produto:', error);
+    throw error;
+  }
+}
+
+export async function updateProductState(produtoId, state) {
+  try {
+    const response = await fetch(
+      API_ENDPOINTS.products.updateState(produtoId),
+      {
+        method: 'PUT',
+        headers: DEFAULT_OPTIONS.headers,
+        body: JSON.stringify({ state }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao atualizar o estado do produto: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao atualizar o estado do produto:', error);
+    throw error;
+  }
+}
