@@ -34,7 +34,7 @@ public class ProductService {
         }
         UserEntity user = userBean.getUserByToken(token);
         if (user == null) {
-            return Response.status(200).entity("Token inválido").build();
+            return Response.status(401).entity("Token inválido").build();
         }
         if (user.isAdmin()) {
             List<ProductDto> products = productBean.getAllProducts();
@@ -51,7 +51,7 @@ public class ProductService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getProductById(@PathParam("id") int id) {
         ProductDto productDto = productBean.getProductById(id);
-        return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
+        return productDto == null ? Response.status(404).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
     }
 
@@ -187,7 +187,7 @@ public class ProductService {
     public Response getProductsByUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
         if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Não tem permissões para esta ação").build();
         }
 
         UserEntity user = userBean.getUserByUsername(username);
