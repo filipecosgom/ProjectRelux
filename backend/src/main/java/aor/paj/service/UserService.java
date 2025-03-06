@@ -34,7 +34,6 @@ public class UserService {
     UserDao userDao;
 
 
-
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -162,6 +161,7 @@ public class UserService {
             return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
         }
     }
+
     @GET
     @Path("/deleted")
     @Produces(MediaType.APPLICATION_JSON)
@@ -189,18 +189,18 @@ public class UserService {
         return Response.status(Response.Status.OK).entity(userDto).build();
     }
 
-}
 
-@GET
-@Path("/all")
-@Produces(MediaType.APPLICATION_JSON)
-public Response getAllUsers(@HeaderParam("Authorization") String token) {
-    UserEntity loggedInUser = userBean.getUserByToken(token);
-    if (loggedInUser == null || !loggedInUser.isAdmin()) {
-        return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação.").build();
+    @GET
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsers(@HeaderParam("Authorization") String token) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação.").build();
+        }
+
+        List<UserDto> allUsers = userBean.getAllUsers();
+        return Response.status(Response.Status.OK).entity(allUsers).build();
     }
+}
 
-    List<UserDto> allUsers = userBean.getAllUsers();
-    return Response.status(Response.Status.OK).entity(allUsers).build();
-}
-}

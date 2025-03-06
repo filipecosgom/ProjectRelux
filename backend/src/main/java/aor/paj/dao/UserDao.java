@@ -48,7 +48,7 @@ public class UserDao extends AbstratDao<UserEntity>{
 
     public List<UserEntity> findAll() {
         try {
-            return em.createNamedQuery("Utilizador.findAllUsers", UserEntity.class).getResultList();
+            return em.createNamedQuery("Utilizador.getAllUsers", UserEntity.class).getResultList();
         } catch (NoResultException e) {
             return null;
         }
