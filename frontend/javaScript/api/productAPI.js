@@ -95,3 +95,46 @@ export async function sendNewProductReq(product) {
     throw error;
   }
 }
+
+export async function getProductsByUser(username) {
+  try {
+    const response = await fetch(API_ENDPOINTS.products.byUser(username), {
+      method: 'GET',
+      headers: DEFAULT_OPTIONS.headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao buscar produtos do usuário: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao buscar produtos do usuário:', error);
+    return null;
+  }
+}
+
+export async function getProductsByCategory(categoryId) {
+  try {
+    const response = await fetch(
+      API_ENDPOINTS.products.byCategory(categoryId),
+      {
+        method: 'GET',
+        headers: DEFAULT_OPTIONS.headers,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro ao buscar produtos por categoria: ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Erro ao buscar produtos por categoria:', error);
+    return null;
+  }
+}

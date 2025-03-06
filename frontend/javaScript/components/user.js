@@ -198,6 +198,7 @@ export async function addNewUser() {
 
         try {
           await userAPI.registerUser(newUser);
+          console.log('mensagem de boas vindas');
           alert('Utilizador registado! Bem-vindo/a, ' + newUser.firstName);
           window.location.href = 'pagina-login.html';
         } catch (error) {

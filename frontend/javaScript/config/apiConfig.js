@@ -18,8 +18,8 @@ const API_ENDPOINTS = {
     create: `${API_BASE_URL}/products`,
     update: id => `${API_BASE_URL}/products/${id}`,
     delete: id => `${API_BASE_URL}/products/${id}`,
-    mostRecent: `${API_BASE_URL}/products/recent`,
-    mostRated: `${API_BASE_URL}/products/rated`,
+    byUser: username => `${API_BASE_URL}/products/user-products/${username}`,
+    byCategory: categoryId => `${API_BASE_URL}/products/category/${categoryId}`,
   },
 
   // User endpoints

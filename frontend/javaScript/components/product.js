@@ -5,7 +5,6 @@ import * as userAPI from '../api/userAPI.js';
 import * as helpers from '../utils/helpers.js';
 
 export function createCard(product) {
-  const rating = helpers.gerarRating(product.avaliacoes);
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
