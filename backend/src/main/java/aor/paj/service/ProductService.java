@@ -54,10 +54,12 @@ public class ProductService {
         return productDto == null ? Response.status(200).entity("Produto não encontrado!").build()
                 : Response.ok(productDto).build();
     }
-
     @GET
     @Path("/details")
     public Response getProductDetails(@QueryParam("id") String productId) {
+        if (productId == null || productId.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Product ID is required").build();
+        }
         return Response.seeOther(URI.create("/detalhes-produto.html?id=" + productId)).build();
     }
 
