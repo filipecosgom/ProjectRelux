@@ -71,8 +71,8 @@ export async function displayUser() {
       '<p>Utilizador não encontrado</p>';
     return;
   }
-  document.getElementById('primeiroNome').value = user.primeiroNome;
-  document.getElementById('ultimoNome').value = user.ultimoNome;
+  document.getElementById('primeiroNome').value = user.firstName;
+  document.getElementById('ultimoNome').value = user.lastName;
   document.getElementById('username').value = user.username;
   document.getElementById('telefone').value = user.telefone;
   document.getElementById('email').value = user.email;
@@ -96,8 +96,10 @@ export async function displayUser() {
 
   if (user.isAdmin) {
     document.getElementById('admin-section').style.display = 'block';
+    console.log('O utilizador é administrador');
   } else {
     document.getElementById('admin-section').style.display = 'none';
+    console.log('O utilizador não é administrador');
   }
 }
 
@@ -292,3 +294,45 @@ export async function updateExistentUser() {
       }
     });
 }
+
+function openForm() {
+  document.getElementById('myForm').style.display = 'block';
+}
+
+function closeForm() {
+  document.getElementById('myForm').style.display = 'none';
+}
+
+async function searchUser() {
+  const username = document.getElementById('search-username').value;
+  try {
+    const response = await fetch(`/rest/users/me?username=${username}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // Adicione aqui headers de autenticação se necessário
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Erro ao buscar usuário');
+    }
+    const userData = await response.json();
+    displayUserInfo(userData);
+  } catch (error) {
+    console.error('Erro:', error);
+    document.getElementById('user-info').innerHTML =
+      'Erro ao buscar informações do usuário.';
+  }
+}
+
+function displayUserInfo(userData) {
+  const userInfoDiv = document.getElementById('user-info');
+  userInfoDiv.innerHTML = `
+                <h3>Informações do Usuário</h3>
+                <p>Nome: ${userData.firstName} ${userData.lastName}</p>
+                <p>Username: ${userData.username}</p>
+                <p>Email: ${userData.email}</p>
+                <p>Telefone: ${userData.phone}</p>
+              `;
+}
+

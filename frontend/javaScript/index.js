@@ -41,6 +41,8 @@ function init() {
     if (window.location.pathname.endsWith('perfil-utilizador.html')) {
       await userComponent.displayUser();
       await userComponent.toggleFormUserEdit();
+      await userComponent.searchUser();
+      await userComponent.displayUserInfo();
     }
 
     if (window.location.pathname.endsWith('novo-registo.html')) {
@@ -103,4 +105,12 @@ function displaySearchResults(user) {
     <p>Foto de Perfil: <img src="${user.profilePic}" alt="Foto de Perfil" /></p>
   `;
   document.getElementById('search-results-wrapper').classList.remove('hidden');
+}
+
+function openForm() {
+  document.getElementById('myForm').style.display = 'block';
+}
+
+function closeForm() {
+  document.getElementById('myForm').style.display = 'none';
 }
