@@ -41,7 +41,7 @@ public class CategoryService {
     @GET
     @Path("/all")
     public Response allCategories() {
-        List<CategoryDao> categories = categoryDao.findAll();
+        List<CategoryEntity> categories = categoryDao.findAll();
         return Response.status(200).entity(categories).build();
     }
 }
