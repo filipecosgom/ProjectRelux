@@ -125,7 +125,7 @@ public class ProductBean implements Serializable {
     }
 
 
-    private ProductEntity convertProductDtoToProductEntity(ProductDto a) {
+    ProductEntity convertProductDtoToProductEntity(ProductDto a) {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setTitle(a.getTitle());
         productEntity.setDescription(a.getDescription());
@@ -147,7 +147,7 @@ public class ProductBean implements Serializable {
         return productDtos;
     }
 
-    private ProductDto convertProductEntityToProductDto(ProductEntity a) {
+    ProductDto convertProductEntityToProductDto(ProductEntity a) {
         ProductDto productDto = new ProductDto();
         productDto.setTitle(a.getTitle());
         productDto.setDescription(a.getDescription());
