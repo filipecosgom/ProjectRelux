@@ -18,6 +18,8 @@ const API_ENDPOINTS = {
     create: `${API_BASE_URL}/products`,
     update: id => `${API_BASE_URL}/products/${id}`,
     delete: id => `${API_BASE_URL}/products/${id}`,
+    softDelete: id => `${API_BASE_URL}/products/soft-delete/${id}`,
+    updateState: id => `${API_BASE_URL}/products/update-state/${id}`,
     byUser: username => `${API_BASE_URL}/products/user-products/${username}`,
     byCategory: categoryId => `${API_BASE_URL}/products/category/${categoryId}`,
   },
