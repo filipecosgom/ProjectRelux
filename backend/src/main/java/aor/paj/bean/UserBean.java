@@ -58,7 +58,7 @@ public class UserBean implements Serializable {
     }
 
 
-    private UserEntity convertUserDtotoUserEntity(UserDto user) {
+    UserEntity convertUserDtotoUserEntity(UserDto user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(user.getPassword());
