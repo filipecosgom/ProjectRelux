@@ -2,6 +2,7 @@
 
 import * as userAPI from './api/userAPI.js';
 import * as productAPI from './api/productAPI.js';
+import { logout } from './components/user.js';
 
 export async function loadCommonElements() {
   fetch('common/header.html')
@@ -58,7 +59,6 @@ async function welcomeMessage() {
     logoutButton.classList.remove('hidden');
     loginButton.classList.add('hidden');
     profileButton.classList.remove('hidden');
-    profilePicture.classList.add('hidden');
   } else {
     loginButton.classList.remove('hidden');
     openModalBtn.classList.add('hidden');
