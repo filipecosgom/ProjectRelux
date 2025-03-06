@@ -29,8 +29,11 @@ public class UserService {
 
     @Inject
     UserBean userBean;
+
+    @Inject
     UserDao userDao;
-    UserDto userDto;
+
+
 
     @POST
     @Path("/register")
@@ -106,7 +109,7 @@ public class UserService {
     public Response getUserProfile(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
         if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(401).entity("Você não tem permissão para acessar este recurso.").build();
+            return Response.status(401).entity("Sem permissões para esta ação.").build();
         }
 
         UserEntity user = userDao.findUserByUsername(username);
