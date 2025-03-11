@@ -7,7 +7,7 @@ import { API_ENDPOINTS, DEFAULT_OPTIONS } from '../config/apiConfig.js';
 /*export async function loginUser(username, password) {
   try {
     const response = await fetch(
-      'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
+      'http://localhost:8080/filipe-proj4/rest/users/login',
       {
         method: 'POST',
         headers: {
@@ -97,7 +97,7 @@ export async function getUserInfo() {
     }
 
     const response = await fetch(
-      'http://localhost:8080/mariana-filipe-proj3/rest/users/me',
+      'http://localhost:8080/filipe-proj4/rest/users/me',
       {
         method: 'GET',
         headers: {

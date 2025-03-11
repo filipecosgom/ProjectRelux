@@ -72,7 +72,7 @@ async function searchUser() {
   try {
     const token = localStorage.getItem('token');
     const response = await fetch(
-      `http://localhost:8080/mariana-filipe-proj3/rest/users/profile/${username}`,
+      `http://localhost:8080/filipe-proj4/rest/users/profile/${username}`,
       {
         method: 'GET',
         headers: {

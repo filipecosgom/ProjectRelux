@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>aor.paj</groupId>
-    <artifactId>mariana-filipe-proj3</artifactId>
+    <artifactId>filipe-proj4</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>mariana-filipe-proj3</name>
+    <name>filipe-proj4</name>
     <packaging>war</packaging>
 
     <properties>

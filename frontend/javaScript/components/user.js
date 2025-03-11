@@ -10,7 +10,7 @@ export async function submitLoginForm() {
 
   try {
     const response = await fetch(
-      'http://localhost:8080/mariana-filipe-proj3/rest/users/login',
+      'http://localhost:8080/filipe-proj4/rest/users/login',
       {
         method: 'POST',
         headers: {
@@ -43,7 +43,7 @@ export async function logout() {
   const token = localStorage.getItem('token');
   try {
     const response = await fetch(
-      'http://localhost:8080/mariana-filipe-proj3/rest/users/logout',
+      'http://localhost:8080/filipe-proj4/rest/users/logout',
       {
         method: 'POST',
         headers: {
