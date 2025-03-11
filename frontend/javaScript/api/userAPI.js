@@ -4,33 +4,6 @@ import { API_ENDPOINTS, DEFAULT_OPTIONS } from '../config/apiConfig.js';
 
 // User API functions
 
-/*export async function loginUser(username, password) {
-  try {
-    const response = await fetch(
-      'http://localhost:8080/filipe-proj4/rest/users/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Login falhou: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    sessionStorage.setItem('token', data.token); // Armazena o token na sessionStorage
-    return data;
-  } catch (error) {
-    console.error('Erro ao fazer login:', error);
-    throw error;
-  }
-}
-  
-*/
 
 export async function registerUser(newUser) {
   try {
