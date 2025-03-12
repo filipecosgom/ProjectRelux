@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 
@@ -6,19 +7,19 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <a className="navbar-logo" href="/">
+        <Link className="navbar-logo" to="/">
           <img src={StoreLogo} alt="Store Logo" />
-        </a>
+        </Link>
         <ul className="nav-menu">
           <li className="nav-item">
-            <a className="nav-link" href="/home">
+            <Link className="nav-link" to="/home">
               Home
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/login">
+            <Link className="nav-link" to="/login">
               Login
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
