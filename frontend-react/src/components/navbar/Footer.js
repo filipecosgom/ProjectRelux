@@ -1,17 +1,14 @@
 import React from "react";
 import "./Footer.css";
 import StoreLogo from "../../images/icon.png";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <img
-            src={StoreLogo}
-            alt="Logo"
-            className="footer-logo"
-          />
+          <img src={StoreLogo} alt="Logo" className="footer-logo" />
         </div>
         <div className="footer-section">
           <div className="quick-links">
@@ -27,21 +24,21 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              FB
+              <FaFacebookF /> {/* Ícone do Facebook */}
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              TW
+              <FaTwitter /> {/* Ícone do Twitter */}
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              IG
+              <FaInstagram /> {/* Ícone do Instagram */}
             </a>
           </div>
         </div>
