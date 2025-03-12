@@ -5,9 +5,63 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.Login {
+  background: #333;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  color: white;
+}
+
+.Login h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.Login label {
+  margin-bottom: 10px;
+}
+
+.Login input[type="text"],
+.Login input[type="password"] {
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.Login input[type="submit"] {
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.Login input[type="submit"]:hover {
+  background-color: #777;
 }

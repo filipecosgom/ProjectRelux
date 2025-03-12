@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "../components/navbar/Sidebar";
+//import Navbar from "../components/navbar/Navbar";
 import "../index.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -26,10 +26,6 @@ function Login() {
 
   return (
     <div className="Login" id="profile-outer-container">
-      <Sidebar
-        pageWrapId={"login-page-wrap"}
-        outerContainerId={"login-outer-container"}
-      />
       <div className="page-wrap" id="login-page-wrap">
         <h1>Login</h1>
 
@@ -55,6 +51,7 @@ function Login() {
           <input type="submit" value="Login" />
         </form>
       </div>
+      <p></p>
     </div>
   );
 }
