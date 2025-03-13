@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../pages/Register.css";
 import { useNavigate, Link } from "react-router-dom";
+import { FaUserPlus } from "react-icons/fa";
+
 
 function Register() {
   const navigate = useNavigate();
@@ -65,7 +67,10 @@ function Register() {
   return (
     <div className="register-container">
       <div className="Register">
-        <h1>Register new user</h1>
+        <h1>
+          <FaUserPlus />
+            Register new user
+        </h1>
         {error && <p className="error">{error}</p>}{" "}
         {/* Display error message if any */}
         <form onSubmit={handleSubmit}>
