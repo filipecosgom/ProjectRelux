@@ -42,6 +42,11 @@ const Navbar = () => {
           <img src={StoreLogo} alt="Store Logo" />
         </Link>
         <ul className="nav-menu">
+          {username && (
+            <li className="nav-item">
+              <span className="nav-welcome">Bem-vindo, {username}!</span>
+            </li>
+          )}
           <li className="nav-item">
             <Link className="nav-link" to="/home">
               Home
@@ -64,7 +69,7 @@ const Navbar = () => {
           {username && (
             <li className="nav-item">
               <button className="nav-link logout-button" onClick={handleLogout}>
-                <FaSignOutAlt />
+                <FaSignOutAlt /> Logout
               </button>
             </li>
           )}
