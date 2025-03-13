@@ -13,7 +13,7 @@ function Register() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  // Função para fazer o pedido REST de registro
+  // Function to make the REST request for registration
   const registerUser = async (userData) => {
     try {
       const response = await fetch(
@@ -38,27 +38,27 @@ function Register() {
     }
   };
 
-  // Função para lidar com o envio do formulário
+  // Function to handle form submission
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Previne o comportamento padrão do formulário
+    event.preventDefault(); // Prevent default form behavior
     try {
-      console.log("Enviando dados:", inputs); // Loga os dados enviados
-      const response = await registerUser(inputs); // Chama a função de registro
-      console.log("Resposta recebida:", response); // Loga a resposta recebida
+      console.log("Sending data:", inputs); // Log the data being sent
+      const response = await registerUser(inputs); // Call the registration function
+      console.log("Response received:", response); // Log the response received
       alert(
-        `Registro bem-sucedido!\nEnviado: ${JSON.stringify(
+        `Registration successful!\nSent: ${JSON.stringify(
           inputs
-        )}\nResposta recebida: ${response}`
-      ); // Alerta para o utilizador
-      navigate("/login", { replace: true }); // Navega para a página de login
+        )}\nResponse received: ${response}`
+      ); // Alert the user
+      navigate("/login", { replace: true }); // Navigate to the login page
     } catch (error) {
-      console.error("Erro no registro:", error); // Loga o erro
-      setError("Registration failed. Please check your details and try again."); // Define a mensagem de erro
+      console.error("Registration error:", error); // Log the error
+      setError("Registration failed. Please check your details and try again."); // Set the error message
       alert(
-        `Registro falhado!\nEnviado: ${JSON.stringify(inputs)}\nErro: ${
+        `Registration failed!\nSent: ${JSON.stringify(inputs)}\nError: ${
           error.message
         }`
-      ); // Alerta para o utilizador
+      ); // Alert the user
     }
   };
 
@@ -67,7 +67,7 @@ function Register() {
       <div className="Register">
         <h1>Register new user</h1>
         {error && <p className="error">{error}</p>}{" "}
-        {/* Exibe a mensagem de erro, se houver */}
+        {/* Display error message if any */}
         <form onSubmit={handleSubmit}>
           <label>
             Username:
