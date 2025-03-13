@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/navbar/Footer";
 import Login from "./pages/Login";
+import Logo from "./logo.svg";
 import "./App.css";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
             path="/"
             element={
               <header className="App-header">
-                <img src="./logo.svg" className="App-logo" alt="logo" />
+                <img src={Logo} className="App-logo" alt="logo" />
                 <p>
                   Edit <code>src/App.js</code> and save to reload.
                 </p>
