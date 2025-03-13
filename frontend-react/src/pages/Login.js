@@ -7,6 +7,8 @@ function Login() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({});
   const [error, setError] = useState(null);
+  const updateName = userStore((state) => state.updateName);
+  const updateToken = userStore((state) => state.updateToken);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -44,10 +46,11 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Previne o comportamento padrão do formulário
     try {
-      console.log("Enviando dados:", inputs); // Loga os dados enviados
+      console.log("Enviando dados:", inputs);
       const token = await loginUser(inputs.username, inputs.password); // Chama a função de login
-      updateName(inputs.username); // Atualiza o estado na store
-      console.log("Token recebido:", token); // Loga o token recebido
+      updateName(inputs.username); // Atualiza o estado do username na store
+      updateToken(token); // Atualiza o estado do token na store
+      console.log("Token recebido:", token);
       alert(
         `Login bem-sucedido!\nEnviado: ${JSON.stringify(
           inputs
@@ -55,8 +58,8 @@ function Login() {
       ); // Alerta para o utilizador
       navigate("/home", { replace: true }); // Navega para a página inicial
     } catch (error) {
-      console.error("Erro no login:", error); // Loga o erro
-      setError("Login failed. Please check your username and password."); // Define a mensagem de erro
+      console.error("Erro no login:", error);
+      setError("Login failed. Please check your username and password.");
       alert(
         `Login falhado!\nEnviado: ${JSON.stringify(inputs)}\nErro: ${
           error.message
@@ -65,7 +68,6 @@ function Login() {
     }
   };
 
-  const updateName = userStore((state) => state.updateName);
 
   return (
     <div className="login-container">

@@ -3,16 +3,19 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 //Define the store
 export const userStore = create(
-    persist(
-        (set) => ({
-            username: "", //state variable
-            updateName: (username) => set({ username }), //function to update the state variable
-        }),
-        {
-            name: 'mystore', //name of the store
-            storage: createJSONStorage(() => sessionStorage) //storage type
-        }
-    )
+  persist(
+    (set) => ({
+      username: "", // state variable
+      token: "", // state variable for token
+      updateName: (username) => set({ username }), // function to update the username
+      updateToken: (token) => set({ token }), // function to update the token
+      clearUser: () => set({ username: "", token: "" }), // function to clear the user state
+    }),
+    {
+      name: "mystore", // name of the store
+      storage: createJSONStorage(() => sessionStorage), // storage type
+    }
+  )
 );
 
 /*
