@@ -17,7 +17,7 @@ function App() {
           <Route
             path="/"
             element={
-              <header className="App-header">
+              <header className="App-body">
                 <img src={Logo} className="App-logo" alt="logo" />
                 <p>
                   Edit <code>src/App.js</code> and save to reload.
