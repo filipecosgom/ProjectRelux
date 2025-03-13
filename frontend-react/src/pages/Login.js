@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../pages/Login.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
 
 function Login() {
@@ -97,7 +97,7 @@ function Login() {
           <input type="submit" value="Login" />
         </form>
         <p>
-          Don't have an account? <a href="/register">Register here</a>
+          Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
     </div>

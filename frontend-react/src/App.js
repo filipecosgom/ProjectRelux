@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/navbar/Footer";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Logo from "./logo.svg";
 import "./App.css";
 
@@ -14,8 +15,7 @@ function App() {
         <Navbar />
         {/* Definindo as rotas do aplicativo */}
         <Routes>
-          <Route
-            path="/"
+          <Route path="/" 
             element={
               <header className="App-body">
                 <img src={Logo} className="App-logo" alt="logo" />
@@ -36,6 +36,7 @@ function App() {
 
           {/* Rota para a página de login */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
 
         <Footer />

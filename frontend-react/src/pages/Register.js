@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../pages/Register.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ function Register() {
   };
 
   // Função para fazer o pedido REST de registro
-  const registerUser = async (username, password) => {
+  const registerUser = async (userData) => {
     try {
       const response = await fetch(
         "http://localhost:8080/filipe-proj4/rest/users/register",
@@ -23,7 +23,7 @@ function Register() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify(userData),
         }
       );
 
@@ -43,7 +43,7 @@ function Register() {
     event.preventDefault(); // Previne o comportamento padrão do formulário
     try {
       console.log("Enviando dados:", inputs); // Loga os dados enviados
-      const response = await registerUser(inputs.username, inputs.password); // Chama a função de registro
+      const response = await registerUser(inputs); // Chama a função de registro
       console.log("Resposta recebida:", response); // Loga a resposta recebida
       alert(
         `Registro bem-sucedido!\nEnviado: ${JSON.stringify(
@@ -63,34 +63,81 @@ function Register() {
   };
 
   return (
-    <div className="Register">
-      <h1>Register</h1>
-      {error && <p className="error">{error}</p>}{" "}
-      {/* Exibe a mensagem de erro, se houver */}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Enter your username:
-          <input
-            type="text"
-            name="username"
-            defaultValue={inputs.username || ""}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Enter your password:
-          <input
-            type="password"
-            name="password"
-            defaultValue={inputs.password || ""}
-            onChange={handleChange}
-          />
-        </label>
-        <input type="submit" value="Register" />
-      </form>
-      <p>
-        Already have an account? <a href="/login">Login here</a>
-      </p>
+    <div className="register-container">
+      <div className="Register">
+        <h1>Register new user</h1>
+        {error && <p className="error">{error}</p>}{" "}
+        {/* Exibe a mensagem de erro, se houver */}
+        <form onSubmit={handleSubmit}>
+          <label>
+            Username:
+            <input
+              type="text"
+              name="username"
+              defaultValue={inputs.username || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              name="password"
+              defaultValue={inputs.password || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            First name:
+            <input
+              type="text"
+              name="firstName"
+              defaultValue={inputs.firstName || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Last name:
+            <input
+              type="text"
+              name="lastName"
+              defaultValue={inputs.lastName || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Email:
+            <input
+              type="email"
+              name="email"
+              defaultValue={inputs.email || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Phone:
+            <input
+              type="text"
+              name="phone"
+              defaultValue={inputs.phone || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Image URL:
+            <input
+              type="text"
+              name="imagem"
+              defaultValue={inputs.imagem || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <input type="submit" value="Register" />
+        </form>
+        <p>
+          Already have an account? <Link to="/login">Login here</Link>
+        </p>
+      </div>
     </div>
   );
 }
