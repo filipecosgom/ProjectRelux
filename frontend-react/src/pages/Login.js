@@ -65,37 +65,39 @@ function Login() {
     }
   };
 
- const updateName = userStore((state) => state.updateName);
+  const updateName = userStore((state) => state.updateName);
 
   return (
-    <div className="Login">
-      <h1>Login</h1>
-      {error && <p className="error">{error}</p>}{" "}
-      {/* Exibe a mensagem de erro, se houver */}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Enter your username:
-          <input
-            type="text"
-            name="username"
-            defaultValue={inputs.username || ""}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Enter your password:
-          <input
-            type="password"
-            name="password"
-            defaultValue={inputs.password || ""}
-            onChange={handleChange}
-          />
-        </label>
-        <input type="submit" value="Login" />
-      </form>
-      <p>
-        Don't have an account? <a href="/register">Register here</a>
-      </p>
+    <div className="login-container">
+      <div className="Login">
+        <h1>Login</h1>
+        {error && <p className="error">{error}</p>}{" "}
+        {/* Exibe a mensagem de erro, se houver */}
+        <form onSubmit={handleSubmit}>
+          <label>
+            Enter your username:
+            <input
+              type="text"
+              name="username"
+              defaultValue={inputs.username || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Enter your password:
+            <input
+              type="password"
+              name="password"
+              defaultValue={inputs.password || ""}
+              onChange={handleChange}
+            />
+          </label>
+          <input type="submit" value="Login" />
+        </form>
+        <p>
+          Don't have an account? <a href="/register">Register here</a>
+        </p>
+      </div>
     </div>
   );
 }

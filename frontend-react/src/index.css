@@ -8,11 +8,19 @@ body {
   background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
   width: 100%; /* Ensure the body takes the full width */
   height: 100vh; /* Ensure the body takes the full height */
+  
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh; /* Ensure the container takes the full height */
 }
 
 .Login {
@@ -23,12 +31,14 @@ code {
   max-width: 400px;
   width: 100%;
   color: white;
-  margin: auto; /* Center the login card */
+  margin-top: 30px;
+  margin-bottom: 30px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60vh; /* Ensure the login card takes the full height */
+  height: 40vh; /* Ensure the login card takes the full height */
 }
 
 .Login h1 {
