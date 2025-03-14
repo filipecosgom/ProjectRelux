@@ -7,9 +7,9 @@ export const userStore = create(
     (set) => ({
       username: "", // state variable
       token: "", // state variable for token
-      updateName: (username) => set({ username }), // function to update the username
-      updateToken: (token) => set({ token }), // function to update the token
-      clearUser: () => set({ username: "", token: "" }), // function to clear the user state
+      imagem: "", // state variable for user image
+      updateUser: (username, token, imagem) => set({ username, token, imagem }), // function to update the user details
+      clearUser: () => set({ username: "", token: "", imagem: "" }), // function to clear the user state
     }),
     {
       name: "mystore", // name of the store

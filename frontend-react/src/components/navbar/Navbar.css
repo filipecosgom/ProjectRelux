@@ -1,6 +1,6 @@
 .navbar {
-  background: rgb(44,35,0);
-  background: radial-gradient(circle, rgba(44,35,0,1) 4%, rgba(0,0,0,1) 100%);
+  background: rgb(44, 35, 0);
+  background: radial-gradient(circle, rgba(44, 35, 0, 1) 4%, rgba(0, 0, 0, 1) 100%);
   height: 80px;
   display: flex;
   justify-content: center;
@@ -74,4 +74,11 @@
 .logout-button:hover {
   background: none !important;
   color: #a90000 !important;
+}
+
+.nav-user-image {
+  width: 40px; /* Define a largura da imagem do usuário */
+  height: 40px; /* Define a altura da imagem do usuário */
+  border-radius: 50%; /* Torna a imagem redonda */
+  margin-right: 10px; /* Adiciona um espaço à direita da imagem */
 }

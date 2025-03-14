@@ -7,6 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 
 const Navbar = () => {
   const username = userStore((state) => state.username); // Obtém o estado do username da store
+  const imagem = userStore((state) => state.imagem); // Obtém o estado da imagem da store
   const clearUser = userStore((state) => state.clearUser);
 
   const handleLogout = async () => {
@@ -44,6 +45,9 @@ const Navbar = () => {
         <ul className="nav-menu">
           {username && (
             <li className="nav-item">
+              {imagem && (
+                <img src={imagem} alt="User" className="nav-user-image" />
+              )}
               <span className="nav-welcome">Bem-vindo, {username}!</span>
             </li>
           )}

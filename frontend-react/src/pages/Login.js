@@ -7,8 +7,7 @@ function Login() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({});
   const [error, setError] = useState(null);
-  const updateName = userStore((state) => state.updateName);
-  const updateToken = userStore((state) => state.updateToken);
+  const updateUser = userStore((state) => state.updateUser);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -42,19 +41,45 @@ function Login() {
     }
   };
 
+  // Função para obter os detalhes do usuário
+  const getUserDetails = async (token) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/filipe-proj4/rest/users/me",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": token,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user details");
+      }
+
+      const userDetails = await response.json();
+      return userDetails;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
     event.preventDefault(); // Previne o comportamento padrão do formulário
     try {
       console.log("Enviando dados:", inputs);
       const token = await loginUser(inputs.username, inputs.password); // Chama a função de login
-      updateName(inputs.username); // Atualiza o estado do username na store
-      updateToken(token); // Atualiza o estado do token na store
+      const userDetails = await getUserDetails(token); // Obtém os detalhes do usuário
+      updateUser(userDetails.username, token, userDetails.imagem); // Atualiza o estado do usuário na store
       console.log("Token recebido:", token);
+      console.log("Detalhes do usuário recebidos:", userDetails);
       alert(
         `Login bem-sucedido!\nEnviado: ${JSON.stringify(
           inputs
-        )}\nToken recebido: ${token}`
+        )}\nToken recebido: ${token}\nDetalhes do usuário: ${JSON.stringify(userDetails)}`
       ); // Alerta para o utilizador
       navigate("/home", { replace: true }); // Navega para a página inicial
     } catch (error) {
@@ -67,7 +92,6 @@ function Login() {
       ); // Alerta para o utilizador
     }
   };
-
 
   return (
     <div className="login-container">
