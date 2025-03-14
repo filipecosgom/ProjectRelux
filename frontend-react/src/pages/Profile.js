@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
 import { FaUser, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
+import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
 
 function Profile() {
@@ -37,7 +38,12 @@ function Profile() {
   }, [token]);
 
   if (!userDetails) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-container">
+        <ClipLoader color="#ffffff" size={30} /> {/* Spinner de carregamento */}
+        <p>Carregando...</p> {/* Mensagem de carregamento */}
+      </div>
+    );
   }
 
   return (
@@ -53,7 +59,8 @@ function Profile() {
         <div className="profile-details">
           <div className="profile-column">
             <p>Username: {userDetails.username}</p>
-            <p>Password: {"*".repeat(userDetails.password.length)}</p>
+            <p>Password: {"*".repeat(userDetails.password.length)}</p>{" "}
+            {/* Troca os caracteres da pwd por asteriscos */}
           </div>
           <div className="profile-column">
             <p>Email: {userDetails.email}</p>
