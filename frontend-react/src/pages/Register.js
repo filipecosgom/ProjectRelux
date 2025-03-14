@@ -81,6 +81,7 @@ function Register() {
               name="username"
               defaultValue={inputs.username || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -90,6 +91,7 @@ function Register() {
               name="password"
               defaultValue={inputs.password || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -99,6 +101,7 @@ function Register() {
               name="firstName"
               defaultValue={inputs.firstName || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -108,6 +111,7 @@ function Register() {
               name="lastName"
               defaultValue={inputs.lastName || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -117,6 +121,7 @@ function Register() {
               name="email"
               defaultValue={inputs.email || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -126,6 +131,7 @@ function Register() {
               name="phone"
               defaultValue={inputs.phone || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <label>
@@ -135,6 +141,7 @@ function Register() {
               name="imagem"
               defaultValue={inputs.imagem || ""}
               onChange={handleChange}
+              required
             />
           </label>
           <input type="submit" value="Register" />
