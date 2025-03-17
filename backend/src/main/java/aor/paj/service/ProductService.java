@@ -25,7 +25,7 @@ public class ProductService {
     UserBean userBean;
 
     @GET
-    @Path("/all")
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllProducts(@HeaderParam("Authorization") String token) {
         if (token == null || token.isEmpty()) {
