@@ -5,50 +5,57 @@ import "./Breadcrumbs.css";
 
 const Breadcrumbs = () => {
   const { id } = useParams(); // Obtém o ID do produto da URL
-  console.log("Breadcrumbs renderizado. ID capturado pelo useParams:", id);
-    const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null);
 
-    console.log("ID capturado pelo useParams: ", id);
-    useEffect(() => {
-    // Busca os detalhes do produto para obter o nome e a categoria
-    const fetchProduct = async () => {
-      if (id) {
-        console.log("ID do produto:", id); // Log para depuração
+  useEffect(() => {
+    if (id) {
+      const fetchProduct = async () => {
         try {
           const response = await axios.get(
             `http://localhost:8080/filipe-proj4/rest/products/${id}`
           );
-          console.log("Dados do produto:", response.data); // Log para depuração
           setProduct(response.data);
         } catch (error) {
           console.error("Erro ao buscar produto:", error);
         }
-      }
-    };
+      };
 
-    fetchProduct();
+      fetchProduct();
+    }
   }, [id]);
 
+  // Se não houver ID, exiba apenas "Home"
+  if (!id) {
+    return (
+      <div className="breadcrumbs">
+        <Link to="/" className="breadcrumb-link">
+          Home
+        </Link>
+      </div>
+    );
+  }
+
+  // Se o produto ainda não foi carregado, exiba "Carregando..."
+  if (!product) {
+    return (
+      <div className="breadcrumbs">
+        <span className="breadcrumb-loading">Carregando...</span>
+      </div>
+    );
+  }
+
+  // Exiba os breadcrumbs completos quando o produto for carregado
   return (
     <div className="breadcrumbs">
       <Link to="/" className="breadcrumb-link">
         Home
       </Link>
-      {product ? (
-        <>
-          <span className="breadcrumb-separator">/</span>
-          <Link
-            to={`/category/${product.category.id}`}
-            className="breadcrumb-link"
-          >
-            {product.category.nome}
-          </Link>
-          <span className="breadcrumb-separator">/</span>
-          <span className="breadcrumb-current">{product.title}</span>
-        </>
-      ) : (
-        <span className="breadcrumb-loading">Carregando...</span>
-      )}
+      <span className="breadcrumb-separator">/</span>
+      <Link to={`/category/${product.category.id}`} className="breadcrumb-link">
+        {product.category.nome}
+      </Link>
+      <span className="breadcrumb-separator">/</span>
+      <span className="breadcrumb-current">{product.title}</span>
     </div>
   );
 };
