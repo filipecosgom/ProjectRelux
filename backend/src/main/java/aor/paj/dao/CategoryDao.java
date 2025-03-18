@@ -21,4 +21,9 @@ public class CategoryDao extends AbstratDao<CategoryEntity> {
         em.persist(category);
         return category;
     }
+
+    // Adiciona o mét0do para buscar uma categoria pelo ID
+    public CategoryEntity findById(int categoryId) {
+        return em.find(CategoryEntity.class, categoryId);
+    }
 }

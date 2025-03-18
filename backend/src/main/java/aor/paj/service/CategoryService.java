@@ -44,6 +44,18 @@ public class CategoryService {
         List<CategoryEntity> categories = categoryDao.findAll();
         return Response.status(200).entity(categories).build();
     }
+
+    // Adiciona o endpoint para buscar uma categoria pelo ID
+    @GET
+    @Path("/{categoryId}")
+    public Response getCategoryById(@PathParam("categoryId") int categoryId) {
+        CategoryEntity category = categoryDao.findById(categoryId);
+        if (category == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Categoria não encontrada").build();
+        }
+        return Response.ok(category).build();
+    }
 }
+
 
 
