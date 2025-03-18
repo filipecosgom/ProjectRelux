@@ -1,0 +1,27 @@
+.breadcrumbs {
+  background-color: #444; /* Fundo escuro */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.breadcrumb-link {
+  color: #FFD700; /* Cor dourada para os links */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+  color: #fff; /* Branco ao passar o mouse */
+}
+
+.breadcrumb-current {
+  color: #aaa; /* Cor cinza para o item atual */
+}
+
+.breadcrumb-separator {
+  color: #fff; /* Cor branca para o separador */
+}
