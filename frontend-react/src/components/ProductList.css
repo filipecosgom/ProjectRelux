@@ -17,6 +17,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background 0.3s ease, transform 0.2s ease; /* Adiciona transição suave */
+  cursor: pointer; /* Altera o cursor para "mão" */
+}
+
+.product-card:hover {
+  background: linear-gradient(135deg, #444, #555); /* Gradiente mais claro no hover */
+  transform: translateY(-5px); /* Eleva o cartão levemente */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta a sombra no hover */
 }
 
 .product-image {
