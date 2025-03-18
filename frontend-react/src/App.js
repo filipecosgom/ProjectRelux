@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/product/ProductDetails";
+import CategoryProducts from "./components/category/CategoryProducts";
 import "./App.css";
 
 function App() {
@@ -35,6 +36,15 @@ function App() {
               <>
                 <Breadcrumbs />
                 <ProductDetails />
+              </>
+            }
+          />
+          <Route
+            path="/category/:categoryId"
+            element={
+              <>
+                <Breadcrumbs />
+                <CategoryProducts />
               </>
             }
           />
