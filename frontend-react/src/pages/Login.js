@@ -81,7 +81,7 @@ function Login() {
           inputs
         )}\nToken recebido: ${token}\nDetalhes do usuário: ${JSON.stringify(userDetails)}`
       ); // Alerta para o utilizador
-      navigate("/home", { replace: true }); // Navega para a página inicial
+      navigate("/", { replace: true }); // Navega para a página inicial
     } catch (error) {
       console.error("Erro no login:", error);
       setError("Login failed. Please check your username and password.");
