@@ -30,8 +30,8 @@ function ProductList() {
             className="product-image"
           />
           <h2>{product.title}</h2>
-          <p>Price: ${product.price}</p>
-          <p>Location: {product.local}</p>
+          <p>Price: {product.price} €</p>
+          <p>Localização: {product.local}</p>
         </div>
       ))}
     </div>
