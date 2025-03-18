@@ -1,0 +1,92 @@
+.product-modal {
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a); /* Gradiente escuro */
+  color: white; /* Texto branco */
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px; /* Aumentado para acomodar campos lado a lado */
+  max-height: 90vh; /* Limita a altura do modal */
+  overflow-y: auto; /* Adiciona scroll vertical se necessário */
+  margin: auto;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra para destacar o modal */
+}
+
+.product-modal-overlay {
+  background: rgba(0, 0, 0, 0.8); /* Fundo escuro semi-transparente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-modal h2 {
+  margin-bottom: 20px;
+  color: #FFD700; /* Título em dourado */
+  text-align: center;
+}
+
+.product-modal form {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os campos quebrem linha se necessário */
+  gap: 20px; /* Espaçamento entre os campos */
+}
+
+.product-modal form label {
+  display: flex;
+  flex-direction: column; /* Mantém o rótulo acima do campo */
+  flex: 1 1 calc(50% - 20px); /* Cada campo ocupa 50% da largura menos o espaçamento */
+  color: white; /* Texto branco */
+}
+
+.product-modal form input,
+.product-modal form textarea,
+.product-modal form select {
+  width: 100%; /* Garante que os campos ocupem toda a largura do container */
+  padding: 10px;
+  margin-top: 5px; /* Espaçamento entre o rótulo e o campo */
+  border: 1px solid #555; /* Borda escura */
+  border-radius: 4px;
+  background: #333; /* Fundo escuro */
+  color: white; /* Texto branco */
+  box-sizing: border-box;
+}
+
+.product-modal form textarea {
+  resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+.product-modal form input::placeholder,
+.product-modal form textarea::placeholder {
+  color: #aaa; /* Placeholder em cinza claro */
+}
+
+.product-modal form button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-modal form button[type="submit"] {
+  background: #28a745; /* Verde para o botão de submissão */
+  color: white;
+}
+
+.product-modal form button[type="submit"]:hover {
+  background: #218838; /* Verde mais escuro no hover */
+}
+
+.product-modal form button[type="button"] {
+  background: #dc3545; /* Vermelho para o botão de cancelar */
+  color: white;
+}
+
+.product-modal form button[type="button"]:hover {
+  background: #c82333; /* Vermelho mais escuro no hover */
+}

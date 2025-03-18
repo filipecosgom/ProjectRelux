@@ -82,3 +82,24 @@
   border-radius: 50%; /* Torna a imagem redonda */
   margin-right: 10px; /* Adiciona um espaço à direita da imagem */
 }
+
+.nav-user-image {
+  width: 40px; /* Define a largura da imagem do usuário */
+  height: 40px; /* Define a altura da imagem do usuário */
+  border-radius: 50%; /* Torna a imagem redonda */
+  margin-right: 10px; /* Adiciona um espaço à direita da imagem */
+}
+
+/* Estilo para o botão "+" */
+.add-product-icon {
+  color: white; /* Define a cor do ícone como branco */
+  font-size: 24px; /* Ajusta o tamanho do ícone */
+  cursor: pointer; /* Adiciona um cursor de ponteiro ao passar o mouse */
+  margin-right: 10px; /* Adiciona espaço à direita do ícone */
+  transition: transform 0.2s ease, color 0.2s ease; /* Adiciona uma transição suave */
+}
+
+.add-product-icon:hover {
+  transform: scale(1.2); /* Aumenta o tamanho ao passar o mouse */
+  color: #FFD700; /* Altera a cor para dourado no hover */
+}

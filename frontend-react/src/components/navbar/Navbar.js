@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
 import { FaSignOutAlt } from "react-icons/fa";
+import { IoAddCircleOutline } from "react-icons/io5";
+import ProductModal from "../product/ProductModal";
 
 const Navbar = () => {
   const username = userStore((state) => state.username); // Obtém o estado do username da store
   const imagem = userStore((state) => state.imagem); // Obtém o estado da imagem da store
   const clearUser = userStore((state) => state.clearUser);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
 
   const handleLogout = async () => {
     try {
@@ -45,10 +49,15 @@ const Navbar = () => {
         <ul className="nav-menu">
           {username && (
             <li className="nav-item">
+              {/* Botão "+" para abrir o modal */}
+              <IoAddCircleOutline
+                className="add-product-icon"
+                onClick={() => setIsModalOpen(true)}
+              />
               {imagem && (
                 <img src={imagem} alt="User" className="nav-user-image" />
               )}
-              <span className="nav-welcome">Bem-vindo, {username}!</span>
+              <span className="nav-welcome"> Bem-vindo, {username}!</span>
             </li>
           )}
           <li className="nav-item">
@@ -79,6 +88,11 @@ const Navbar = () => {
           )}
         </ul>
       </div>
+      {/* Modal de criação de produto */}
+      <ProductModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </nav>
   );
 };
