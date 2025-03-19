@@ -26,6 +26,8 @@ public class CategoryEntity implements Serializable {
     @OneToMany (mappedBy = "category")
     private Set <ProductEntity>  products;
 
+
+
     public int getId() {
         return id;
     }
@@ -43,6 +45,7 @@ public class CategoryEntity implements Serializable {
         this.name = name;
         return this;
     }
+
 
     public Set<ProductEntity> getProducts() {
         return products;

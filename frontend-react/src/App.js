@@ -13,7 +13,6 @@ import "./App.css";
 
 function App() {
   return (
-    // Envolvendo o aplicativo com o BrowserRouter para gerenciar as rotas
     <Router>
       <div className="App">
         <Navbar />

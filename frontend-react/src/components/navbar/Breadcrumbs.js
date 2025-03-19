@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Breadcrumbs.css";
 
@@ -7,7 +7,6 @@ const Breadcrumbs = () => {
   const { id, categoryId } = useParams(); // Obtém o ID do produto ou da categoria da URL
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
-  const location = useLocation(); // Obtém a localização atual
 
   useEffect(() => {
     // Se estivermos na rota de detalhes do produto, buscar os dados do produto
@@ -62,7 +61,7 @@ const Breadcrumbs = () => {
           Home
         </Link>
         <span className="breadcrumb-separator">/</span>
-        <span className="breadcrumb-current">{category.nome}</span>
+        <span className="breadcrumb-current">{category.name}</span>
       </div>
     );
   }
@@ -76,10 +75,11 @@ const Breadcrumbs = () => {
         </Link>
         <span className="breadcrumb-separator">/</span>
         <Link
-          to={`/category/${product.category.id}`}
+          to={`/category/${product.category.id}`} // Redireciona para a rota da categoria
           className="breadcrumb-link"
         >
-          {product.category.nome}
+          {product.category.nome}{" "}
+          {/* Certifique-se de que o backend retorna "name" */}
         </Link>
         <span className="breadcrumb-separator">/</span>
         <span className="breadcrumb-current">{product.title}</span>

@@ -48,11 +48,15 @@ public class CategoryService {
     // Adiciona o endpoint para buscar uma categoria pelo ID
     @GET
     @Path("/{categoryId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getCategoryById(@PathParam("categoryId") int categoryId) {
+        System.out.println("Buscando categoria com ID: " + categoryId);
         CategoryEntity category = categoryDao.findById(categoryId);
         if (category == null) {
+            System.out.println("Categoria não encontrada para ID: " + categoryId);
             return Response.status(Response.Status.NOT_FOUND).entity("Categoria não encontrada").build();
         }
+        System.out.println("Categoria encontrada: " + category.getName());
         return Response.ok(category).build();
     }
 }
