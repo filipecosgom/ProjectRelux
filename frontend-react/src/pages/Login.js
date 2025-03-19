@@ -15,7 +15,6 @@ function Login() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  // Função para fazer o pedido REST de login
   const loginUser = async (username, password) => {
     try {
       const response = await fetch(
@@ -33,7 +32,6 @@ function Login() {
         throw new Error("Login failed");
       }
 
-      // Trata a resposta como texto
       const token = await response.text();
       return token;
     } catch (error) {
@@ -41,7 +39,6 @@ function Login() {
     }
   };
 
-  // Função para obter os detalhes do usuário
   const getUserDetails = async (token) => {
     try {
       const response = await fetch(
@@ -50,7 +47,7 @@ function Login() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": token,
+            Authorization: token,
           },
         }
       );
@@ -66,30 +63,29 @@ function Login() {
     }
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Previne o comportamento padrão do formulário
+    event.preventDefault();
     try {
-      console.log("Enviando dados:", inputs);
-      const token = await loginUser(inputs.username, inputs.password); // Chama a função de login
-      const userDetails = await getUserDetails(token); // Obtém os detalhes do usuário
-      updateUser(userDetails.username, token, userDetails.imagem); // Atualiza o estado do usuário na store
+      console.log("Enviando dados para login:", inputs);
+      const token = await loginUser(inputs.username, inputs.password);
+      const userDetails = await getUserDetails(token);
+
+      // Atualiza a store com os dados do usuário, incluindo isAdmin
+      updateUser(
+        userDetails.username,
+        token,
+        userDetails.imagem,
+        userDetails.isAdmin
+      );
       console.log("Token recebido:", token);
       console.log("Detalhes do usuário recebidos:", userDetails);
-      alert(
-        `Login bem-sucedido!\nEnviado: ${JSON.stringify(
-          inputs
-        )}\nToken recebido: ${token}\nDetalhes do usuário: ${JSON.stringify(userDetails)}`
-      ); // Alerta para o utilizador
-      navigate("/", { replace: true }); // Navega para a página inicial
+
+      alert(`Login bem-sucedido!\nEnviado: ${JSON.stringify(inputs)}
+      \nToken: ${token}\nDetalhes do usuário: ${JSON.stringify(userDetails)}`);
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Erro no login:", error);
-      setError("Login failed. Please check your username and password.");
-      alert(
-        `Login falhado!\nEnviado: ${JSON.stringify(inputs)}\nErro: ${
-          error.message
-        }`
-      ); // Alerta para o utilizador
+      setError("Login falhou. Verifique suas credenciais.");
     }
   };
 
@@ -97,15 +93,14 @@ function Login() {
     <div className="login-container">
       <div className="Login">
         <h1>Login</h1>
-        {error && <p className="error">{error}</p>}{" "}
-        {/* Exibe a mensagem de erro, se houver */}
+        {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>
             Enter your username:
             <input
               type="text"
               name="username"
-              defaultValue={inputs.username || ""}
+              value={inputs.username || ""}
               onChange={handleChange}
             />
           </label>
@@ -114,7 +109,7 @@ function Login() {
             <input
               type="password"
               name="password"
-              defaultValue={inputs.password || ""}
+              value={inputs.password || ""}
               onChange={handleChange}
             />
           </label>
