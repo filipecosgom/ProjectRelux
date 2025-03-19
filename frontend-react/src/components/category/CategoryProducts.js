@@ -8,22 +8,27 @@ function CategoryProducts() {
   const { categoryId } = useParams(); // Obtém o ID da categoria da URL
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const token = userStore((state) => state.token);
+  const token = userStore((state) => state.token); // Obtém o token do userStore
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
+        console.log("Buscando produtos da categoria:", categoryId); // Log para depuração
         const response = await axios.get(
           `http://localhost:8080/filipe-proj4/rest/products/category/${categoryId}`,
-        {
+          {
             headers: {
               Authorization: token, // Envia o token no cabeçalho
             },
           }
         );
+        console.log("Produtos recebidos:", response.data); // Log para depuração
         setProducts(response.data);
       } catch (error) {
-        console.error("Erro ao buscar produtos da categoria:", error);
+        console.error(
+          "Erro ao buscar produtos da categoria:",
+          error.response || error
+        );
       }
     };
 

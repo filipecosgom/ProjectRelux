@@ -1,7 +1,9 @@
 package aor.paj.service;
 
+import aor.paj.bean.CategoryBean;
 import aor.paj.dao.CategoryDao;
 import aor.paj.dao.UserDao;
+import aor.paj.dto.CategoryDto;
 import aor.paj.entity.CategoryEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
@@ -10,6 +12,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -22,6 +25,9 @@ public class CategoryService {
 
     @Inject
     private CategoryDao categoryDao;
+
+    @Inject
+    CategoryBean categoryBean;
 
     @Inject
     private UserDao userDao;
@@ -41,11 +47,11 @@ public class CategoryService {
     @GET
     @Path("/all")
     public Response allCategories() {
-        List<CategoryEntity> categories = categoryDao.findAll();
+        ArrayList < CategoryDto> categories = categoryBean.getAllCategories();
         return Response.status(200).entity(categories).build();
     }
 
-    // Adiciona o endpoint para buscar uma categoria pelo ID
+
     @GET
     @Path("/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +63,10 @@ public class CategoryService {
             return Response.status(Response.Status.NOT_FOUND).entity("Categoria não encontrada").build();
         }
         System.out.println("Categoria encontrada: " + category.getName());
-        return Response.ok(category).build();
+
+        // Converte a entidade para DTO
+        CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName());
+        return Response.ok(categoryDto).build();
     }
 }
 

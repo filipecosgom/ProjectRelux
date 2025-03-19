@@ -5,12 +5,15 @@ import java.io.Serializable;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 
 @Entity
 @Table(name="category")
 @NamedQuery(name = "Category.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
 @NamedQuery(name = "Category.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
+//to get all categories
+@NamedQuery(name = "Category.getAllCategories", query = "SELECT a FROM CategoryEntity a")
 
 public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,7 +26,7 @@ public class CategoryEntity implements Serializable {
     @Column(name = "name", nullable = false, unique = false, updatable = true)
     private String name;
 
-    @OneToMany (mappedBy = "category")
+    @OneToMany (fetch=FetchType.LAZY, mappedBy = "category")
     private Set <ProductEntity>  products;
 
 

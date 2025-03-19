@@ -42,6 +42,7 @@ public abstract class AbstratDao <T extends Serializable> implements Serializabl
     }
 
     public List<T> findAll() {
+        System.out.println("Chega aqui");
         final CriteriaQuery<T> criteriaQuery = em.getCriteriaBuilder().createQuery(clazz);
         criteriaQuery.select(criteriaQuery.from(clazz));
         return em.createQuery(criteriaQuery).getResultList();
