@@ -66,6 +66,27 @@ const Breadcrumbs = () => {
     );
   }
 
+  // Renderizar breadcrumbs para a página de detalhes do produto
+  if (id && product) {
+    return (
+      <div className="breadcrumbs">
+        <Link to="/" className="breadcrumb-link">
+          Home
+        </Link>
+        <span className="breadcrumb-separator">/</span>
+        <Link
+          to={`/category/${product.category.id}`} // Redireciona para a rota da categoria
+          className="breadcrumb-link"
+        >
+          {product.category.nome}{" "}
+          {/* Certifique-se de que o backend retorna "nome" */}
+        </Link>
+        <span className="breadcrumb-separator">/</span>
+        <span className="breadcrumb-current">{product.title}</span>
+      </div>
+    );
+  }
+
   // Renderizar "Carregando..." enquanto os dados estão sendo buscados
   return (
     <div className="breadcrumbs">
