@@ -26,13 +26,13 @@ public class UserBean implements Serializable {
     public String loginUser(UserDto user) {
         UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
         if (userEntity != null) {
-                if(userEntity.getPassword().equals(user.getPassword())) {
-                    String token = generateNewToken();
-                    userEntity.setToken(token);
-                    userDao.merge(userEntity);
-                    return token;
-                }
+            if (userEntity.getPassword().equals(user.getPassword())) {
+                String token = generateNewToken();
+                userEntity.setToken(token);
+                userDao.merge(userEntity);
+                return token;
             }
+        }
         return null;
     }
 
@@ -42,8 +42,7 @@ public class UserBean implements Serializable {
             UserEntity userEntity = convertUserDtotoUserEntity(user);
             try {
                 userDao.persist(userEntity);
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
@@ -52,6 +51,7 @@ public class UserBean implements Serializable {
             throw new RuntimeException("Já existe um utilizador com esse username");
         }
     }
+
     public List<UserDto> getAllUsers() {
         List<UserEntity> users = userDao.findAll();
         return convertUserEntityListToUserDtoList(users);
@@ -71,6 +71,7 @@ public class UserBean implements Serializable {
         userEntity.setDeleted(user.getIsDeleted());
         return userEntity;
     }
+
     public UserDto convertUserEntityToUserDto(UserEntity user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
@@ -94,12 +95,13 @@ public class UserBean implements Serializable {
         return base64Encoder.encodeToString(randomBytes);
     }
 
-    public boolean tokenExist(String token){
+    public boolean tokenExist(String token) {
         if (userDao.findByToken(token) != null)
             return true;
         return false;
 
     }
+
     public boolean updateUser(UserDto userDto) {
         UserEntity userEntity = userDao.findUserByUsername(userDto.getUsername());
         if (userEntity != null) {
@@ -130,6 +132,7 @@ public class UserBean implements Serializable {
         }
         return false;
     }
+
     public boolean deleteUser(String username) {
         UserEntity userEntity = userDao.findUserByUsername(username);
         if (userEntity != null) {
@@ -154,6 +157,7 @@ public class UserBean implements Serializable {
         }
         return false;
     }
+
     public UserEntity getUserByUsername(String username) {
         return userDao.findUserByUsername(username);
     }
@@ -162,6 +166,7 @@ public class UserBean implements Serializable {
         List<UserEntity> users = userDao.findDeletedUsers();
         return convertUserEntityListToUserDtoList(users);
     }
+
     private List<UserDto> convertUserEntityListToUserDtoList(List<UserEntity> userEntities) {
         List<UserDto> userDtos = new ArrayList<>();
         for (UserEntity userEntity : userEntities) {

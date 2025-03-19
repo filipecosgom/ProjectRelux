@@ -35,8 +35,8 @@ public class CategoryService {
     @POST
     @Path("/new")
     public Response createCategory(@HeaderParam("Authorization") String token, CategoryEntity category) {
-        UserEntity user= userDao.findByToken(token);
-        if(user==null || !user.isAdmin()){
+        UserEntity user = userDao.findByToken(token);
+        if (user == null || !user.isAdmin()) {
             return Response.status(200).entity("Não tem permissões para esta ação").build();
         }
         CategoryEntity c = categoryDao.createCategory(category.getName());
@@ -47,7 +47,7 @@ public class CategoryService {
     @GET
     @Path("/all")
     public Response allCategories() {
-        ArrayList < CategoryDto> categories = categoryBean.getAllCategories();
+        ArrayList<CategoryDto> categories = categoryBean.getAllCategories();
         return Response.status(200).entity(categories).build();
     }
 
