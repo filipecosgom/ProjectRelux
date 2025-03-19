@@ -20,6 +20,7 @@ const ProductModal = ({ isOpen, onClose }) => {
   const [priceError, setPriceError] = useState(""); // Erro de validação do preço
 
   const token = userStore((state) => state.token); // Obtém o token diretamente da store
+  const isAdmin = userStore((state) => state.isAdmin); // Verifica se o usuário é admin
 
   // Busca as categorias ao carregar o modal
   useEffect(() => {
@@ -105,6 +106,20 @@ const ProductModal = ({ isOpen, onClose }) => {
     }
   };
 
+  // Estados disponíveis com base no tipo de usuário
+  const availableStates = isAdmin
+    ? [
+        { value: "RASCUNHO", label: "Rascunho" },
+        { value: "DISPONIVEL", label: "Disponível" },
+        { value: "RESERVADO", label: "Reservado" },
+        { value: "COMPRADO", label: "Comprado" },
+        { value: "APAGADO", label: "Apagado" },
+      ]
+    : [
+        { value: "RASCUNHO", label: "Rascunho" },
+        { value: "DISPONIVEL", label: "Disponível" },
+      ];
+
   return (
     <Modal
       isOpen={isOpen}
@@ -188,10 +203,11 @@ const ProductModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             required
           >
-            <option value="DISPONIVEL">Disponível</option>
-            <option value="RESERVADO">Reservado</option>
-            <option value="COMPRADO">Comprado</option>
-            <option value="APAGADO">Apagado</option>
+            {availableStates.map((state) => (
+              <option key={state.value} value={state.value}>
+                {state.label}
+              </option>
+            ))}
           </select>
         </label>
         <button type="submit">Criar Produto</button>

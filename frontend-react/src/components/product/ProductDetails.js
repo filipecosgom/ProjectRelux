@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { userStore } from "../../stores/UserStore";
+import { userStore as useUserStore } from "../../stores/UserStore";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
@@ -9,9 +9,9 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
 
-  const token = userStore((state) => state.token);
-  const username = userStore((state) => state.username);
-  const isAdmin = userStore((state) => state.isAdmin);
+  const token = useUserStore((state) => state.token);
+  const username = useUserStore((state) => state.username);
+  const isAdmin = useUserStore((state) => state.isAdmin);
 
   useEffect(() => {
     const fetchProduct = async () => {
