@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import "./ProductModal.css";
@@ -16,21 +16,54 @@ const ProductModal = ({ isOpen, onClose }) => {
     description: "",
     state: "DISPONIVEL",
   });
+  const [categories, setCategories] = useState([]); // Lista de categorias para o dropdown
+  const [priceError, setPriceError] = useState(""); // Erro de validação do preço
 
   const token = userStore((state) => state.token); // Obtém o token diretamente da store
 
+  // Busca as categorias ao carregar o modal
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/filipe-proj4/rest/categories/all"
+        );
+        // Ordena as categorias por nome antes de definir no estado
+        const sortedCategories = response.data.sort((a, b) =>
+          a.nome.localeCompare(b.nome)
+        );
+        setCategories(sortedCategories);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+        alert("Erro ao carregar categorias. Tente novamente.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "categoryId") {
+      const selectedCategory = categories.find(
+        (category) => category.id === parseInt(value)
+      );
       setFormData((prev) => ({
         ...prev,
-        category: { ...prev.category, id: value },
+        category: { id: selectedCategory.id, nome: selectedCategory.nome },
       }));
-    } else if (name === "categoryName") {
-      setFormData((prev) => ({
-        ...prev,
-        category: { ...prev.category, nome: value },
-      }));
+    } else if (name === "price") {
+      // Validação do preço
+      const priceRegex = /^\d+(\.\d{1,2})?$/; // Aceita números com até 2 casas decimais
+      if (!priceRegex.test(value) && value !== "") {
+        setPriceError(
+          "O preço deve ser um número válido com até 2 casas decimais."
+        );
+      } else {
+        setPriceError("");
+      }
+      setFormData((prev) => ({ ...prev, price: value }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -40,6 +73,11 @@ const ProductModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     if (!token) {
       alert("Token não encontrado. Por favor, faça login novamente.");
+      return;
+    }
+
+    if (priceError) {
+      alert("Corrija os erros antes de enviar o formulário.");
       return;
     }
 
@@ -87,34 +125,31 @@ const ProductModal = ({ isOpen, onClose }) => {
           />
         </label>
         <label>
-          Categoria ID:
-          <input
-            type="number"
+          Categoria:
+          <select
             name="categoryId"
             value={formData.category.id}
             onChange={handleChange}
             required
-          />
-        </label>
-        <label>
-          Categoria Nome:
-          <input
-            type="text"
-            name="categoryName"
-            value={formData.category.nome}
-            onChange={handleChange}
-            required
-          />
+          >
+            <option value="">Selecione uma categoria</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.nome}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Preço:
           <input
-            type="number"
+            type="text"
             name="price"
             value={formData.price}
             onChange={handleChange}
             required
           />
+          {priceError && <span className="error-message">{priceError}</span>}
         </label>
         <label>
           URL da Imagem:
