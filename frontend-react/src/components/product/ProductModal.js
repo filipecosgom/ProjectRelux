@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import axios from "axios";
+import { useLocation } from "react-router-dom"; // Importado para verificar mudanças na rota para fechar o modal
 import "./ProductModal.css";
 import { userStore } from "../../stores/UserStore";
 
@@ -21,6 +22,21 @@ const ProductModal = ({ isOpen, onClose }) => {
 
   const token = userStore((state) => state.token); // Obtém o token diretamente da store
   const isAdmin = userStore((state) => state.isAdmin); // Verifica se o usuário é admin
+  const location = useLocation(); // Hook para monitorar mudanças na rota
+
+  // Fecha o modal ao mudar de rota
+  useEffect(() => {
+    if (isOpen) {
+      onClose(); // Fecha o modal apenas se ele estiver aberto
+    }
+  }, [location.pathname]); // Monitora apenas mudanças no pathname
+
+  // Fecha o modal ao efetuar logout
+  useEffect(() => {
+    if (!token && isOpen) {
+      onClose();
+    }
+  }, [token, isOpen, onClose]);
 
   // Busca as categorias ao carregar o modal
   useEffect(() => {
