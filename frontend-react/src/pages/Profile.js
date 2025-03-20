@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { userStore } from "../stores/UserStore";
 import { FaUser, FaCheckCircle, FaRegEyeSlash } from "react-icons/fa";
 import { GiAllSeeingEye } from "react-icons/gi"; // Ícone para mostrar a senha
@@ -12,6 +13,14 @@ function Profile() {
   const [showAdminPanel, setShowAdminPanel] = useState(false); // Estado para alternar a exibição do painel administrativo
   const token = userStore((state) => state.token);
   const isAdmin = userStore((state) => state.isAdmin); // Verifica se o usuário é admin
+  const navigate = useNavigate(); // Hook para redirecionar o usuário
+
+  // Redireciona para a homepage se o token for removido
+  useEffect(() => {
+    if (!token) {
+      navigate("/", { replace: true }); // Redireciona para a homepage
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -38,7 +47,9 @@ function Profile() {
       }
     };
 
-    fetchUserDetails();
+    if (token) {
+      fetchUserDetails();
+    }
   }, [token]);
 
   if (!userDetails) {
