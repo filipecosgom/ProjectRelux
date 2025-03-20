@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { userStore } from "../stores/UserStore";
-import { FaUser, FaCheckCircle } from "react-icons/fa";
+import { FaUser, FaCheckCircle, FaRegEyeSlash } from "react-icons/fa";
+import { GiAllSeeingEye } from "react-icons/gi"; // Ícone para mostrar a senha
 import { MdCancel } from "react-icons/md";
 import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); // Estado para alternar a exibição da senha
   const token = userStore((state) => state.token);
 
   useEffect(() => {
@@ -59,8 +61,18 @@ function Profile() {
         <div className="profile-details">
           <div className="profile-column">
             <p>Username: {userDetails.username}</p>
-            <p>Password: {"*".repeat(userDetails.password.length)}</p>{" "}
-            {/* Troca os caracteres da pwd por asteriscos */}
+            <p>
+              Password:{" "}
+              {showPassword
+                ? userDetails.password // Mostra a senha se showPassword for true
+                : "*".repeat(userDetails.password.length)}{" "}
+              <span
+                className="toggle-password-icon"
+                onClick={() => setShowPassword(!showPassword)} // Alterna o estado de showPassword
+              >
+                {showPassword ? <FaRegEyeSlash /> : <GiAllSeeingEye />}
+              </span>
+            </p>
           </div>
           <div className="profile-column">
             <p>Email: {userDetails.email}</p>
