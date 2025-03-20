@@ -48,11 +48,6 @@
   height: 100%;
 }
 
-.nav-link:hover {
-  background-color: #a90000;
-  color: #fff;
-}
-
 .nav-welcome {
   color: #fff;
   font-style: italic;
@@ -102,4 +97,15 @@
 .add-product-icon:hover {
   transform: scale(1.2); /* Aumenta o tamanho ao passar o mouse */
   color: #FFD700; /* Altera a cor para dourado no hover */
+}
+
+.nav-icon {
+  font-size: 1.5rem;
+  color: #a3a3a3;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+}
+
+.nav-icon:hover {
+  color: #FFD700;
 }

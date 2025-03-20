@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
-import { FaSignOutAlt } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { HiOutlineLogin, HiOutlineLogout } from "react-icons/hi"; // Ícones de Login e Logout
 import ProductModal from "../product/ProductModal";
 
 const Navbar = () => {
@@ -63,7 +63,7 @@ const Navbar = () => {
           {!username && (
             <li className="nav-item">
               <Link className="nav-link" to="/login">
-                Login
+                <HiOutlineLogin className="nav-icon" /> {/* Ícone de Login */}
               </Link>
             </li>
           )}
@@ -77,7 +77,7 @@ const Navbar = () => {
           {username && (
             <li className="nav-item">
               <button className="nav-link logout-button" onClick={handleLogout}>
-                <FaSignOutAlt /> Logout
+                <HiOutlineLogout className="nav-icon" /> {/* Ícone de Logout */}
               </button>
             </li>
           )}
