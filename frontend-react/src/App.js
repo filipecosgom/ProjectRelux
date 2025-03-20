@@ -6,6 +6,7 @@ import Breadcrumbs from "./components/navbar/Breadcrumbs";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import AdminPanel from "./pages/AdminPanel";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/product/ProductDetails";
 import CategoryProducts from "./components/category/CategoryProducts";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/admin" element={<AdminPanel />} />
           <Route
             path="/product/:id"
             element={
