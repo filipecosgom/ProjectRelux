@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
 import { FaUsersCog } from "react-icons/fa"; // Ícone para Gerir Utilizadores
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb"; // Ícones para Gerir Produtos e Categorias
+import { FaRegEyeSlash, FaEye } from "react-icons/fa"; // Ícones para mostrar/ocultar senha
 import "./AdminPanel.css";
 
 function AdminPanel() {
@@ -12,6 +13,7 @@ function AdminPanel() {
   const [activePanel, setActivePanel] = useState(null); // Estado para controlar o painel ativo
   const [users, setUsers] = useState([]); // Estado para armazenar os utilizadores
   const [loading, setLoading] = useState(false); // Estado para controlar o carregamento
+  const [showPasswords, setShowPasswords] = useState({}); // Estado para controlar a exibição das senhas
 
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
@@ -55,6 +57,14 @@ function AdminPanel() {
       fetchUsers();
     }
   }, [activePanel, token]);
+
+  // Alterna a exibição da senha para um utilizador específico
+  const togglePasswordVisibility = (username) => {
+    setShowPasswords((prevState) => ({
+      ...prevState,
+      [username]: !prevState[username],
+    }));
+  };
 
   return (
     <div className="admin-panel-container">
@@ -100,34 +110,73 @@ function AdminPanel() {
           {loading ? (
             <p>Carregando utilizadores...</p>
           ) : (
-            <table className="users-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Nome</th>
-                  <th>Email</th>
-                  <th>Telefone</th>
-                  <th>Admin</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.username}</td>
-                    <td>
-                      {user.firstName} {user.lastName}
-                    </td>
-                    <td>{user.email}</td>
-                    <td>{user.phone}</td>
-                    <td>{user.isAdmin ? "Sim" : "Não"}</td>
-                    <td>{user.isDeleted ? "Inativo" : "Ativo"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="users-cards-container">
+              {users.map((user) => (
+                <div className="user-card" key={user.username}>
+                  {/* Primeira Coluna */}
+                  <div className="user-card-column user-card-column-center">
+                    <img
+                      src={user.imagem || "https://via.placeholder.com/70"}
+                      alt={user.username}
+                      className="user-card-image"
+                    />
+                    <div className="user-card-info-line">
+                      <p className="user-card-username">{user.username}</p>
+                      <span className="user-card-role">
+                        ({user.isAdmin ? "Admin" : "Utilizador"})
+                      </span>
+                      <span
+                        className={`user-card-status ${
+                          user.isDeleted ? "deleted" : "active"
+                        }`}
+                      >
+                        {user.isDeleted ? (
+                          <>
+                            <span>❌</span> Inativo
+                          </>
+                        ) : (
+                          <>
+                            <span>✅</span> Ativo
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Segunda Coluna */}
+                  <div className="user-card-column">
+                    <p>
+                      <strong>Nome completo:</strong> {user.firstName}{" "}
+                      {user.lastName}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {user.email}
+                    </p>
+                    <p>
+                      <strong>Telefone:</strong> {user.phone}
+                    </p>
+                    <p>
+                      <strong>Password:</strong>{" "}
+                      <span className="password-mask">
+                        {showPasswords[user.username]
+                          ? user.password
+                          : "*".repeat(user.password.length)}
+                      </span>{" "}
+                      <button
+                        className="toggle-password-button"
+                        onClick={() => togglePasswordVisibility(user.username)}
+                      >
+                        {showPasswords[user.username] ? (
+                          <FaRegEyeSlash />
+                        ) : (
+                          <FaEye />
+                        )}
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}

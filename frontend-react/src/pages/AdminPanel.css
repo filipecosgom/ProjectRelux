@@ -59,7 +59,7 @@ h1 {
   padding: 20px;
   border-radius: 5px;
   width: 80%;
-  text-align: center;
+  text-align: left;
 }
 
 .admin-panel-content h2 {
@@ -70,30 +70,121 @@ h1 {
   margin: 0;
 }
 
-/* Estilo para a tabela de utilizadores */
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Container dos cards */
+.users-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+  gap: 20px;
+  justify-content: center;
   margin-top: 20px;
 }
 
-.users-table th,
-.users-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+/* Estilo do card de utilizador */
+.user-card {
+  background-color: #2a2a2a;
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex; /* Torna o card horizontal */
+  gap: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.user-card:hover {
+  background-color: #5b5b5b;
+}
+
+/* Colunas do card */
+.user-card-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Centraliza os itens da primeira coluna */
+.user-card-column-center {
+  align-items: center;
   text-align: center;
 }
 
-.users-table th {
-  background-color: #007bff;
+/* Linha de informações do utilizador na primeira coluna */
+.user-card-info-line {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaçamento entre os itens */
+  justify-content: center; /* Centraliza os itens */
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Imagem do utilizador */
+.user-card-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+/* Username */
+.user-card-username {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
   color: white;
+}
+
+/* Papel do utilizador */
+.user-card-role {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #ccc;
+  font-style: italic;
+}
+
+/* Estado do utilizador */
+.user-card-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+}
+
+.user-card-status.active {
+  color: #28a745; /* Verde */
   font-weight: bold;
 }
 
-.users-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+.user-card-status.deleted {
+  color: #ccc; /* Cinza claro */
+  font-style: italic;
 }
 
-.users-table tr:hover {
-  background-color: #ddd;
+/* Informações do utilizador na segunda coluna */
+.user-card-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ccc;
+  line-height: 1.5; /* Espaçamento entre as linhas */
+}
+
+/* Máscara de senha */
+.password-mask {
+  font-family: monospace;
+  letter-spacing: 1px; /* Garante espaçamento uniforme */
+}
+
+/* Botão de alternar senha */
+.toggle-password-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+.toggle-password-button:hover {
+  color: #ffd700; /* Cor dourada ao passar o mouse */
 }
