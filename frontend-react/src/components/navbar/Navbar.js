@@ -60,11 +60,6 @@ const Navbar = () => {
               <span className="nav-welcome"> Bem-vindo, {username}!</span>
             </li>
           )}
-          <li className="nav-item">
-            <Link className="nav-link" to="/">
-              Home
-            </Link>
-          </li>
           {!username && (
             <li className="nav-item">
               <Link className="nav-link" to="/login">
