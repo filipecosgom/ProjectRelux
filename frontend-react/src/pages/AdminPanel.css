@@ -69,3 +69,31 @@ h1 {
 .admin-panel-content p {
   margin: 0;
 }
+
+/* Estilo para a tabela de utilizadores */
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.users-table th,
+.users-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.users-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.users-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.users-table tr:hover {
+  background-color: #ddd;
+}
