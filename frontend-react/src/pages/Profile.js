@@ -9,7 +9,9 @@ import "./Profile.css";
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false); // Estado para alternar a exibição da senha
+  const [showAdminPanel, setShowAdminPanel] = useState(false); // Estado para alternar a exibição do painel administrativo
   const token = userStore((state) => state.token);
+  const isAdmin = userStore((state) => state.isAdmin); // Verifica se o usuário é admin
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -91,6 +93,25 @@ function Profile() {
             </>
           )}
         </p>
+
+        {/* Botão e Painel Administrativo */}
+        {isAdmin && (
+          <div className="admin-panel-container">
+            <button
+              className="admin-panel-toggle"
+              onClick={() => setShowAdminPanel(!showAdminPanel)}
+            >
+              Painel Administrativo
+            </button>
+            {showAdminPanel && (
+              <div className="admin-panel">
+                <button className="admin-button">Gerir Utilizadores</button>
+                <button className="admin-button">Gerir Produtos</button>
+                <button className="admin-button">Gerir Categorias</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
