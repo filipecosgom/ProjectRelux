@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
-import { FaUsersCog } from "react-icons/fa"; // Ícone para Gerir Utilizadores
-import { TbBasketCog, TbBuildingCog } from "react-icons/tb"; // Ícones para Gerir Produtos e Categorias
-import { FaRegEyeSlash, FaEye } from "react-icons/fa"; // Ícones para mostrar/ocultar senha
+import { FaUsersCog } from "react-icons/fa";
+import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
+import { FaRegEyeSlash, FaEye } from "react-icons/fa";
+import axios from "axios";
 import "./AdminPanel.css";
 
 function AdminPanel() {
-  const isAdmin = userStore((state) => state.isAdmin); // Verifica se o usuário é admin
-  const token = userStore((state) => state.token); // Obtém o token do usuário logado
+  const isAdmin = userStore((state) => state.isAdmin);
+  const token = userStore((state) => state.token);
   const navigate = useNavigate();
-  const [activePanel, setActivePanel] = useState(null); // Estado para controlar o painel ativo
-  const [users, setUsers] = useState([]); // Estado para armazenar os utilizadores
-  const [loading, setLoading] = useState(false); // Estado para controlar o carregamento
-  const [showPasswords, setShowPasswords] = useState({}); // Estado para controlar a exibição das senhas
+  const [activePanel, setActivePanel] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showPasswords, setShowPasswords] = useState({});
+  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
+  const [newUser, setNewUser] = useState({
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    imagem: "",
+    isAdmin: false,
+  }); // Estado para os dados do novo utilizador
+  const [error, setError] = useState(null);
 
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
@@ -26,23 +39,15 @@ function AdminPanel() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
+      const response = await axios.get(
         "http://localhost:8080/filipe-proj4/rest/users/all",
         {
-          method: "GET",
           headers: {
-            "Content-Type": "application/json",
             Authorization: token,
           },
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Erro ao buscar utilizadores");
-      }
-
-      const data = await response.json();
-      setUsers(data); // Atualiza o estado com os utilizadores
+      setUsers(response.data);
     } catch (error) {
       console.error("Erro ao buscar utilizadores:", error);
       alert("Erro ao carregar utilizadores. Tente novamente.");
@@ -67,8 +72,52 @@ function AdminPanel() {
   };
 
   // Função para criar um novo utilizador
-  const handleCreateUser = () => {
-    alert("Função para criar um novo utilizador ainda não implementada.");
+  const handleCreateUser = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    // Validação simples
+    if (
+      !newUser.username ||
+      !newUser.password ||
+      !newUser.email ||
+      !newUser.firstName ||
+      !newUser.lastName ||
+      !newUser.phone
+    ) {
+      setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/filipe-proj4/rest/users/register",
+        newUser,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      alert(`O utilizador ${newUser.username} foi criado com sucesso!`);
+      setShowModal(false); // Fecha o modal
+      fetchUsers(); // Atualiza a lista de utilizadores
+    } catch (error) {
+      console.error("Erro ao criar utilizador:", error);
+      setError(
+        error.response?.data || "Erro ao criar utilizador. Tente novamente."
+      );
+    }
+  };
+
+  // Função para lidar com mudanças nos campos do formulário
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setNewUser((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
   return (
@@ -112,7 +161,10 @@ function AdminPanel() {
       {activePanel === "users" && (
         <div className="admin-panel-content">
           <h2>Gerir Utilizadores</h2>
-          <button className="create-user-button" onClick={handleCreateUser}>
+          <button
+            className="create-user-button"
+            onClick={() => setShowModal(true)}
+          >
             + Criar Novo Utilizador
           </button>
           {loading ? (
@@ -189,17 +241,99 @@ function AdminPanel() {
         </div>
       )}
 
-      {/* Painéis de Gerir Produtos e Categorias */}
-      {activePanel === "products" && (
-        <div className="admin-panel-content">
-          <h2>Gerir Produtos</h2>
-          <p>Aqui você pode adicionar, editar ou remover produtos.</p>
-        </div>
-      )}
-      {activePanel === "categories" && (
-        <div className="admin-panel-content">
-          <h2>Gerir Categorias</h2>
-          <p>Aqui você pode adicionar, editar ou remover categorias.</p>
+      {/* Modal de Criação de Utilizador */}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Criar Novo Utilizador</h3>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleCreateUser}>
+              <label>
+                Username:
+                <input
+                  type="text"
+                  name="username"
+                  value={newUser.username}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Password:
+                <input
+                  type="password"
+                  name="password"
+                  value={newUser.password}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                First Name:
+                <input
+                  type="text"
+                  name="firstName"
+                  value={newUser.firstName}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Last Name:
+                <input
+                  type="text"
+                  name="lastName"
+                  value={newUser.lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Email:
+                <input
+                  type="email"
+                  name="email"
+                  value={newUser.email}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Phone:
+                <input
+                  type="text"
+                  name="phone"
+                  value={newUser.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <label>
+                Image URL:
+                <input
+                  type="text"
+                  name="imagem"
+                  value={newUser.imagem}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Admin:
+                <input
+                  type="checkbox"
+                  name="isAdmin"
+                  checked={newUser.isAdmin}
+                  onChange={handleChange}
+                />
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Criar</button>
+                <button type="button" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
