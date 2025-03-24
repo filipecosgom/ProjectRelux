@@ -13,11 +13,13 @@ function AdminPanel() {
   const navigate = useNavigate();
   const [activePanel, setActivePanel] = useState(null);
   const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({});
-  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
-  const [showCreateModal, setShowCreateModal] = useState(false); // Estado para controlar o modal de criação
-  const [editUser, setEditUser] = useState(null); // Estado para o utilizador a ser editado
+  const [showModal, setShowModal] = useState(false); // Modal de edição de utilizador
+  const [showCreateModal, setShowCreateModal] = useState(false); // Modal de criação de utilizador
+  const [editUser, setEditUser] = useState(null); // Utilizador a ser editado
   const [newUser, setNewUser] = useState({
     username: "",
     password: "",
@@ -27,7 +29,19 @@ function AdminPanel() {
     phone: "",
     imagem: "",
     isAdmin: false,
-  }); // Estado para o novo utilizador
+  }); // Novo utilizador
+  const [editProduct, setEditProduct] = useState(null); // Produto a ser editado
+  const [showProductModal, setShowProductModal] = useState(false); // Modal de edição de produto
+  const [showCreateProductModal, setShowCreateProductModal] = useState(false); // Modal de criação de produto
+  const [newProduct, setNewProduct] = useState({
+    title: "",
+    category: "",
+    price: "",
+    imagem: "",
+    local: "",
+    description: "",
+    state: "DISPONIVEL",
+  }); // Novo produto
   const [error, setError] = useState(null);
 
   // Redireciona para a homepage se o usuário não for admin
@@ -58,10 +72,51 @@ function AdminPanel() {
     }
   };
 
+  // Função para buscar todos os produtos
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/filipe-proj4/rest/products/",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar produtos:", error);
+      alert("Erro ao carregar produtos. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para buscar categorias
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/filipe-proj4/rest/categories/all"
+      );
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar categorias:", error);
+    }
+  };
+
   // Busca os utilizadores ao abrir o painel de "Gerir Utilizadores"
   useEffect(() => {
     if (activePanel === "users") {
       fetchUsers();
+    }
+  }, [activePanel, token]);
+
+  // Busca os produtos ao abrir o painel de "Gerir Produtos"
+  useEffect(() => {
+    if (activePanel === "products") {
+      fetchProducts();
+      fetchCategories();
     }
   }, [activePanel, token]);
 
@@ -186,6 +241,88 @@ function AdminPanel() {
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  // Função para criar um novo produto
+  const handleCreateProduct = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    try {
+      await axios.post(
+        "http://localhost:8080/filipe-proj4/rest/products/add",
+        newProduct,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      alert(`O produto "${newProduct.title}" foi criado com sucesso!`);
+      setShowCreateProductModal(false); // Fecha o modal
+      fetchProducts(); // Atualiza a lista de produtos
+    } catch (error) {
+      console.error("Erro ao criar produto:", error);
+      setError(
+        error.response?.data || "Erro ao criar produto. Tente novamente."
+      );
+    }
+  };
+
+  // Função para apagar um produto
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm(`Tem certeza que deseja apagar o produto?`)) {
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `http://localhost:8080/filipe-proj4/rest/products/${id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      alert("Produto apagado com sucesso!");
+      fetchProducts(); // Atualiza a lista de produtos
+    } catch (error) {
+      console.error("Erro ao apagar produto:", error);
+      alert("Erro ao apagar produto. Tente novamente.");
+    }
+  };
+
+  // Função para abrir o modal de edição de produto
+  const handleEditProduct = (product) => {
+    setEditProduct(product);
+    setShowProductModal(true);
+  };
+
+  // Função para salvar as alterações do produto
+  const handleSaveProduct = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    try {
+      await axios.put(
+        `http://localhost:8080/filipe-proj4/rest/products/${editProduct.id}`,
+        editProduct,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      alert(`O produto "${editProduct.title}" foi atualizado com sucesso!`);
+      setShowProductModal(false); // Fecha o modal
+      fetchProducts(); // Atualiza a lista de produtos
+    } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+      setError(
+        error.response?.data || "Erro ao atualizar produto. Tente novamente."
+      );
+    }
   };
 
   return (
@@ -315,6 +452,60 @@ function AdminPanel() {
                         <FaTrash /> Apagar
                       </button>
                     </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Painel de Gerir Produtos */}
+      {activePanel === "products" && (
+        <div className="admin-panel-content">
+          <h2>Gerir Produtos</h2>
+          <button
+            className="create-product-button"
+            onClick={() => setShowCreateProductModal(true)}
+          >
+            + Criar Novo Produto
+          </button>
+          {loading ? (
+            <p>Carregando produtos...</p>
+          ) : (
+            <div className="products-cards-container">
+              {products.map((product) => (
+                <div className="product-card" key={product.id}>
+                  <div className="product-card-column">
+                    <img
+                      src={product.imagem || "https://via.placeholder.com/70"}
+                      alt={product.title}
+                      className="product-card-image"
+                    />
+                    <h3>{product.title}</h3>
+                    <p>
+                      <strong>Categoria:</strong> {product.category.nome}
+                    </p>
+                    <p>
+                      <strong>Preço:</strong> {product.price} €
+                    </p>
+                    <p>
+                      <strong>Estado:</strong> {product.state}
+                    </p>
+                  </div>
+                  <div className="product-card-actions">
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      <FaEdit /> Editar
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteProduct(product.id)}
+                    >
+                      <FaTrash /> Apagar
+                    </button>
                   </div>
                 </div>
               ))}

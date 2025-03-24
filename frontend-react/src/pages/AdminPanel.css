@@ -307,3 +307,47 @@ h1 {
 .delete-button:hover {
   background-color: #c82333;
 }
+
+/* Container dos cards de produtos */
+.products-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cards por linha */
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Estilo do card de produto */
+.product-card {
+  background-color: #2a2a2a;
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  background-color: #5b5b5b;
+}
+
+.product-card-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
