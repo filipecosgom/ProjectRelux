@@ -112,7 +112,7 @@ function AdminPanel() {
     }
   }, [activePanel, token]);
 
-  // Busca os produtos ao abrir o painel de "Gerir Produtos"
+  // Busca os produtos e categorias ao abrir o painel de "Gerir Produtos"
   useEffect(() => {
     if (activePanel === "products") {
       fetchProducts();
@@ -361,14 +361,16 @@ function AdminPanel() {
           Gerir Categorias
         </button>
       </div>
-
       {/* Painel de Gerir Utilizadores */}
       {activePanel === "users" && (
         <div className="admin-panel-content">
           <h2>Gerir Utilizadores</h2>
           <button
             className="create-user-button"
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              console.log("Abrindo modal de criação de utilizador");
+              setShowCreateModal(true);
+            }}
           >
             + Criar Novo Utilizador
           </button>
@@ -460,61 +462,6 @@ function AdminPanel() {
         </div>
       )}
 
-      {/* Painel de Gerir Produtos */}
-      {activePanel === "products" && (
-        <div className="admin-panel-content">
-          <h2>Gerir Produtos</h2>
-          <button
-            className="create-product-button"
-            onClick={() => setShowCreateProductModal(true)}
-          >
-            + Criar Novo Produto
-          </button>
-          {loading ? (
-            <p>Carregando produtos...</p>
-          ) : (
-            <div className="products-cards-container">
-              {products.map((product) => (
-                <div className="product-card" key={product.id}>
-                  <div className="product-card-column">
-                    <img
-                      src={product.imagem || "https://via.placeholder.com/70"}
-                      alt={product.title}
-                      className="product-card-image"
-                    />
-                    <h3>{product.title}</h3>
-                    <p>
-                      <strong>Categoria:</strong> {product.category.nome}
-                    </p>
-                    <p>
-                      <strong>Preço:</strong> {product.price} €
-                    </p>
-                    <p>
-                      <strong>Estado:</strong> {product.state}
-                    </p>
-                  </div>
-                  <div className="product-card-actions">
-                    <button
-                      className="edit-button"
-                      onClick={() => handleEditProduct(product)}
-                    >
-                      <FaEdit /> Editar
-                    </button>
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDeleteProduct(product.id)}
-                    >
-                      <FaTrash /> Apagar
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Modal de Criação de Utilizador */}
       {showCreateModal && (
         <div className="modal">
           <div className="modal-content">
@@ -602,6 +549,159 @@ function AdminPanel() {
               <div className="modal-buttons">
                 <button type="submit">Criar</button>
                 <button type="button" onClick={() => setShowCreateModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Painel de Gerir Produtos */}
+      {activePanel === "products" && (
+        <div className="admin-panel-content">
+          <h2>Gerir Produtos</h2>
+          <button
+            className="create-product-button"
+            onClick={() => setShowCreateProductModal(true)}
+          >
+            + Criar Novo Produto
+          </button>
+          {loading ? (
+            <p>Carregando produtos...</p>
+          ) : (
+            <div className="products-cards-container">
+              {products.map((product) => (
+                <div className="product-card" key={product.id}>
+                  <div className="product-card-column">
+                    <img
+                      src={product.imagem || "https://via.placeholder.com/70"}
+                      alt={product.title}
+                      className="product-card-image"
+                    />
+                    <h3>{product.title}</h3>
+                    <p>
+                      <strong>Categoria:</strong> {product.category.nome}
+                    </p>
+                    <p>
+                      <strong>Preço:</strong> {product.price} €
+                    </p>
+                    <p>
+                      <strong>Estado:</strong> {product.state}
+                    </p>
+                  </div>
+                  <div className="product-card-actions">
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      <FaEdit /> Editar
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteProduct(product.id)}
+                    >
+                      <FaTrash /> Apagar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+      {/* Modal de Criação de Produto */}
+      {showCreateProductModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Criar Novo Produto</h3>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleCreateProduct}>
+              <label>
+                Título:
+                <input
+                  type="text"
+                  name="title"
+                  value={newProduct.title}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, title: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Categoria:
+                <select
+                  name="category"
+                  value={newProduct.category}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, category: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.nome}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Preço:
+                <input
+                  type="number"
+                  name="price"
+                  value={newProduct.price}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, price: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                URL da Imagem:
+                <input
+                  type="text"
+                  name="imagem"
+                  value={newProduct.imagem}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, imagem: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Localização:
+                <input
+                  type="text"
+                  name="local"
+                  value={newProduct.local}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, local: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Descrição:
+                <textarea
+                  name="description"
+                  value={newProduct.description}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Criar</button>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateProductModal(false)}
+                >
                   Cancelar
                 </button>
               </div>
@@ -714,6 +814,125 @@ function AdminPanel() {
               <div className="modal-buttons">
                 <button type="submit">Salvar</button>
                 <button type="button" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Edição de Produto */}
+      {showProductModal && editProduct && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Editar Produto</h3>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleSaveProduct}>
+              <label>
+                Título:
+                <input
+                  type="text"
+                  name="title"
+                  value={editProduct.title}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, title: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Categoria:
+                <select
+                  name="category"
+                  value={editProduct.category.id}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      category: { id: e.target.value },
+                    })
+                  }
+                  required
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.nome}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Preço:
+                <input
+                  type="number"
+                  name="price"
+                  value={editProduct.price}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, price: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                URL da Imagem:
+                <input
+                  type="text"
+                  name="imagem"
+                  value={editProduct.imagem}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, imagem: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Localização:
+                <input
+                  type="text"
+                  name="local"
+                  value={editProduct.local}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, local: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Descrição:
+                <textarea
+                  name="description"
+                  value={editProduct.description}
+                  onChange={(e) =>
+                    setEditProduct({
+                      ...editProduct,
+                      description: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </label>
+              <label>
+                Estado:
+                <select
+                  name="state"
+                  value={editProduct.state}
+                  onChange={(e) =>
+                    setEditProduct({ ...editProduct, state: e.target.value })
+                  }
+                  required
+                >
+                  <option value="DISPONIVEL">Disponível</option>
+                  <option value="RESERVADO">Reservado</option>
+                  <option value="COMPRADO">Comprado</option>
+                  <option value="APAGADO">Apagado</option>
+                </select>
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Salvar</button>
+                <button
+                  type="button"
+                  onClick={() => setShowProductModal(false)}
+                >
                   Cancelar
                 </button>
               </div>

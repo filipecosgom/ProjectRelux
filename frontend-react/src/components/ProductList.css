@@ -2,8 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 20px; /* Espaçamento entre os cards */
   padding: 20px;
+  position: relative; /* Garante que os elementos filhos respeitem o layout */
 }
 
 .product-card {
@@ -13,12 +14,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   max-width: 300px;
   width: 100%;
+  min-height: 350px;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: background 0.3s ease, transform 0.2s ease; /* Adiciona transição suave */
-  cursor: pointer; /* Altera o cursor para "mão" */
+  text-align: center; /* Garante que o texto fique centralizado */
+  gap: 10px; /* Espaçamento entre os elementos */
 }
 
 .product-card:hover {
@@ -29,15 +31,23 @@
 
 .product-image {
   width: 100%;
-  height: auto;
+  max-height: 60%; /* Limita a altura máxima da imagem */
+  object-fit: contain; /* Garante que a imagem seja cortada proporcionalmente */
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .product-card h2 {
   margin: 10px 0;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  overflow: auto; /* Evita que o texto ultrapasse os limites */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  white-space: nowrap; /* Mantém o texto em uma única linha */
 }
 
 .product-card p {
   margin: 5px 0;
+  font-size: 1rem;
+  line-height: 1.1;
 }
