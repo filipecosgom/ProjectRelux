@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
-import { FaUsersCog } from "react-icons/fa";
+import { FaUsersCog, FaEdit, FaTrash } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
 import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
@@ -15,7 +15,9 @@ function AdminPanel() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({});
-  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal
+  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
+  const [showCreateModal, setShowCreateModal] = useState(false); // Estado para controlar o modal de criação
+  const [editUser, setEditUser] = useState(null); // Estado para o utilizador a ser editado
   const [newUser, setNewUser] = useState({
     username: "",
     password: "",
@@ -25,7 +27,7 @@ function AdminPanel() {
     phone: "",
     imagem: "",
     isAdmin: false,
-  }); // Estado para os dados do novo utilizador
+  }); // Estado para o novo utilizador
   const [error, setError] = useState(null);
 
   // Redireciona para a homepage se o usuário não for admin
@@ -90,7 +92,7 @@ function AdminPanel() {
     }
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:8080/filipe-proj4/rest/users/register",
         newUser,
         {
@@ -101,7 +103,7 @@ function AdminPanel() {
       );
 
       alert(`O utilizador ${newUser.username} foi criado com sucesso!`);
-      setShowModal(false); // Fecha o modal
+      setShowCreateModal(false); // Fecha o modal
       fetchUsers(); // Atualiza a lista de utilizadores
     } catch (error) {
       console.error("Erro ao criar utilizador:", error);
@@ -111,10 +113,76 @@ function AdminPanel() {
     }
   };
 
-  // Função para lidar com mudanças nos campos do formulário
-  const handleChange = (event) => {
+  // Função para lidar com mudanças nos campos do formulário de criação
+  const handleNewUserChange = (event) => {
     const { name, value, type, checked } = event.target;
     setNewUser((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  // Função para apagar um utilizador
+  const handleDeleteUser = async (username) => {
+    if (
+      !window.confirm(`Tem certeza que deseja apagar o utilizador ${username}?`)
+    ) {
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `http://localhost:8080/filipe-proj4/rest/users/delete/${username}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      alert(`O utilizador ${username} foi apagado com sucesso!`);
+      fetchUsers(); // Atualiza a lista de utilizadores
+    } catch (error) {
+      console.error("Erro ao apagar utilizador:", error);
+      alert("Erro ao apagar utilizador. Tente novamente.");
+    }
+  };
+
+  // Função para abrir o modal de edição
+  const handleEditUser = (user) => {
+    setEditUser(user);
+    setShowModal(true);
+  };
+
+  // Função para salvar as alterações do utilizador
+  const handleSaveUser = async (event) => {
+    event.preventDefault();
+    setError(null);
+
+    try {
+      await axios.put(
+        "http://localhost:8080/filipe-proj4/rest/users/update",
+        editUser,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      alert(`O utilizador ${editUser.username} foi atualizado com sucesso!`);
+      setShowModal(false); // Fecha o modal
+      fetchUsers(); // Atualiza a lista de utilizadores
+    } catch (error) {
+      console.error("Erro ao atualizar utilizador:", error);
+      setError(
+        error.response?.data || "Erro ao atualizar utilizador. Tente novamente."
+      );
+    }
+  };
+
+  // Função para lidar com mudanças nos campos do formulário de edição
+  const handleEditChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setEditUser((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -163,7 +231,7 @@ function AdminPanel() {
           <h2>Gerir Utilizadores</h2>
           <button
             className="create-user-button"
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowCreateModal(true)}
           >
             + Criar Novo Utilizador
           </button>
@@ -233,6 +301,20 @@ function AdminPanel() {
                         )}
                       </button>
                     </p>
+                    <div className="user-card-actions">
+                      <button
+                        className="edit-button"
+                        onClick={() => handleEditUser(user)}
+                      >
+                        <FaEdit /> Editar
+                      </button>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDeleteUser(user.username)}
+                      >
+                        <FaTrash /> Apagar
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -242,7 +324,7 @@ function AdminPanel() {
       )}
 
       {/* Modal de Criação de Utilizador */}
-      {showModal && (
+      {showCreateModal && (
         <div className="modal">
           <div className="modal-content">
             <h3>Criar Novo Utilizador</h3>
@@ -254,7 +336,7 @@ function AdminPanel() {
                   type="text"
                   name="username"
                   value={newUser.username}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -264,7 +346,7 @@ function AdminPanel() {
                   type="password"
                   name="password"
                   value={newUser.password}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -274,7 +356,7 @@ function AdminPanel() {
                   type="text"
                   name="firstName"
                   value={newUser.firstName}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -284,7 +366,7 @@ function AdminPanel() {
                   type="text"
                   name="lastName"
                   value={newUser.lastName}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -294,7 +376,7 @@ function AdminPanel() {
                   type="email"
                   name="email"
                   value={newUser.email}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -304,7 +386,7 @@ function AdminPanel() {
                   type="text"
                   name="phone"
                   value={newUser.phone}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                   required
                 />
               </label>
@@ -314,7 +396,7 @@ function AdminPanel() {
                   type="text"
                   name="imagem"
                   value={newUser.imagem}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                 />
               </label>
               <label>
@@ -323,11 +405,123 @@ function AdminPanel() {
                   type="checkbox"
                   name="isAdmin"
                   checked={newUser.isAdmin}
-                  onChange={handleChange}
+                  onChange={handleNewUserChange}
                 />
               </label>
               <div className="modal-buttons">
                 <button type="submit">Criar</button>
+                <button type="button" onClick={() => setShowCreateModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Edição de Utilizador */}
+      {showModal && editUser && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Editar Utilizador</h3>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleSaveUser}>
+              <label>
+                Username:
+                <input
+                  type="text"
+                  name="username"
+                  value={editUser.username}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Password:
+                <input
+                  type="password"
+                  name="password"
+                  value={editUser.password}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                First Name:
+                <input
+                  type="text"
+                  name="firstName"
+                  value={editUser.firstName}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Last Name:
+                <input
+                  type="text"
+                  name="lastName"
+                  value={editUser.lastName}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Email:
+                <input
+                  type="email"
+                  name="email"
+                  value={editUser.email}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Phone:
+                <input
+                  type="text"
+                  name="phone"
+                  value={editUser.phone}
+                  onChange={handleEditChange}
+                  required
+                />
+              </label>
+              <label>
+                Image URL:
+                <input
+                  type="text"
+                  name="imagem"
+                  value={editUser.imagem}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <label>
+                Admin:
+                <input
+                  type="checkbox"
+                  name="isAdmin"
+                  checked={editUser.isAdmin}
+                  onChange={handleEditChange}
+                />
+              </label>
+              <label>
+                Ativo:
+                <input
+                  type="checkbox"
+                  name="isDeleted"
+                  checked={!editUser.isDeleted}
+                  onChange={(e) =>
+                    handleEditChange({
+                      target: {
+                        name: "isDeleted",
+                        value: !e.target.checked,
+                      },
+                    })
+                  }
+                />
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Salvar</button>
                 <button type="button" onClick={() => setShowModal(false)}>
                   Cancelar
                 </button>
