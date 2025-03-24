@@ -66,6 +66,11 @@ function AdminPanel() {
     }));
   };
 
+  // Função para criar um novo utilizador
+  const handleCreateUser = () => {
+    alert("Função para criar um novo utilizador ainda não implementada.");
+  };
+
   return (
     <div className="admin-panel-container">
       <h1>Painel Administrativo</h1>
@@ -107,6 +112,9 @@ function AdminPanel() {
       {activePanel === "users" && (
         <div className="admin-panel-content">
           <h2>Gerir Utilizadores</h2>
+          <button className="create-user-button" onClick={handleCreateUser}>
+            + Criar Novo Utilizador
+          </button>
           {loading ? (
             <p>Carregando utilizadores...</p>
           ) : (
