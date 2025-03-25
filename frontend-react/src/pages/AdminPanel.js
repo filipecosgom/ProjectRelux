@@ -246,6 +246,7 @@ function AdminPanel() {
   // Função para criar um novo produto
   const handleCreateProduct = async (event) => {
     event.preventDefault();
+    console.log("Dados enviados:", newProduct);
     setError(null);
 
     try {
@@ -633,10 +634,19 @@ function AdminPanel() {
                 Categoria:
                 <select
                   name="category"
-                  value={newProduct.category}
-                  onChange={(e) =>
-                    setNewProduct({ ...newProduct, category: e.target.value })
-                  }
+                  value={newProduct.category.id || ""}
+                  onChange={(e) => {
+                    const selectedCategory = categories.find(
+                      (category) => category.id === parseInt(e.target.value)
+                    );
+                    setNewProduct({
+                      ...newProduct,
+                      category: {
+                        id: selectedCategory.id,
+                        nome: selectedCategory.nome,
+                      },
+                    });
+                  }}
                   required
                 >
                   <option value="">Selecione uma categoria</option>
@@ -654,7 +664,10 @@ function AdminPanel() {
                   name="price"
                   value={newProduct.price}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, price: e.target.value })
+                    setNewProduct({
+                      ...newProduct,
+                      price: parseFloat(e.target.value),
+                    })
                   }
                   required
                 />
