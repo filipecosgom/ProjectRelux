@@ -184,7 +184,9 @@ public class ProductService {
         }
 
 // Para outras alterações, verificar se o usuário é o autor do produto
-        if (!product.getUserAutor().equals(user.getUsername())) {
+        System.out.println("User: " + user.getUsername());
+        System.out.println("Product user: " + product.getUserAutor());
+        if (product.getUserAutor().equals(user.getUsername())) {
             return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para alterar o estado deste produto.").build();
         }
 
