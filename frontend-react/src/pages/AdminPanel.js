@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
+import CategoryManager from "../components/category/CategoryManager";
 import { FaUsersCog, FaEdit, FaTrash } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
 import { FaRegEyeSlash, FaEye } from "react-icons/fa";
@@ -956,6 +957,8 @@ function AdminPanel() {
           </div>
         </div>
       )}
+
+      {activePanel === "categories" && <CategoryManager token={token} />}
     </div>
   );
 }

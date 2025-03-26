@@ -1,0 +1,42 @@
+.category-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  color: white;
+}
+
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #333;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.category-item button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.category-item button:hover {
+  background-color: #555;
+}
+
+.category-item input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
