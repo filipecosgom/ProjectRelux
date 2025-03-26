@@ -184,10 +184,11 @@ public class ProductService {
         }
 
 // Para outras alterações, verificar se o usuário é o autor do produto
-        System.out.println("User: " + user.getUsername());
-        System.out.println("Product user: " + product.getUserAutor());
+
         if (product.getUserAutor().equals(user.getUsername())) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para alterar o estado deste produto.").build();
+            System.out.println("User: " + user.getUsername());
+            System.out.println("Product user: " + product.getUserAutor());
+            return Response.status(Response.Status.FORBIDDEN).entity("Você está a tentar alterar o estado de um produto que é seu.").build();
         }
 
         boolean success = productBean.updateProductState(id, productDto.getState());
