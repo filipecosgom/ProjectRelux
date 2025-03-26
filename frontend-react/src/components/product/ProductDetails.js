@@ -8,7 +8,7 @@ const ProductDetails = () => {
   const { id } = useParams(); // Obtém o ID do produto da URL
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
-
+  const [showConfirmation, setShowConfirmation] = useState(false); // Estado para controlar a mensagem de confirmação
   const token = useUserStore((state) => state.token);
   const username = useUserStore((state) => state.username);
   const isAdmin = useUserStore((state) => state.isAdmin);
@@ -51,9 +51,31 @@ const ProductDetails = () => {
     }
   };
 
+  const handleBuy = async () => {
+    try {
+      console.log("Token enviado:", token);
+      console.log("Enviando estado:", { state: "COMPRADO" });
+      await axios.put(
+        `http://localhost:8080/filipe-proj4/rest/products/update-state/${id}`,
+        { state: "COMPRADO" }, // Atualiza o estado para "COMPRADO"
+        {
+          headers: { Authorization: token },
+          "Content-Type": "application/json",
+        }
+      );
+      alert("Compra efetuada com sucesso!");
+      navigate("/"); // Redireciona para a página inicial após a compra
+    } catch (error) {
+      console.error("Erro ao comprar produto:", error);
+      alert("Erro ao comprar produto.");
+    }
+  };
+
   if (!product) {
-    return <p>Carregando...</p>;
+    return <p>A carregar...</p>;
   }
+
+
 
   return (
     <div className="product-details">
@@ -80,10 +102,33 @@ const ProductDetails = () => {
         <p>
           <strong>Autor:</strong> {product.userAutor}
         </p>
-        {(isAdmin || username === product.userAutor) && (
+        {isAdmin || username === product.userAutor ? (
           <div className="product-actions">
             <button onClick={handleEdit}>Editar</button>
             <button onClick={handleDelete}>Excluir</button>
+          </div>
+        ) : (
+          product.state !== "COMPRADO" && (
+            <button
+              onClick={() => {
+                if (username) {
+                  setShowConfirmation(true);
+                } else {
+                  alert("Necessita estar logado para comprar. Faça login aqui");
+                  navigate("/Login");
+                }
+              }}
+            >
+              Comprar
+            </button>
+          )
+        )}
+
+        {showConfirmation && (
+          <div className="confirmation-dialog">
+            <p>Tem a certeza que deseja comprar {product.title}?</p>
+            <button onClick={handleBuy}>Sim</button>
+            <button onClick={() => setShowConfirmation(false)}>Não</button>
           </div>
         )}
       </div>

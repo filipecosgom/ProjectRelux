@@ -107,9 +107,12 @@ public class ProductBean implements Serializable {
     public boolean updateProductState(int id, EstadosDoProduto state) {
         ProductEntity productEntity = productDao.findById(id);
         if (productEntity != null) {
-            productEntity.setState(state);
-            productDao.merge(productEntity);
-            return true;
+            // Permitir apenas a alteração para o estado "COMPRADO"
+            if (state == EstadosDoProduto.COMPRADO) {
+                productEntity.setState(state);
+                productDao.merge(productEntity);
+                return true;
+            }
         }
         return false;
     }

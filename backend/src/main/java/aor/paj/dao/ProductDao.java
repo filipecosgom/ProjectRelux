@@ -20,13 +20,13 @@ public class ProductDao extends AbstratDao<ProductEntity> {
     }
 
     public ProductEntity findById(int id) {
-        try{
+        try {
             return (ProductEntity) em.createNamedQuery("Product.findProductsById").setParameter("id", id).getSingleResult();
-        }
-        catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }
+
     public List<ProductEntity> findProductByUser(UserEntity userEntity) {
         try {
             return em.createNamedQuery("Product.findProductByUser", ProductEntity.class).setParameter("owner", userEntity).getResultList();
@@ -34,6 +34,7 @@ public class ProductDao extends AbstratDao<ProductEntity> {
             return null;
         }
     }
+
     public List<ProductEntity> findProductByCategory(int categoryId) {
         try {
             return em.createNamedQuery("Product.findProductByCategory", ProductEntity.class)
@@ -53,6 +54,17 @@ public class ProductDao extends AbstratDao<ProductEntity> {
     public void remove(ProductEntity productEntity) {
         em.remove(em.contains(productEntity) ? productEntity : em.merge(productEntity));
     }
+
+//    public List<ProductEntity> findProductsByState(EstadosDoProduto state) {
+//        try {
+//            return em.createNamedQuery("ProductEntity.findByState", ProductEntity.class)
+//                    .setParameter("state", state)
+//                    .getResultList();
+//        } catch (NoResultException e) {
+//            return null;
+//        }
+//    }
+
 }
 
 

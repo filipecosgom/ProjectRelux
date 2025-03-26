@@ -28,22 +28,24 @@ function ProductList() {
 
   return (
     <div className="product-list">
-      {products.map((product) => (
-        <div
-          className="product-card"
-          key={product.id}
-          onClick={() => handleCardClick(product.id)} // Torna o card clicável
-        >
-          <img
-            src={product.imagem}
-            alt={product.title}
-            className="product-image"
-          />
-          <h2>{product.title}</h2>
-          <p>Preço: {product.price} €</p>
-          <p>Localização: {product.local}</p>
-        </div>
-      ))}
+      {products
+        .filter((product) => product.state !== "COMPRADO") // Filtra produtos comprados
+        .map((product) => (
+          <div
+            className="product-card"
+            key={product.id}
+            onClick={() => handleCardClick(product.id)} // Torna o card clicável
+          >
+            <img
+              src={product.imagem}
+              alt={product.title}
+              className="product-image"
+            />
+            <h2>{product.title}</h2>
+            <p>Preço: {product.price} €</p>
+            <p>Localização: {product.local}</p>
+          </div>
+        ))}
     </div>
   );
 }

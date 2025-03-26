@@ -1,4 +1,5 @@
 package aor.paj.dao;
+
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -8,7 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 
 @Stateless
-public class UserDao extends AbstratDao<UserEntity>{
+public class UserDao extends AbstratDao<UserEntity> {
     private static final long serialVersionUID = 1L;
 
 

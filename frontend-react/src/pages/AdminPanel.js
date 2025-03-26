@@ -7,6 +7,9 @@ import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import "./AdminPanel.css";
 
+//todo user não admin poder editar o seu perfil
+//fixme comprar produto não funciona. 403 error response
+
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
   const token = userStore((state) => state.token);
