@@ -102,7 +102,7 @@ const ProductDetails = () => {
         <p>
           <strong>Autor:</strong> {product.userAutor}
         </p>
-        {isAdmin || username === product.userAutor ? (
+        {username === product.userAutor ? (
           <div className="product-actions">
             <button onClick={handleEdit}>Editar</button>
             <button onClick={handleDelete}>Excluir</button>
