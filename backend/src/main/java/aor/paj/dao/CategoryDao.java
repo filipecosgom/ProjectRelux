@@ -37,4 +37,8 @@ public class CategoryDao extends AbstratDao<CategoryEntity> {
             return null;
         }
     }
+
+    public void update(CategoryEntity category) {
+        em.merge(category);
+    }
 }

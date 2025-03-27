@@ -68,6 +68,32 @@ public class CategoryService {
         CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName());
         return Response.ok(categoryDto).build();
     }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateCategory(
+            @HeaderParam("Authorization") String token,
+            @PathParam("id") int id,
+            CategoryDto categoryDto
+    ) {
+        // Verifica se o token é válido e se o usuário é administrador
+        UserEntity user = userDao.findByToken(token);
+        if (user == null || !user.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissões para esta ação.").build();
+        }
+
+        // Busca a categoria pelo ID
+        CategoryEntity category = categoryDao.findById(id);
+        if (category == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Categoria não encontrada.").build();
+        }
+
+        // Atualiza o nome da categoria
+        category.setName(categoryDto.getNome());
+        categoryDao.update(category);
+
+        return Response.status(Response.Status.OK).entity("Categoria atualizada com sucesso!").build();
+    }
 }
 
 
