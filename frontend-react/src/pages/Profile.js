@@ -6,12 +6,15 @@ import { GiAllSeeingEye } from "react-icons/gi"; // Ícone para mostrar a senha
 import { MdCancel } from "react-icons/md";
 import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
+import EditUserModal from "../components/user/EditUserModal"; // Modal de edição de utilizador
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false); // Estado para alternar a exibição da senha
   const token = userStore((state) => state.token);
-  const navigate = useNavigate(); // Hook para redirecionar o usuário
+  const navigate = useNavigate();                         // Hook para redirecionar o usuário
+  const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar/ocultar o modal de edição
+  const [editUser, setEditUser] = useState(null); // Estado para armazenar o utilizador a ser editado
 
   // Redireciona para a homepage se o token for removido
   useEffect(() => {
@@ -49,6 +52,11 @@ function Profile() {
       fetchUserDetails();
     }
   }, [token]);
+
+    const handleEditProfile = () => {
+      setEditUser(userDetails); // Define os detalhes do utilizador como o utilizador a ser editado
+      setShowEditModal(true); // Abre o modal
+    };
 
   if (!userDetails) {
     return (
@@ -102,7 +110,27 @@ function Profile() {
             </>
           )}
         </p>
+        <button className="edit-profile-button" onClick={handleEditProfile}>
+          Editar Perfil
+        </button>
       </div>
+      {showEditModal && (
+        <EditUserModal
+          user={editUser}
+          isVisible={showEditModal}
+          onClose={() => setShowEditModal(false)} // Fecha o modal
+          onSave={(e) => {
+            e.preventDefault();
+            console.log("Salvando alterações do perfil:", editUser);
+            setShowEditModal(false);
+          }}
+          onChange={(e) => {
+            const { name, value } = e.target;
+            setEditUser((prev) => ({ ...prev, [name]: value }));
+          }}
+          error={null} 
+        />
+      )}
     </div>
   );
 }

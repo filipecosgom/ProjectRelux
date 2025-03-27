@@ -8,6 +8,7 @@ import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
+import EditUserModal from "../components/user/EditUserModal";
 
 //todo user não admin poder editar o seu perfil
 //fixme comprar produto não funciona. 403 error response
@@ -381,7 +382,7 @@ function AdminPanel() {
             + Criar Novo Utilizador
           </button>
           {loading ? (
-            <p>Carregando utilizadores...</p>
+            <p>A carregar utilizadores...</p>
           ) : (
             <div className="users-cards-container">
               {users.map((user) => (
@@ -730,114 +731,14 @@ function AdminPanel() {
 
       {/* Modal de Edição de Utilizador */}
       {showModal && editUser && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Editar Utilizador</h3>
-            {error && <p className="error">{error}</p>}
-            <form onSubmit={handleSaveUser}>
-              <label>
-                Username:
-                <input
-                  type="text"
-                  name="username"
-                  value={editUser.username}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  name="password"
-                  value={editUser.password}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                First Name:
-                <input
-                  type="text"
-                  name="firstName"
-                  value={editUser.firstName}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                Last Name:
-                <input
-                  type="text"
-                  name="lastName"
-                  value={editUser.lastName}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                Email:
-                <input
-                  type="email"
-                  name="email"
-                  value={editUser.email}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                Phone:
-                <input
-                  type="text"
-                  name="phone"
-                  value={editUser.phone}
-                  onChange={handleEditChange}
-                  required
-                />
-              </label>
-              <label>
-                Image URL:
-                <input
-                  type="text"
-                  name="imagem"
-                  value={editUser.imagem}
-                  onChange={handleEditChange}
-                />
-              </label>
-              <label>
-                Admin:
-                <input
-                  type="checkbox"
-                  name="isAdmin"
-                  checked={editUser.isAdmin}
-                  onChange={handleEditChange}
-                />
-              </label>
-              <label>
-                Ativo:
-                <input
-                  type="checkbox"
-                  name="isDeleted"
-                  checked={!editUser.isDeleted}
-                  onChange={(e) =>
-                    handleEditChange({
-                      target: {
-                        name: "isDeleted",
-                        value: !e.target.checked,
-                      },
-                    })
-                  }
-                />
-              </label>
-              <div className="modal-buttons">
-                <button type="submit">Salvar</button>
-                <button type="button" onClick={() => setShowModal(false)}>
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EditUserModal
+          user={editUser}
+          isVisible={showModal}
+          onClose={() => setShowModal(false)}
+          onSave={handleSaveUser}
+          onChange={handleEditChange}
+          error={error}
+        />
       )}
 
       {/* Modal de Edição de Produto */}
