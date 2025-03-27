@@ -7,12 +7,13 @@ import { MdCancel } from "react-icons/md";
 import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
 import EditUserModal from "../components/user/EditUserModal"; // Modal de edição de utilizador
+import { updateUser } from "../services/userService";
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false); // Estado para alternar a exibição da senha
   const token = userStore((state) => state.token);
-  const navigate = useNavigate();                         // Hook para redirecionar o usuário
+  const navigate = useNavigate(); // Hook para redirecionar o usuário
   const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar/ocultar o modal de edição
   const [editUser, setEditUser] = useState(null); // Estado para armazenar o utilizador a ser editado
 
@@ -53,10 +54,10 @@ function Profile() {
     }
   }, [token]);
 
-    const handleEditProfile = () => {
-      setEditUser(userDetails); // Define os detalhes do utilizador como o utilizador a ser editado
-      setShowEditModal(true); // Abre o modal
-    };
+  const handleEditProfile = () => {
+    setEditUser(userDetails); // Define os detalhes do utilizador como o utilizador a ser editado
+    setShowEditModal(true); // Abre o modal
+  };
 
   if (!userDetails) {
     return (
@@ -119,16 +120,31 @@ function Profile() {
           user={editUser}
           isVisible={showEditModal}
           onClose={() => setShowEditModal(false)} // Fecha o modal
-          onSave={(e) => {
-            e.preventDefault();
-            console.log("Salvando alterações do perfil:", editUser);
-            setShowEditModal(false);
+          onSave={async (e) => {
+            e.preventDefault(); // Evita o comportamento padrão do formulário
+            try {
+              // Chama o serviço para atualizar o utilizador
+              const updatedUser = await updateUser(editUser, token);
+
+              // Atualiza os detalhes do utilizador no estado
+              setUserDetails(updatedUser);
+
+              // Exibe uma mensagem de sucesso
+              alert("Perfil atualizado com sucesso!");
+
+              // Fecha o modal
+              setShowEditModal(false);
+            } catch (error) {
+              // Exibe uma mensagem de erro, caso algo dê errado
+              console.error("Erro ao atualizar o perfil:", error);
+              alert("Erro ao atualizar o perfil. Tente novamente.");
+            }
           }}
           onChange={(e) => {
             const { name, value } = e.target;
             setEditUser((prev) => ({ ...prev, [name]: value }));
           }}
-          error={null} 
+          error={null}
         />
       )}
     </div>

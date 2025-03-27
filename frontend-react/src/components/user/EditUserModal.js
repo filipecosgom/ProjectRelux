@@ -22,7 +22,6 @@ const EditUserModal = ({
     <div className="modal">
       <div className="modal-content">
         <h3>Editar Utilizador</h3>
-        {error && <p className="error">{error}</p>}
         <form onSubmit={onSave}>
           <label>
             Username:

@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:8080/filipe-proj4/rest/users";
  * Atualiza os dados de um utilizador.
  * @param {Object} user - Os dados do utilizador a serem atualizados.
  * @param {string} token - O token de autenticação.
- * @returns {Promise<Object>} - Os dados atualizados do utilizador.
+ * @returns {Promise<Object|string>} - Os dados atualizados do utilizador ou uma mensagem de texto.
  */
 export const updateUser = async (user, token) => {
   try {
@@ -20,8 +20,10 @@ export const updateUser = async (user, token) => {
     if (!response.ok) {
       throw new Error("Erro ao atualizar o utilizador.");
     }
-
-    return await response.json(); // Retorna os dados atualizados do utilizador
+      if (response.status === 200) {
+          return true;
+    }
+   
   } catch (error) {
     console.error("Erro no serviço de atualização de utilizador:", error);
     throw error; // Propaga o erro para ser tratado onde o serviço for chamado

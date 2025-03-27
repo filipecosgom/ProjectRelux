@@ -9,6 +9,7 @@ import axios from "axios";
 import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
+import { updateUser } from "../services/userService";
 
 //todo user não admin poder editar o seu perfil
 //fixme comprar produto não funciona. 403 error response
@@ -220,22 +221,25 @@ function AdminPanel() {
     setError(null);
 
     try {
-      await axios.put(
-        "http://localhost:8080/filipe-proj4/rest/users/update",
-        editUser,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      alert(`O utilizador ${editUser.username} foi atualizado com sucesso!`);
-      setShowModal(false); // Fecha o modal
-      fetchUsers(); // Atualiza a lista de utilizadores
+      const updatedUser = await updateUser(editUser, token); // Chama o serviço
+
+      if (updatedUser) {
+        // Atualiza a lista de utilizadores
+        fetchUsers();
+        alert(`O utilizador ${editUser.username} foi atualizado com sucesso!`);
+
+      } 
+
+      // Fecha o modal
+      setShowModal(false);
+
+
     } catch (error) {
       console.error("Erro ao atualizar utilizador:", error);
+
+      // Exibe a mensagem de erro no modal
       setError(
-        error.response?.data || "Erro ao atualizar utilizador. Tente novamente."
+        error.message || "Erro ao atualizar utilizador. Tente novamente."
       );
     }
   };
