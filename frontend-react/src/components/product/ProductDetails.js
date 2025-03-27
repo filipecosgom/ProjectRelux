@@ -3,15 +3,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { userStore as useUserStore } from "../../stores/UserStore";
 import "./ProductDetails.css";
+import EditProductModal from "./EditProductModal";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Obtém o ID do produto da URL
-  const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
+  const navigate = useNavigate(); // Hook de navegação
+  const [product, setProduct] = useState(null); // Estado para armazenar o produto
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para controlar a mensagem de confirmação
-  const token = useUserStore((state) => state.token);
-  const username = useUserStore((state) => state.username);
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const token = useUserStore((state) => state.token); // Obtém o token do usuário
+  const username = useUserStore((state) => state.username); // Obtém o username do usuário
+  const isAdmin = useUserStore((state) => state.isAdmin); // Verifica se o usuário é admin
+  const [showEditModal, setShowEditModal] = useState(false); // Controla a visibilidade do modal
+  const [editProduct, setEditProduct] = useState(null); // Armazena o produto a ser editado
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -31,8 +34,8 @@ const ProductDetails = () => {
   }, [id, navigate]);
 
   const handleEdit = () => {
-    // Lógica para editar o produto
-    alert("Função de edição ainda não implementada.");
+    setEditProduct(product); // Define o produto atual como o produto a ser editado
+    setShowEditModal(true); // Abre o modal
   };
 
   const handleDelete = async () => {
@@ -71,11 +74,28 @@ const ProductDetails = () => {
     }
   };
 
+  const handleSaveProduct = async (event) => {
+    event.preventDefault();             // Evita o comportamento padrão do formulário
+    try {
+      await axios.put(
+        `http://localhost:8080/filipe-proj4/rest/products/${editProduct.id}`,
+        editProduct,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      alert("Produto atualizado com sucesso!");
+      setShowEditModal(false);          // Fecha o modal
+      setProduct(editProduct);          // Atualiza o produto exibido na página
+    } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+      alert("Erro ao atualizar produto. Tente novamente.");
+    }
+  };
+
   if (!product) {
     return <p>A carregar...</p>;
   }
-
-
 
   return (
     <div className="product-details">
@@ -132,6 +152,18 @@ const ProductDetails = () => {
           </div>
         )}
       </div>
+      {/* Modal de Edição */}
+      {showEditModal && (
+        <EditProductModal
+          product={editProduct}
+          categories={[product.category]} // Passa a categoria atual como única opção
+          isVisible={showEditModal}
+          onClose={() => setShowEditModal(false)} // Fecha o modal
+          onSave={handleSaveProduct} // Salva as alterações
+          onChange={setEditProduct} // Atualiza o estado do produto durante a edição
+          error={null} // Pode adicionar lógica para exibir erros, se necessário
+        />
+      )}
     </div>
   );
 };

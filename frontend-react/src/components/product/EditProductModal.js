@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./EditProductModal.css";
 
 const EditProductModal = ({
@@ -10,22 +10,58 @@ const EditProductModal = ({
   onChange,
   error,
 }) => {
-  console.log("isVisible:", isVisible); // Verifica o valor de isVisible
+  const [priceError, setPriceError] = useState(""); // Erro de validação do preço
+
   if (!isVisible) return null;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "price") {
+      // Validação do preço
+      const priceRegex = /^\d+(\.\d{1,2})?$/; // Aceita números com até 2 casas decimais
+      if (!priceRegex.test(value) && value !== "") {
+        setPriceError(
+          "O preço deve ser um número válido com até 2 casas decimais."
+        );
+      } else {
+        setPriceError("");
+      }
+      onChange({ ...product, [name]: value });
+    } else {
+      onChange({ ...product, [name]: value });
+    }
+  };
+
+  const handleSaveProduct = (event) => {
+    event.preventDefault();
+
+    if (!product.title.trim()) {
+      alert("O título é obrigatório.");
+      return;
+    }
+
+    if (priceError) {
+      alert("Corrija os erros antes de salvar.");
+      return;
+    }
+
+    onSave(event); // Chama a função de salvar passada como prop
+  };
 
   return (
     <div className="modal">
       <div className="modal-content">
         <h3>Editar Produto</h3>
         {error && <p className="error">{error}</p>}
-        <form onSubmit={onSave}>
+        <form onSubmit={handleSaveProduct}>
           <label>
             Título:
             <input
               type="text"
               name="title"
               value={product.title}
-              onChange={(e) => onChange({ ...product, title: e.target.value })}
+              onChange={handleChange}
               required
             />
           </label>
@@ -53,14 +89,13 @@ const EditProductModal = ({
           <label>
             Preço:
             <input
-              type="number"
+              type="text"
               name="price"
               value={product.price}
-              onChange={(e) =>
-                onChange({ ...product, price: parseFloat(e.target.value) })
-              }
+              onChange={handleChange}
               required
             />
+            {priceError && <span className="error-message">{priceError}</span>}
           </label>
           <label>
             URL da Imagem:
@@ -68,7 +103,7 @@ const EditProductModal = ({
               type="text"
               name="imagem"
               value={product.imagem}
-              onChange={(e) => onChange({ ...product, imagem: e.target.value })}
+              onChange={handleChange}
             />
           </label>
           <label>
@@ -77,7 +112,7 @@ const EditProductModal = ({
               type="text"
               name="local"
               value={product.local}
-              onChange={(e) => onChange({ ...product, local: e.target.value })}
+              onChange={handleChange}
               required
             />
           </label>
@@ -86,9 +121,7 @@ const EditProductModal = ({
             <textarea
               name="description"
               value={product.description}
-              onChange={(e) =>
-                onChange({ ...product, description: e.target.value })
-              }
+              onChange={handleChange}
               required
             />
           </label>
@@ -97,9 +130,10 @@ const EditProductModal = ({
             <select
               name="state"
               value={product.state}
-              onChange={(e) => onChange({ ...product, state: e.target.value })}
+              onChange={handleChange}
               required
             >
+              <option value="RASCUNHO">Rascunho</option>
               <option value="DISPONIVEL">Disponível</option>
               <option value="RESERVADO">Reservado</option>
               <option value="COMPRADO">Comprado</option>
