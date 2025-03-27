@@ -1,0 +1,95 @@
+/* Fundo do modal */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro semi-transparente */
+  z-index: 1000; /* Certifique-se de que o modal está acima de outros elementos */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+  background: #2a2a2a; /* Fundo escuro */
+  color: white; /* Texto branco */
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para destacar o modal */
+}
+
+/* Título do modal */
+.modal-content h3 {
+  margin-bottom: 20px;
+  color: #ffd700; /* Título em dourado */
+  text-align: center;
+}
+
+/* Botões do modal */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-buttons button[type="submit"] {
+  background-color: #28a745; /* Verde para salvar */
+  color: white;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background-color: #218838; /* Verde mais escuro no hover */
+}
+
+.modal-buttons button[type="button"] {
+  background-color: #dc3545; /* Vermelho para cancelar */
+  color: white;
+}
+
+.modal-buttons button[type="button"]:hover {
+  background-color: #c82333; /* Vermelho mais escuro no hover */
+}
+
+/* Campos do formulário */
+.modal-content form label {
+  display: block;
+  margin-bottom: 10px;
+  color: white; /* Texto branco */
+}
+
+.modal-content form input,
+.modal-content form select,
+.modal-content form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #555; /* Borda escura */
+  border-radius: 4px;
+  background: #333; /* Fundo escuro */
+  color: white; /* Texto branco */
+  box-sizing: border-box;
+}
+
+.modal-content form textarea {
+  resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+.modal-content form input::placeholder,
+.modal-content form textarea::placeholder {
+  color: #aaa; /* Placeholder em cinza claro */
+}
