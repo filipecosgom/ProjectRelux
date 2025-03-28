@@ -218,13 +218,11 @@ public class ProductService {
     @GET
     @Path("/category/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProductsByCategory(@HeaderParam("Authorization") String token, @PathParam("categoryId") int categoryId) {
-        UserEntity loggedInUser = userBean.getUserByToken(token);
-        if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissão para acessar este recurso.").build();
-        }
-
+    public Response getProductsByCategory(@PathParam("categoryId") int categoryId) {
         List<ProductDto> products = productBean.getProductsByCategory(categoryId);
+        if (products == null || products.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Nenhum produto encontrado para esta categoria.").build();
+        }
         return Response.status(Response.Status.OK).entity(products).build();
     }
 }
