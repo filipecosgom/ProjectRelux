@@ -80,8 +80,7 @@ function Login() {
       console.log("Token recebido:", token);
       console.log("Detalhes do usuário recebidos:", userDetails);
 
-      alert(`Login bem-sucedido!\nEnviado: ${JSON.stringify(inputs)}
-      \nToken: ${token}\nDetalhes do usuário: ${JSON.stringify(userDetails)}`);
+
       navigate("/", { replace: true });
     } catch (error) {
       console.error("Erro no login:", error);
