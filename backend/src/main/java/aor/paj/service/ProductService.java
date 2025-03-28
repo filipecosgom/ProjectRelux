@@ -173,7 +173,7 @@ public class ProductService {
             return Response.status(Response.Status.NOT_FOUND).entity("Produto não encontrado!").build();
         }
 
-// Permitir que qualquer usuário altere o estado para "COMPRADO"
+// Permitir que qualquer utilizador altere o estado para "COMPRADO"
         if ("COMPRADO".equals(productDto.getState())) {
             boolean success = productBean.updateProductState(id, productDto.getState());
             if (success) {
@@ -183,7 +183,7 @@ public class ProductService {
             }
         }
 
-// Para outras alterações, verificar se o usuário é o autor do produto
+// Para outras alterações, verificar se o utilizador é o autor do produto
 
         if (product.getUserAutor().equals(user.getUsername())) {
             System.out.println("User: " + user.getUsername());

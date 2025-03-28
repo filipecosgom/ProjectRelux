@@ -76,7 +76,7 @@ public class CategoryService {
             @PathParam("id") int id,
             CategoryDto categoryDto
     ) {
-        // Verifica se o token é válido e se o usuário é administrador
+        // Verifica se o token é válido e se o utilizador é administrador
         UserEntity user = userDao.findByToken(token);
         if (user == null || !user.isAdmin()) {
             return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissões para esta ação.").build();
