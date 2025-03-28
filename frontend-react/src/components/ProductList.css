@@ -24,7 +24,11 @@
 }
 
 .product-card:hover {
-  background: linear-gradient(135deg, #444, #555); /* Gradiente mais claro no hover */
+  background: linear-gradient(
+    135deg,
+    #444,
+    #555
+  ); /* Gradiente mais claro no hover */
   transform: translateY(-5px); /* Eleva o cartão levemente */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta a sombra no hover */
 }
@@ -50,4 +54,67 @@
   margin: 5px 0;
   font-size: 1rem;
   line-height: 1.1;
+}
+
+/* Container principal */
+.product-list-container {
+  position: relative;
+}
+
+/* Contêiner que envolve o ícone e o dropdown */
+.categories-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
+
+/* Ícone de categorias */
+.categories-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #cea41a;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.categories-icon:hover {
+  background-color: #b37d00;
+}
+
+/* Dropdown de categorias */
+.categories-dropdown {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background-color: #7d6919;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  transition: background-color 1s ease;
+}
+
+.category-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.category-item:hover {
+  background-color: #f5f5f5;
 }
