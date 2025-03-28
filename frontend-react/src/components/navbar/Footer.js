@@ -23,6 +23,7 @@ const Footer = () => {
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Facebook"
             >
               <FaFacebookF /> {/* Ícone do Facebook */}
             </a>
@@ -30,6 +31,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Twitter"
             >
               <FaTwitter /> {/* Ícone do Twitter */}
             </a>
@@ -37,6 +39,7 @@ const Footer = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Instagram"
             >
               <FaInstagram /> {/* Ícone do Instagram */}
             </a>

@@ -36,7 +36,7 @@ function CategoryManager({ token }) {
       setNewCategory("");
       fetchCategories();
     } catch (error) {
-      console.error("Erro ao criar categoria:", error);
+      
       alert("Erro ao criar categoria. Tente novamente.");
     }
   };
