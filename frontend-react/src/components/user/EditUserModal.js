@@ -33,25 +33,7 @@ const EditUserModal = ({
               required
             />
           </label>
-          <label>
-            Password:
-            <div className="password-field">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={user.password}
-                onChange={onChange}
-                required
-              />
-              <button
-                type="button"
-                className="toggle-password-button"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <FaRegEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-          </label>
+
           <label>
             First Name:
             <input

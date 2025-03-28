@@ -35,10 +35,10 @@ public class UserEntity implements Serializable {
     @Column(name = "lastName", nullable = false, unique = false, updatable = true)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique = true, updatable = false)
+    @Column(name = "email", nullable = false, unique = true, updatable = true)
     private String email;
 
-    @Column(name = "telefone", nullable = false, unique = false, updatable = false)
+    @Column(name = "telefone", nullable = false, unique = false, updatable = true)
     private String phone;
 
     @Column(name = "token", nullable = true, unique = true, updatable = true)

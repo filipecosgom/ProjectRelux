@@ -24,7 +24,7 @@ function Profile() {
     }
   }, [token, navigate]);
 
-  useEffect(() => {
+
     const fetchUserDetails = async () => {
       try {
         const response = await fetch(
@@ -47,8 +47,9 @@ function Profile() {
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
-    };
-
+  };
+  
+  useEffect(() => {
     if (token) {
       fetchUserDetails();
     }
@@ -81,18 +82,6 @@ function Profile() {
         <div className="profile-details">
           <div className="profile-column">
             <p>Username: {userDetails.username}</p>
-            <p>
-              Password:{" "}
-              {showPassword
-                ? userDetails.password // Mostra a senha se showPassword for true
-                : "*".repeat(userDetails.password.length)}{" "}
-              <span
-                className="toggle-password-icon"
-                onClick={() => setShowPassword(!showPassword)} // Alterna o estado de showPassword
-              >
-                {showPassword ? <FaRegEyeSlash /> : <GiAllSeeingEye />}
-              </span>
-            </p>
           </div>
           <div className="profile-column">
             <p>Email: {userDetails.email}</p>
@@ -126,14 +115,21 @@ function Profile() {
               // Chama o serviço para atualizar o utilizador
               const updatedUser = await updateUser(editUser, token);
 
-              // Atualiza os detalhes do utilizador no estado
-              setUserDetails(updatedUser);
+              // Atualiza o estado do utilizador, preservando as propriedades existentes
+              setUserDetails((prevDetails) => ({
+                ...prevDetails,
+                ...updatedUser,
+              }));
 
               // Exibe uma mensagem de sucesso
               alert("Perfil atualizado com sucesso!");
 
               // Fecha o modal
               setShowEditModal(false);
+
+              // Faz um novo pedido para buscar os dados atualizados do utilizador
+              fetchUserDetails();
+
             } catch (error) {
               // Exibe uma mensagem de erro, caso algo dê errado
               console.error("Erro ao atualizar o perfil:", error);
