@@ -1,8 +1,5 @@
 package aor.paj.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 

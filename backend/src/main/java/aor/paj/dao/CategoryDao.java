@@ -6,7 +6,6 @@ import jakarta.persistence.NoResultException;
 
 
 import java.util.List;
-import java.util.Locale;
 
 
 @Stateless

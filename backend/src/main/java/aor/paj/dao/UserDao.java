@@ -2,9 +2,7 @@ package aor.paj.dao;
 
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
 

@@ -1,14 +1,11 @@
 package aor.paj.service;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import aor.paj.bean.ProductBean;
 import aor.paj.bean.UserBean;
 import aor.paj.dto.ProductDto;
-//import aor.paj.bean.ProductBean;
-import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

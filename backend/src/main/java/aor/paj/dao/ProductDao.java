@@ -1,7 +1,6 @@
 package aor.paj.dao;
 
 import aor.paj.dto.EstadosDoProduto;
-import aor.paj.entity.CategoryEntity;
 import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.Stateless;

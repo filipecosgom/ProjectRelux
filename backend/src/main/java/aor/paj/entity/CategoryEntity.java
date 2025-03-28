@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlTransient;
 
 
 @Entity
