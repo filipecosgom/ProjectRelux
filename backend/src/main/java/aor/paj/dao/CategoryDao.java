@@ -41,4 +41,11 @@ public class CategoryDao extends AbstratDao<CategoryEntity> {
     public void update(CategoryEntity category) {
         em.merge(category);
     }
+
+    public void deleteCategory(int categoryId) {
+        CategoryEntity category = findById(categoryId);
+        if (category != null) {
+            em.remove(category);
+        }
+    }
 }

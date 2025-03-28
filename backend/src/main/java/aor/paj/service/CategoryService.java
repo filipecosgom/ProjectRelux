@@ -94,6 +94,24 @@ public class CategoryService {
 
         return Response.status(Response.Status.OK).entity("Categoria atualizada com sucesso!").build();
     }
+
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteCategory(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
+        UserEntity user = userDao.findByToken(token);
+        if (user == null || !user.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não tem permissões para esta ação de apagar categoria.").build();
+        }
+
+        CategoryEntity category = categoryDao.findById(id);
+        if (category == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Categoria não encontrada.").build();
+        }
+
+        categoryDao.deleteCategory(id);
+        return Response.status(Response.Status.OK).entity("Categoria apagada com sucesso!").build();
+    }
 }
 
 
