@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import api from "../../services/apiService"; // Importa o serviço Axios configurado
+import api from "../../services/apiService";
+import { toast } from "react-toastify"; // Importa o toastify
 import "./CategoryManager.css";
 
 function CategoryManager() {
@@ -19,16 +20,17 @@ function CategoryManager() {
         "Erro ao buscar categorias:",
         error.response?.data || error.message
       );
-      alert("Erro ao carregar categorias. Tente novamente.");
+      toast.error("Erro ao carregar categorias. Tente novamente."); // Toast de erro
     }
   };
 
   // Create a new category
   const handleCreateCategory = async () => {
-    if (!newCategory.trim()) return alert("O nome da categoria é obrigatório.");
+    if (!newCategory.trim())
+      return toast.warn("O nome da categoria é obrigatório."); // Toast de aviso
     try {
       await api.post("/categories/new", { name: newCategory }); // Faz o request com o serviço Axios
-      alert("Categoria criada com sucesso!");
+      toast.success("Categoria criada com sucesso!"); // Toast de sucesso
       setNewCategory("");
       fetchCategories(); // Atualiza a lista de categorias
     } catch (error) {
@@ -36,19 +38,19 @@ function CategoryManager() {
         "Erro ao criar categoria:",
         error.response?.data || error.message
       );
-      alert("Erro ao criar categoria. Tente novamente.");
+      toast.error("Erro ao criar categoria. Tente novamente."); // Toast de erro
     }
   };
 
   // Edit a category
   const handleEditCategory = async () => {
     if (!editCategoryName.trim())
-      return alert("O nome da categoria é obrigatório.");
+      return toast.warn("O nome da categoria é obrigatório."); // Toast de aviso
     try {
       await api.put(`/categories/${editCategory.id}`, {
         name: editCategoryName,
       }); // Faz o request com o serviço Axios
-      alert("Categoria editada com sucesso!");
+      toast.success("Categoria editada com sucesso!"); // Toast de sucesso
       setEditCategory(null);
       setEditCategoryName("");
       fetchCategories(); // Atualiza a lista de categorias
@@ -57,7 +59,7 @@ function CategoryManager() {
         "Erro ao editar categoria:",
         error.response?.data || error.message
       );
-      alert("Erro ao editar categoria. Tente novamente.");
+      toast.error("Erro ao editar categoria. Tente novamente."); // Toast de erro
     }
   };
 
@@ -67,14 +69,14 @@ function CategoryManager() {
       return;
     try {
       await api.delete(`/categories/${id}`); // Faz o request com o serviço Axios
-      alert("Categoria apagada com sucesso!");
+      toast.success("Categoria apagada com sucesso!"); // Toast de sucesso
       fetchCategories(); // Atualiza a lista de categorias
     } catch (error) {
       console.error(
         "Erro ao apagar categoria:",
         error.response?.data || error.message
       );
-      alert("Erro ao apagar categoria. Tente novamente.");
+      toast.error("Erro ao apagar categoria. Tente novamente."); // Toast de erro
     }
   };
 
