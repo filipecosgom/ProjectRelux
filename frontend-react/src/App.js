@@ -10,6 +10,8 @@ import AdminPanel from "./pages/AdminPanel";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/product/ProductDetails";
 import CategoryProducts from "./components/category/CategoryProducts";
+import { ToastContainer } from "react-toastify"; // Importa o ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Importa os estilos do React-Toastify
 import "./App.css";
 
 function App() {
@@ -23,7 +25,7 @@ function App() {
             element={
               <>
                 <Breadcrumbs />
-                <ProductList/>
+                <ProductList />
               </>
             }
           />
@@ -51,6 +53,8 @@ function App() {
           />
         </Routes>
         <Footer />
+        <ToastContainer theme="dark" />{" "}
+        {/* Adiciona o ToastContainer para exibir notificações */}
       </div>
     </Router>
   );

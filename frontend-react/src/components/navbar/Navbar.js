@@ -7,6 +7,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { HiOutlineLogin, HiOutlineLogout, HiOutlineCog } from "react-icons/hi"; // Ícones de Login, Logout e Painel Administrativo
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService"; // Importa o serviço Axios configurado
+import { toast } from "react-toastify"; // Importa o método toast para notificações
 
 const Navbar = () => {
   const username = userStore((state) => state.username); // Obtém o estado do username da store
@@ -20,10 +21,10 @@ const Navbar = () => {
     try {
       await api.post("/users/logout"); // Faz o request com o serviço Axios configurado
       clearUser(); // Limpa o estado do usuário na store
-      alert("Logout realizado com sucesso!");
+      toast.success("Logout realizado com sucesso!"); // Exibe a toast notification de sucesso
     } catch (error) {
       console.error("Erro no logout:", error.response?.data || error.message);
-      alert("Erro ao realizar logout. Tente novamente.");
+      toast.error("Erro ao realizar logout. Tente novamente."); // Exibe a toast notification de erro
     }
   };
 
