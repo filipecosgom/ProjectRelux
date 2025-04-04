@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import "./Breadcrumbs.css";
 
 const Breadcrumbs = () => {
@@ -13,12 +13,13 @@ const Breadcrumbs = () => {
     if (id) {
       const fetchProduct = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:8080/filipe-proj4/rest/products/${id}`
-          );
+          const response = await api.get(`/products/${id}`); // Faz o request com o serviço Axios
           setProduct(response.data);
         } catch (error) {
-          console.error("Erro ao buscar produto:", error);
+          console.error(
+            "Erro ao buscar produto:",
+            error.response?.data || error.message
+          );
         }
       };
 
@@ -29,12 +30,13 @@ const Breadcrumbs = () => {
     if (categoryId) {
       const fetchCategory = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:8080/filipe-proj4/rest/categories/${categoryId}`
-          );
+          const response = await api.get(`/categories/${categoryId}`); // Faz o request com o serviço Axios
           setCategory(response.data);
         } catch (error) {
-          console.error("Erro ao buscar categoria:", error);
+          console.error(
+            "Erro ao buscar categoria:",
+            error.response?.data || error.message
+          );
         }
       };
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import "./CategoryManager.css";
 
-function CategoryManager({ token }) {
+function CategoryManager() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [editCategory, setEditCategory] = useState(null);
@@ -12,12 +12,14 @@ function CategoryManager({ token }) {
   // Fetch all categories
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/filipe-proj4/rest/categories/all"
-      );
+      const response = await api.get("/categories/all"); // Faz o request com o serviço Axios
       setCategories(response.data);
     } catch (error) {
-      console.error("Erro ao buscar categorias:", error);
+      console.error(
+        "Erro ao buscar categorias:",
+        error.response?.data || error.message
+      );
+      alert("Erro ao carregar categorias. Tente novamente.");
     }
   };
 
@@ -25,18 +27,15 @@ function CategoryManager({ token }) {
   const handleCreateCategory = async () => {
     if (!newCategory.trim()) return alert("O nome da categoria é obrigatório.");
     try {
-      await axios.post(
-        "http://localhost:8080/filipe-proj4/rest/categories/new",
-        { name: newCategory },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await api.post("/categories/new", { name: newCategory }); // Faz o request com o serviço Axios
       alert("Categoria criada com sucesso!");
       setNewCategory("");
-      fetchCategories();
+      fetchCategories(); // Atualiza a lista de categorias
     } catch (error) {
-      
+      console.error(
+        "Erro ao criar categoria:",
+        error.response?.data || error.message
+      );
       alert("Erro ao criar categoria. Tente novamente.");
     }
   };
@@ -46,19 +45,18 @@ function CategoryManager({ token }) {
     if (!editCategoryName.trim())
       return alert("O nome da categoria é obrigatório.");
     try {
-      await axios.put(
-        `http://localhost:8080/filipe-proj4/rest/categories/${editCategory.id}`,
-        { name: editCategoryName },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await api.put(`/categories/${editCategory.id}`, {
+        name: editCategoryName,
+      }); // Faz o request com o serviço Axios
       alert("Categoria editada com sucesso!");
       setEditCategory(null);
       setEditCategoryName("");
-      fetchCategories();
+      fetchCategories(); // Atualiza a lista de categorias
     } catch (error) {
-      console.error("Erro ao editar categoria:", error);
+      console.error(
+        "Erro ao editar categoria:",
+        error.response?.data || error.message
+      );
       alert("Erro ao editar categoria. Tente novamente.");
     }
   };
@@ -68,16 +66,14 @@ function CategoryManager({ token }) {
     if (!window.confirm("Tem certeza que deseja apagar esta categoria?"))
       return;
     try {
-      await axios.delete(
-        `http://localhost:8080/filipe-proj4/rest/categories/${id}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await api.delete(`/categories/${id}`); // Faz o request com o serviço Axios
       alert("Categoria apagada com sucesso!");
-      fetchCategories();
+      fetchCategories(); // Atualiza a lista de categorias
     } catch (error) {
-      console.error("Erro ao apagar categoria:", error);
+      console.error(
+        "Erro ao apagar categoria:",
+        error.response?.data || error.message
+      );
       alert("Erro ao apagar categoria. Tente novamente.");
     }
   };

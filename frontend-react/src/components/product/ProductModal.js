@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
-import axios from "axios";
 import { useLocation } from "react-router-dom"; // Importado para verificar mudanças na rota para fechar o modal
-import "./ProductModal.css";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import { userStore } from "../../stores/UserStore";
+import "./ProductModal.css";
 
 Modal.setAppElement("#root"); // Define o elemento principal para acessibilidade
 
@@ -42,16 +42,17 @@ const ProductModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/filipe-proj4/rest/categories/all"
-        );
+        const response = await api.get("/categories/all"); // Faz o request com o serviço Axios
         // Ordena as categorias por nome antes de definir no estado
         const sortedCategories = response.data.sort((a, b) =>
           a.nome.localeCompare(b.nome)
         );
         setCategories(sortedCategories);
       } catch (error) {
-        console.error("Erro ao buscar categorias:", error);
+        console.error(
+          "Erro ao buscar categorias:",
+          error.response?.data || error.message
+        );
         alert("Erro ao carregar categorias. Tente novamente.");
       }
     };
@@ -102,22 +103,15 @@ const ProductModal = ({ isOpen, onClose }) => {
       console.log("Token enviado:", token);
       console.log("Dados enviados:", formData);
 
-      const response = await axios.post(
-        "http://localhost:8080/filipe-proj4/rest/products/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
+      const response = await api.post("/products/add", formData); // Faz o request com o serviço Axios
       alert(response.data); // Exibe a mensagem de sucesso
       onClose(); // Fecha o modal
       window.location.reload(); // Atualiza a página para exibir o novo produto
     } catch (error) {
-      console.error("Erro ao criar produto:", error);
+      console.error(
+        "Erro ao criar produto:",
+        error.response?.data || error.message
+      );
       alert("Erro ao criar produto. Tente novamente.");
     }
   };

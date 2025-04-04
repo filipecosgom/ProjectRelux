@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
 import EditUserModal from "../components/user/EditUserModal"; // Modal de edição de utilizador
 import { updateUser } from "../services/userService";
+import api from "../services/apiService"; // Importa o serviço Axios
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -24,31 +25,19 @@ function Profile() {
     }
   }, [token, navigate]);
 
-
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/filipe-proj4/rest/users/me",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user details");
-        }
-
-        const data = await response.json();
-        setUserDetails(data);
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
+  // Atualiza o método fetchUserDetails para usar Axios
+  const fetchUserDetails = async () => {
+    try {
+      const response = await api.get("/users/me"); // Faz o request com o serviço Axios
+      setUserDetails(response.data); // Atualiza o estado com os detalhes do usuário
+    } catch (error) {
+      console.error(
+        "Erro ao buscar detalhes do usuário:",
+        error.response?.data || error.message
+      );
+    }
   };
-  
+
   useEffect(() => {
     if (token) {
       fetchUserDetails();
@@ -129,7 +118,6 @@ function Profile() {
 
               // Faz um novo pedido para buscar os dados atualizados do utilizador
               fetchUserDetails();
-
             } catch (error) {
               // Exibe uma mensagem de erro, caso algo dê errado
               console.error("Erro ao atualizar o perfil:", error);

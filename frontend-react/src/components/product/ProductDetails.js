@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import { userStore as useUserStore } from "../../stores/UserStore";
 import "./ProductDetails.css";
 import EditProductModal from "./EditProductModal";
@@ -19,12 +19,13 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/filipe-proj4/rest/products/${id}`
-        );
+        const response = await api.get(`/products/${id}`); // Faz o request com o serviço Axios
         setProduct(response.data);
       } catch (error) {
-        console.error("Erro ao buscar produto:", error);
+        console.error(
+          "Erro ao buscar produto:",
+          error.response?.data || error.message
+        );
         alert("Produto não encontrado!");
         navigate("/"); // Redireciona para a página inicial se o produto não for encontrado
       }
@@ -40,16 +41,14 @@ const ProductDetails = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(
-        `http://localhost:8080/filipe-proj4/rest/products/${id}`,
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
       alert("Produto excluído com sucesso!");
       navigate("/"); // Redireciona para a página inicial após a exclusão
     } catch (error) {
-      console.error("Erro ao excluir produto:", error);
+      console.error(
+        "Erro ao excluir produto:",
+        error.response?.data || error.message
+      );
       alert("Erro ao excluir produto.");
     }
   };
@@ -58,37 +57,30 @@ const ProductDetails = () => {
     try {
       console.log("Token enviado:", token);
       console.log("Enviando estado:", { state: "COMPRADO" });
-      await axios.put(
-        `http://localhost:8080/filipe-proj4/rest/products/update-state/${id}`,
-        { state: "COMPRADO" }, // Atualiza o estado para "COMPRADO"
-        {
-          headers: { Authorization: token },
-          "Content-Type": "application/json",
-        }
-      );
+      await api.put(`/products/update-state/${id}`, { state: "COMPRADO" }); // Faz o request com o serviço Axios
       alert("Compra efetuada com sucesso!");
       navigate("/"); // Redireciona para a página inicial após a compra
     } catch (error) {
-      console.error("Erro ao comprar produto:", error);
+      console.error(
+        "Erro ao comprar produto:",
+        error.response?.data || error.message
+      );
       alert("Erro ao comprar produto.");
     }
   };
 
   const handleSaveProduct = async (event) => {
-    event.preventDefault();             // Evita o comportamento padrão do formulário
+    event.preventDefault(); // Evita o comportamento padrão do formulário
     try {
-      await axios.put(
-        `http://localhost:8080/filipe-proj4/rest/products/${editProduct.id}`,
-        editProduct,
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
       alert("Produto atualizado com sucesso!");
-      setShowEditModal(false);          // Fecha o modal
-      setProduct(editProduct);          // Atualiza o produto exibido na página
+      setShowEditModal(false); // Fecha o modal
+      setProduct(editProduct); // Atualiza o produto exibido na página
     } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
+      console.error(
+        "Erro ao atualizar produto:",
+        error.response?.data || error.message
+      );
       alert("Erro ao atualizar produto. Tente novamente.");
     }
   };

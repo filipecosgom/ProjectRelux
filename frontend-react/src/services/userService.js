@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080/filipe-proj4/rest/users";
+import api from "./apiService";
+const API_BASE_URL = "http://localhost:8080/filipe-proj5/rest/users";
 
 /**
  * Atualiza os dados de um utilizador.
@@ -20,10 +21,9 @@ export const updateUser = async (user, token) => {
     if (!response.ok) {
       throw new Error("Erro ao atualizar o utilizador.");
     }
-      if (response.status === 200) {
-          return true;
+    if (response.status === 200) {
+      return true;
     }
-   
   } catch (error) {
     console.error("Erro no serviço de atualização de utilizador:", error);
     throw error; // Propaga o erro para ser tratado onde o serviço for chamado

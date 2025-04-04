@@ -1,39 +1,30 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { userStore } from "../../stores/UserStore";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import "../ProductList.css"; // Reutiliza os estilos do ProductList
 
 function CategoryProducts() {
   const { categoryId } = useParams(); // Obtém o ID da categoria da URL
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const token = userStore((state) => state.token); // Obtém o token do userStore
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
         console.log("Buscando produtos da categoria:", categoryId); // Log para depuração
-        const response = await axios.get(
-          `http://localhost:8080/filipe-proj4/rest/products/category/${categoryId}`,
-          {
-            headers: {
-              Authorization: token, // Envia o token no cabeçalho
-            },
-          }
-        );
+        const response = await api.get(`/products/category/${categoryId}`); // Faz o request com o serviço Axios
         console.log("Produtos recebidos:", response.data); // Log para depuração
         setProducts(response.data);
       } catch (error) {
         console.error(
           "Erro ao buscar produtos da categoria:",
-          error.response || error
+          error.response?.data || error.message
         );
       }
     };
 
     fetchCategoryProducts();
-  }, [categoryId, token]);
+  }, [categoryId]);
 
   const handleCardClick = (id) => {
     navigate(`/product/${id}`); // Redireciona para a página de detalhes do produto

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { RxDropdownMenu } from "react-icons/rx"; // Importa o ícone
+import api from "../services/apiService"; // Importa o serviço Axios configurado
 import "./ProductList.css";
 
 function ProductList() {
@@ -13,23 +13,19 @@ function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/filipe-proj4/rest/products/"
-        );
+        const response = await api.get("/products/"); // Faz o request com o serviço Axios
         setProducts(response.data);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Erro ao buscar produtos:", error);
       }
     };
 
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/filipe-proj4/rest/categories/all"
-        );
+        const response = await api.get("/categories/all"); // Faz o request com o serviço Axios
         setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Erro ao buscar categorias:", error);
       }
     };
 

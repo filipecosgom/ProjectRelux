@@ -6,6 +6,7 @@ import { userStore } from "../../stores/UserStore";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { HiOutlineLogin, HiOutlineLogout, HiOutlineCog } from "react-icons/hi"; // Ícones de Login, Logout e Painel Administrativo
 import ProductModal from "../product/ProductModal";
+import api from "../../services/apiService"; // Importa o serviço Axios configurado
 
 const Navbar = () => {
   const username = userStore((state) => state.username); // Obtém o estado do username da store
@@ -17,26 +18,11 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const token = userStore.getState().token;
-      const response = await fetch(
-        "http://localhost:8080/filipe-proj4/rest/users/logout",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Logout failed");
-      }
-
+      await api.post("/users/logout"); // Faz o request com o serviço Axios configurado
       clearUser(); // Limpa o estado do usuário na store
       alert("Logout realizado com sucesso!");
     } catch (error) {
-      console.error("Erro no logout:", error);
+      console.error("Erro no logout:", error.response?.data || error.message);
       alert("Erro ao realizar logout. Tente novamente.");
     }
   };

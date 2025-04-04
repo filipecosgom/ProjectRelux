@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../pages/Register.css";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
-
+import api from "../services/apiService"; // Importa o serviço Axios configurado
 
 function Register() {
   const navigate = useNavigate();
@@ -15,52 +15,27 @@ function Register() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  // Function to make the REST request for registration
-  const registerUser = async (userData) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8080/filipe-proj4/rest/users/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
-
-      const data = await response.text();
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  // Function to handle form submission
+  // Função para lidar com o envio do formulário
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form behavior
+    event.preventDefault(); // Evita o comportamento padrão do formulário
     try {
-      console.log("Sending data:", inputs); // Log the data being sent
-      const response = await registerUser(inputs); // Call the registration function
-      console.log("Response received:", response); // Log the response received
+      console.log("Enviando dados:", inputs); // Log dos dados enviados
+      const response = await api.post("/users/register", inputs); // Faz o request com o serviço Axios configurado
+      console.log("Resposta recebida:", response.data); // Log da resposta recebida
       alert(
-        `Registration successful!\nSent: ${JSON.stringify(
+        `Registro realizado com sucesso!\nEnviado: ${JSON.stringify(
           inputs
-        )}\nResponse received: ${response}`
-      ); // Alert the user
-      navigate("/login", { replace: true }); // Navigate to the login page
+        )}\nResposta recebida: ${response.data}`
+      ); // Alerta o usuário
+      navigate("/login", { replace: true }); // Navega para a página de login
     } catch (error) {
-      console.error("Registration error:", error); // Log the error
-      setError("Registration failed. Please check your details and try again."); // Set the error message
+      console.error("Erro no registro:", error.response?.data || error.message); // Log do erro
+      setError("Falha no registro. Verifique os dados e tente novamente."); // Define a mensagem de erro
       alert(
-        `Registration failed!\nSent: ${JSON.stringify(inputs)}\nError: ${
-          error.message
+        `Falha no registro!\nEnviado: ${JSON.stringify(inputs)}\nErro: ${
+          error.response?.data || error.message
         }`
-      ); // Alert the user
+      ); // Alerta o usuário
     }
   };
 
@@ -69,10 +44,10 @@ function Register() {
       <div className="Register">
         <h1>
           <FaUserPlus />
-            Register new user
+          Register new user
         </h1>
         {error && <p className="error">{error}</p>}{" "}
-        {/* Display error message if any */}
+        {/* Exibe a mensagem de erro, se houver */}
         <form onSubmit={handleSubmit}>
           <label>
             Username:

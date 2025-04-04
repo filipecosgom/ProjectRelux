@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../pages/Login.css";
 import { useNavigate, Link } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
+import api from "../services/apiService";
 
 function Login() {
   const navigate = useNavigate();
@@ -17,48 +18,27 @@ function Login() {
 
   const loginUser = async (username, password) => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/filipe-proj4/rest/users/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const token = await response.text();
-      return token;
+      const response = await api.post("/users/login", { username, password });
+      return response.data; // Retorna o token
     } catch (error) {
+      console.error("Erro no login:", error.response?.data || error.message);
       throw error;
     }
   };
 
   const getUserDetails = async (token) => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/filipe-proj4/rest/users/me",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch user details");
-      }
-
-      const userDetails = await response.json();
-      return userDetails;
+      const response = await api.get("/users/me", {
+        headers: {
+          Authorization: token,
+        },
+      });
+      return response.data; // Retorna os detalhes do usuário
     } catch (error) {
+      console.error(
+        "Erro ao buscar detalhes do usuário:",
+        error.response?.data || error.message
+      );
       throw error;
     }
   };
@@ -79,7 +59,6 @@ function Login() {
       );
       console.log("Token recebido:", token);
       console.log("Detalhes do usuário recebidos:", userDetails);
-
 
       navigate("/", { replace: true });
     } catch (error) {

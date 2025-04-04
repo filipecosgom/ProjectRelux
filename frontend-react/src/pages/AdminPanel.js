@@ -5,7 +5,7 @@ import CategoryManager from "../components/category/CategoryManager";
 import { FaUsersCog, FaEdit, FaTrash } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
 import { FaRegEyeSlash, FaEye } from "react-icons/fa";
-import axios from "axios";
+import api from "../services/apiService"; // Importa o serviço Axios configurado
 import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
@@ -62,17 +62,13 @@ function AdminPanel() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8080/filipe-proj4/rest/users/all",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await api.get("/users/all"); // Faz o request com o serviço Axios
       setUsers(response.data);
     } catch (error) {
-      console.error("Erro ao buscar utilizadores:", error);
+      console.error(
+        "Erro ao buscar utilizadores:",
+        error.response?.data || error.message
+      );
       alert("Erro ao carregar utilizadores. Tente novamente.");
     } finally {
       setLoading(false);
@@ -83,17 +79,13 @@ function AdminPanel() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        "http://localhost:8080/filipe-proj4/rest/products/",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await api.get("/products/"); // Faz o request com o serviço Axios
       setProducts(response.data);
     } catch (error) {
-      console.error("Erro ao buscar produtos:", error);
+      console.error(
+        "Erro ao buscar produtos:",
+        error.response?.data || error.message
+      );
       alert("Erro ao carregar produtos. Tente novamente.");
     } finally {
       setLoading(false);
@@ -103,12 +95,13 @@ function AdminPanel() {
   // Função para buscar categorias
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/filipe-proj4/rest/categories/all"
-      );
+      const response = await api.get("/categories/all"); // Faz o request com o serviço Axios
       setCategories(response.data);
     } catch (error) {
-      console.error("Erro ao buscar categorias:", error);
+      console.error(
+        "Erro ao buscar categorias:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -117,7 +110,7 @@ function AdminPanel() {
     if (activePanel === "users") {
       fetchUsers();
     }
-  }, [activePanel, token]);
+  }, [activePanel]);
 
   // Busca os produtos e categorias ao abrir o painel de "Gerir Produtos"
   useEffect(() => {
@@ -125,7 +118,7 @@ function AdminPanel() {
       fetchProducts();
       fetchCategories();
     }
-  }, [activePanel, token]);
+  }, [activePanel]);
 
   // Alterna a exibição da senha para um utilizador específico
   const togglePasswordVisibility = (username) => {
@@ -154,21 +147,16 @@ function AdminPanel() {
     }
 
     try {
-      await axios.post(
-        "http://localhost:8080/filipe-proj4/rest/users/register",
-        newUser,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await api.post("/users/register", newUser); // Faz o request com o serviço Axios
 
       alert(`O utilizador ${newUser.username} foi criado com sucesso!`);
       setShowCreateModal(false); // Fecha o modal
       fetchUsers(); // Atualiza a lista de utilizadores
     } catch (error) {
-      console.error("Erro ao criar utilizador:", error);
+      console.error(
+        "Erro ao criar utilizador:",
+        error.response?.data || error.message
+      );
       setError(
         error.response?.data || "Erro ao criar utilizador. Tente novamente."
       );
@@ -193,18 +181,14 @@ function AdminPanel() {
     }
 
     try {
-      await axios.delete(
-        `http://localhost:8080/filipe-proj4/rest/users/delete/${username}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await api.delete(`/users/delete/${username}`); // Faz o request com o serviço Axios
       alert(`O utilizador ${username} foi apagado com sucesso!`);
       fetchUsers(); // Atualiza a lista de utilizadores
     } catch (error) {
-      console.error("Erro ao apagar utilizador:", error);
+      console.error(
+        "Erro ao apagar utilizador:",
+        error.response?.data || error.message
+      );
       alert("Erro ao apagar utilizador. Tente novamente.");
     }
   };
@@ -227,13 +211,10 @@ function AdminPanel() {
         // Atualiza a lista de utilizadores
         fetchUsers();
         alert(`O utilizador ${editUser.username} foi atualizado com sucesso!`);
-
-      } 
+      }
 
       // Fecha o modal
       setShowModal(false);
-
-
     } catch (error) {
       console.error("Erro ao atualizar utilizador:", error);
 
@@ -260,21 +241,16 @@ function AdminPanel() {
     setError(null);
 
     try {
-      await axios.post(
-        "http://localhost:8080/filipe-proj4/rest/products/add",
-        newProduct,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
 
       alert(`O produto "${newProduct.title}" foi criado com sucesso!`);
       setShowCreateProductModal(false); // Fecha o modal
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
-      console.error("Erro ao criar produto:", error);
+      console.error(
+        "Erro ao criar produto:",
+        error.response?.data || error.message
+      );
       setError(
         error.response?.data || "Erro ao criar produto. Tente novamente."
       );
@@ -288,18 +264,14 @@ function AdminPanel() {
     }
 
     try {
-      await axios.delete(
-        `http://localhost:8080/filipe-proj4/rest/products/${id}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
       alert("Produto apagado com sucesso!");
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
-      console.error("Erro ao apagar produto:", error);
+      console.error(
+        "Erro ao apagar produto:",
+        error.response?.data || error.message
+      );
       alert("Erro ao apagar produto. Tente novamente.");
     }
   };
@@ -316,20 +288,15 @@ function AdminPanel() {
     setError(null);
 
     try {
-      await axios.put(
-        `http://localhost:8080/filipe-proj4/rest/products/${editProduct.id}`,
-        editProduct,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
       alert(`O produto "${editProduct.title}" foi atualizado com sucesso!`);
       setShowProductModal(false); // Fecha o modal
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
+      console.error(
+        "Erro ao atualizar produto:",
+        error.response?.data || error.message
+      );
       setError(
         error.response?.data || "Erro ao atualizar produto. Tente novamente."
       );
