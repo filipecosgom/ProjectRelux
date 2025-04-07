@@ -3,7 +3,6 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-
 }
 
 .search-user-products-form {
@@ -61,4 +60,73 @@
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
+}
+
+/* Cards de produtos do usuário */
+.user-product-card {
+  background: #2a2a2a; /* Fundo escuro */
+  color: white; /* Texto branco */
+  border-radius: 8px;
+  padding: 15px;
+  width: 250px; /* Largura fixa */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-product-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.user-product-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-product-card-title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.user-product-card-text {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.user-product-card-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.user-product-card-actions button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.user-product-card-actions .btn-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.user-product-card-actions .btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.user-product-card-actions .btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.user-product-card-actions .btn-danger:hover {
+  background-color: #c82333;
 }

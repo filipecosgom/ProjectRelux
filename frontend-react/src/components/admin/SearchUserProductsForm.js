@@ -109,24 +109,24 @@ const SearchUserProductsForm = () => {
         ) : userProducts.length > 0 ? (
           <div className="products-cards-container">
             {userProducts.map((product) => (
-              <div className="card" key={product.id}>
+              <div className="user-product-card" key={product.id}>
                 <img
                   src={product.imagem || "https://via.placeholder.com/70"}
                   alt={product.title}
-                  className="card-img-top"
+                  className="user-product-card-img"
                 />
-                <div className="card-body">
-                  <h5 className="card-title">{product.title}</h5>
-                  <p className="card-text">
+                <div className="user-product-card-body">
+                  <h5 className="user-product-card-title">{product.title}</h5>
+                  <p className="user-product-card-text">
                     <strong>Categoria:</strong> {product.category.nome}
                   </p>
-                  <p className="card-text">
+                  <p className="user-product-card-text">
                     <strong>Preço:</strong> {product.price} €
                   </p>
-                  <p className="card-text">
+                  <p className="user-product-card-text">
                     <strong>Estado:</strong> {product.state}
                   </p>
-                  <div className="d-flex justify-content-between">
+                  <div className="user-product-card-actions">
                     <button
                       className="btn btn-warning"
                       onClick={() => handleEditProduct(product)}
