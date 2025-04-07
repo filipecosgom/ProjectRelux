@@ -1,6 +1,10 @@
 .navbar {
   background: rgb(44, 35, 0);
-  background: radial-gradient(circle, rgba(44, 35, 0, 1) 4%, rgba(0, 0, 0, 1) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(44, 35, 0, 1) 4%,
+    rgba(0, 0, 0, 1) 100%
+  );
   height: 80px;
   display: flex;
   justify-content: center;
@@ -71,32 +75,103 @@
   color: #a90000 !important;
 }
 
+/* Adiciona o efeito glow à imagem de perfil */
 .nav-user-image {
-  width: 40px; /* Define a largura da imagem do usuário */
-  height: 40px; /* Define a altura da imagem do usuário */
-  border-radius: 50%; /* Torna a imagem redonda */
-  margin-right: 10px; /* Adiciona um espaço à direita da imagem */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Glow inicial */
+  animation: glowEffect 2s infinite alternate; /* Animação de glow */
 }
 
-.nav-user-image {
-  width: 40px; /* Define a largura da imagem do usuário */
-  height: 40px; /* Define a altura da imagem do usuário */
-  border-radius: 50%; /* Torna a imagem redonda */
-  margin-right: 10px; /* Adiciona um espaço à direita da imagem */
+/* Define a animação do efeito glow */
+@keyframes glowEffect {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Glow inicial */
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); /* Glow mais intenso */
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); /* Retorna ao glow inicial */
+  }
+}
+
+/* Contêiner do dropdown */
+.profile-hub {
+  position: relative;
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background-color: #333;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: left;
+  width: 200px;
+}
+
+/* Exibe o dropdown ao passar o mouse */
+.profile-hub:hover .profile-dropdown {
+  display: block;
+}
+
+/* Estilo para a mensagem de boas-vindas */
+.welcome-message {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* Estilo para os links no dropdown */
+.profile-link {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.profile-link:hover {
+  color: #ffd700;
+}
+
+/* Estilo para o botão de logout */
+.logout-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px 0;
+  text-align: left;
+  width: 100%;
+  transition: color 0.3s ease;
+}
+
+.logout-button:hover {
+  color: #ff4500;
 }
 
 /* Estilo para o botão "+" */
 .add-product-icon {
-  color: white; /* Define a cor do ícone como branco */
-  font-size: 24px; /* Ajusta o tamanho do ícone */
-  cursor: pointer; /* Adiciona um cursor de ponteiro ao passar o mouse */
-  margin-right: 10px; /* Adiciona espaço à direita do ícone */
-  transition: transform 0.2s ease, color 0.2s ease; /* Adiciona uma transição suave */
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .add-product-icon:hover {
-  transform: scale(1.2); /* Aumenta o tamanho ao passar o mouse */
-  color: #FFD700; /* Altera a cor para dourado no hover */
+  transform: scale(1.2);
+  color: #ffd700;
 }
 
 .nav-icon {
@@ -107,5 +182,22 @@
 }
 
 .nav-icon:hover {
-  color: #FFD700;
+  color: #ffd700;
+}
+
+/* Define o tamanho de fonte padrão para todos os links e mensagens no menu */
+.nav-menu,
+.nav-menu .profile-link,
+.nav-menu .welcome-message,
+.nav-menu .logout-button {
+  font-size: 14px; /* Define o mesmo tamanho de fonte */
+  font-family: Arial, sans-serif; /* Garante consistência na fonte */
+  color: #fff; /* Mantém a cor branca */
+}
+
+/* Estilo para os ícones no dropdown */
+.profile-icon {
+  margin-right: 8px; /* Espaçamento entre o ícone e o texto */
+  font-size: 16px; /* Tamanho do ícone */
+  vertical-align: middle; /* Alinha o ícone ao texto */
 }
