@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import api from "../../services/apiService";
 import "./SearchUserProductsForm.css";
 
@@ -7,6 +8,7 @@ const SearchUserProductsForm = () => {
   const [userProducts, setUserProducts] = useState([]); // Produtos do usuário
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook para redirecionar
 
   // Função para buscar produtos de um usuário
   const fetchUserProducts = async () => {
@@ -32,6 +34,11 @@ const SearchUserProductsForm = () => {
     }
   };
 
+  // Função para redirecionar para a página de detalhes do produto
+  const handleCardClick = (id) => {
+    navigate(`/product/${id}`); // Redireciona para a página de detalhes do produto
+  };
+
   return (
     <div className="search-user-products-container">
       <h2>Pesquisar Produtos de Usuário</h2>
@@ -51,7 +58,11 @@ const SearchUserProductsForm = () => {
         <div className="products-cards-container">
           {userProducts.length > 0 ? (
             userProducts.map((product) => (
-              <div className="product-card" key={product.id}>
+              <div
+                className="product-card"
+                key={product.id}
+                onClick={() => handleCardClick(product.id)} // Torna o card clicável
+              >
                 <div className="product-card-column">
                   <img
                     src={product.imagem || "https://via.placeholder.com/70"}
