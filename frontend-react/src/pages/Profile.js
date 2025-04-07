@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import { userStore } from "../stores/UserStore";
-import { FaUser, FaCheckCircle, FaRegEyeSlash } from "react-icons/fa";
-import { GiAllSeeingEye } from "react-icons/gi"; // Ícone para mostrar a senha
+import { FaUser, FaCheckCircle } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { ClipLoader } from "react-spinners"; // Spinner de carregamento
 import "./Profile.css";
