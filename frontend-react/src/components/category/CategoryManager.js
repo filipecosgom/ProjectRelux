@@ -118,7 +118,9 @@ function CategoryManager() {
               {editCategory?.id === category.id ? (
                 <>
                   <button onClick={handleEditCategory}>Salvar</button>
-                  <button onClick={() => setEditCategory(null)}>Cancelar</button>
+                  <button onClick={() => setEditCategory(null)}>
+                    Cancelar
+                  </button>
                 </>
               ) : (
                 <>
