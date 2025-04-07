@@ -12,6 +12,8 @@ const EditUserModal = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false); // Estado para alternar exibição da senha
 
+  console.log("Modal visível:", isVisible);
+
   if (!isVisible) return null;
 
   const togglePasswordVisibility = () => {

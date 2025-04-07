@@ -1,6 +1,6 @@
 /* Fundo do modal */
 .modal {
-  display: flex;
+  display: flex !important;/* Garante que o modal seja exibido */
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -8,6 +8,9 @@
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 500px;
+  max-height: 100vh; /* Limita a altura máxima do modal */
+  overflow-y: auto; /* Permite rolagem se o conteúdo for muito longo */
   background-color: rgba(0, 0, 0, 0.8); /* Fundo escuro semi-transparente */
   z-index: 1000; /* Certifique-se de que o modal está acima de outros elementos */
 }

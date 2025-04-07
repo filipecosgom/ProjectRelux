@@ -44,8 +44,10 @@ function Profile() {
   }, [token]);
 
   const handleEditProfile = () => {
+    console.log("A abrir o modal de edição...");
     setEditUser(userDetails); // Define os detalhes do utilizador como o utilizador a ser editado
     setShowEditModal(true); // Abre o modal
+
   };
 
   if (!userDetails) {
