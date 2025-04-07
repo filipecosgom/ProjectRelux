@@ -103,32 +103,39 @@ function CategoryManager() {
       <div className="categories-list">
         {categories.map((category) => (
           <div key={category.id} className="category-item">
-            {editCategory?.id === category.id ? (
-              <div>
+            <div className="category-text">
+              {editCategory?.id === category.id ? (
                 <input
                   type="text"
                   value={editCategoryName}
                   onChange={(e) => setEditCategoryName(e.target.value)}
                 />
-                <button onClick={handleEditCategory}>Salvar</button>
-                <button onClick={() => setEditCategory(null)}>Cancelar</button>
-              </div>
-            ) : (
-              <div>
+              ) : (
                 <span>{category.nome}</span>
-                <button
-                  onClick={() => {
-                    setEditCategory(category);
-                    setEditCategoryName(category.nome);
-                  }}
-                >
-                  <FaEdit /> Editar
-                </button>
-                <button onClick={() => handleDeleteCategory(category.id)}>
-                  <FaTrash /> Apagar
-                </button>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="category-actions">
+              {editCategory?.id === category.id ? (
+                <>
+                  <button onClick={handleEditCategory}>Salvar</button>
+                  <button onClick={() => setEditCategory(null)}>Cancelar</button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      setEditCategory(category);
+                      setEditCategoryName(category.nome);
+                    }}
+                  >
+                    <FaEdit /> Editar
+                  </button>
+                  <button onClick={() => handleDeleteCategory(category.id)}>
+                    <FaTrash /> Apagar
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         ))}
       </div>

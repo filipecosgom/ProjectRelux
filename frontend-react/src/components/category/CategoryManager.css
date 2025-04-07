@@ -16,22 +16,30 @@
 
 .category-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Garante que os botões fiquem à direita */
   align-items: center;
   background: #333;
   padding: 10px;
   border-radius: 5px;
 }
 
-.category-item button {
-  margin-left: 10px;
+.category-text {
+  flex: 1; /* Faz o texto ocupar o espaço disponível */
+}
+
+.category-actions {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os botões */
+}
+
+.category-actions button {
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.category-item button:hover {
+.category-actions button:hover {
   background-color: #555;
 }
 
