@@ -1,11 +1,22 @@
 .search-user-products-container {
+  align-items: center;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.search-user-products-form {
+  background-color: #2a2a2a;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .search-user-products {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
 }
 
 .search-user-products input {
@@ -26,6 +37,10 @@
 
 .search-user-products button:hover {
   background-color: #0056b3;
+}
+
+.products-cards-wrapper {
+  margin-top: 20px;
 }
 
 .products-cards-container {

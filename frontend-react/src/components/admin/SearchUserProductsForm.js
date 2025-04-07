@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import api from "../../services/apiService";
+import EditProductModal from "../product/EditProductModal"; // Importa o modal de edição
 import "./SearchUserProductsForm.css";
 
 const SearchUserProductsForm = () => {
@@ -8,6 +9,8 @@ const SearchUserProductsForm = () => {
   const [userProducts, setUserProducts] = useState([]); // Produtos do usuário
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false); // Controla a visibilidade do modal de edição
+  const [editProduct, setEditProduct] = useState(null); // Produto a ser editado
   const navigate = useNavigate(); // Hook para redirecionar
 
   // Função para buscar produtos de um usuário
@@ -39,31 +42,75 @@ const SearchUserProductsForm = () => {
     navigate(`/product/${id}`); // Redireciona para a página de detalhes do produto
   };
 
+  // Função para abrir o modal de edição
+  const handleEditProduct = (product) => {
+    setEditProduct(product); // Define o produto a ser editado
+    setShowEditModal(true); // Abre o modal
+  };
+
+  // Função para salvar as alterações do produto
+  const handleSaveProduct = async (event) => {
+    event.preventDefault(); // Evita o comportamento padrão do formulário
+    try {
+      await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
+      alert("Produto atualizado com sucesso!");
+      setShowEditModal(false); // Fecha o modal
+      fetchUserProducts(); // Atualiza a lista de produtos
+    } catch (error) {
+      console.error(
+        "Erro ao atualizar produto:",
+        error.response?.data || error.message
+      );
+      alert("Erro ao atualizar produto. Tente novamente.");
+    }
+  };
+
+  // Função para apagar um produto
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm("Tem certeza que deseja apagar este produto?")) return;
+
+    try {
+      await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
+      alert("Produto apagado com sucesso!");
+      fetchUserProducts(); // Atualiza a lista de produtos
+    } catch (error) {
+      console.error(
+        "Erro ao apagar produto:",
+        error.response?.data || error.message
+      );
+      alert("Erro ao apagar produto. Tente novamente.");
+    }
+  };
+
   return (
     <div className="search-user-products-container">
-      <h2>Pesquisar Produtos de Usuário</h2>
-      <div className="search-user-products">
-        <input
-          type="text"
-          placeholder="Digite o nome do usuário"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button onClick={fetchUserProducts}>Pesquisar</button>
+      {/* Formulário de Pesquisa */}
+      <div className="search-user-products-form">
+        <h2>Pesquisar Produtos de Usuário</h2>
+        <div className="search-user-products">
+          <input
+            type="text"
+            placeholder="Digite o nome do usuário"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <button onClick={fetchUserProducts}>Pesquisar</button>
+        </div>
+        {error && <p className="error">{error}</p>}
       </div>
-      {error && <p className="error">{error}</p>}
-      {loading ? (
-        <p>Carregando produtos...</p>
-      ) : (
-        <div className="products-cards-container">
-          {userProducts.length > 0 ? (
-            userProducts.map((product) => (
-              <div
-                className="product-card"
-                key={product.id}
-                onClick={() => handleCardClick(product.id)} // Torna o card clicável
-              >
-                <div className="product-card-column">
+
+      {/* Lista de Produtos */}
+      <div className="products-cards-wrapper">
+        {loading ? (
+          <p>Carregando produtos...</p>
+        ) : userProducts.length > 0 ? (
+          <div className="products-cards-container">
+            {userProducts.map((product) => (
+              <div className="product-card" key={product.id}>
+                <div
+                  className="product-card-column"
+                  onClick={() => handleCardClick(product.id)} // Torna o card clicável
+                >
                   <img
                     src={product.imagem || "https://via.placeholder.com/70"}
                     alt={product.title}
@@ -80,12 +127,39 @@ const SearchUserProductsForm = () => {
                     <strong>Estado:</strong> {product.state}
                   </p>
                 </div>
+                <div className="product-card-actions">
+                  <button
+                    className="edit-button"
+                    onClick={() => handleEditProduct(product)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
+                    Apagar
+                  </button>
+                </div>
               </div>
-            ))
-          ) : (
-            <p>Nenhum produto encontrado para este usuário.</p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p>Nenhum produto encontrado para este usuário.</p>
+        )}
+      </div>
+
+      {/* Modal de Edição */}
+      {showEditModal && (
+        <EditProductModal
+          product={editProduct}
+          categories={[editProduct.category]} // Passa a categoria atual como única opção
+          isVisible={showEditModal}
+          onClose={() => setShowEditModal(false)} // Fecha o modal
+          onSave={handleSaveProduct} // Salva as alterações
+          onChange={setEditProduct} // Atualiza o estado do produto durante a edição
+          error={null} // Pode adicionar lógica para exibir erros, se necessário
+        />
       )}
     </div>
   );
