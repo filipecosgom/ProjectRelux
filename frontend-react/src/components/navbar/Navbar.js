@@ -4,7 +4,7 @@ import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { FaUser, FaCogs, FaSignOutAlt } from "react-icons/fa"; // Importa os ícones FontAwesome
+import { FaUser, FaCogs, FaSignOutAlt, FaSignInAlt } from "react-icons/fa"; // Importa os ícones FontAwesome
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService";
 import { toast } from "react-toastify";
@@ -66,52 +66,58 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            {username && (
-              <li className="nav-item">
-                <IoAddCircleOutline
-                  className="add-product-icon"
-                  onClick={() => setIsModalOpen(true)}
-                />
-              </li>
-            )}
-            {username && (
-              <li className="nav-item dropdown">
-                <img
-                  src={imagem}
-                  alt="User"
-                  className="nav-user-image dropdown-toggle"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                />
-                <ul
-                  className="dropdown-menu dropdown-menu-end"
-                  aria-labelledby="navbarDropdown"
-                >
-                  <li>
-                    <span className="dropdown-item-text">
-                      Bem-vindo, {username}!
-                    </span>
-                  </li>
-                  <li>
-                    <Link to="/profile" className="dropdown-item">
-                      O meu perfil
-                    </Link>
-                  </li>
-                  {isAdmin && (
+            {username ? (
+              <>
+                <li className="nav-item">
+                  <IoAddCircleOutline
+                    className="add-product-icon"
+                    onClick={() => setIsModalOpen(true)}
+                  />
+                </li>
+                <li className="nav-item dropdown">
+                  <img
+                    src={imagem}
+                    alt="User"
+                    className="nav-user-image dropdown-toggle"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  />
+                  <ul
+                    className="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdown"
+                  >
                     <li>
-                      <Link to="/admin" className="dropdown-item">
-                        Administrar
+                      <span className="dropdown-item-text">
+                        Bem-vindo, {username}!
+                      </span>
+                    </li>
+                    <li>
+                      <Link to="/profile" className="dropdown-item">
+                        O meu perfil
                       </Link>
                     </li>
-                  )}
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
+                    {isAdmin && (
+                      <li>
+                        <Link to="/admin" className="dropdown-item">
+                          Administrar
+                        </Link>
+                      </li>
+                    )}
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  <FaSignInAlt className="nav-icon" />
+                </Link>
               </li>
             )}
           </ul>
