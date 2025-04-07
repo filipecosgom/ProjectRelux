@@ -26,8 +26,10 @@
 }
 
 .navbar-logo img {
-  max-width: 120px;
-  height: auto;
+  max-width: 100px; /* Define um tamanho máximo para a largura */
+  height: auto; /* Mantém a proporção da imagem */
+  object-fit: contain; /* Garante que a imagem seja ajustada sem distorção */
+  display: block; /* Remove qualquer comportamento inline indesejado */
 }
 
 .nav-menu {

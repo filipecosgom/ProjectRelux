@@ -44,47 +44,78 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        {/* Logotipo do site */}
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
         <Link className="navbar-logo" to="/">
-          <img src={StoreLogo} alt="Store Logo" />
+          <img
+            src={StoreLogo}
+            alt="Store Logo"
+            className="d-inline-block align-text-top"
+          />
         </Link>
-        <ul className="nav-menu">
-          {/* Botão "+" para abrir o modal de criação de produto */}
-          {username && (
-            <li className="nav-item">
-              <IoAddCircleOutline
-                className="add-product-icon"
-                onClick={() => setIsModalOpen(true)}
-              />
-            </li>
-          )}
-
-          {/* Hub de links na imagem de perfil */}
-          {username && (
-            <li className="nav-item profile-hub">
-              <img src={imagem} alt="User" className="nav-user-image" />
-              <div className="profile-dropdown">
-                <p className="welcome-message">Bem-vindo, {username}!</p>
-                <Link to="/profile" className="profile-link">
-                  <FaUser className="profile-icon" /> O meu perfil
-                </Link>
-                {isAdmin && (
-                  <Link to="/admin" className="profile-link">
-                    <FaCogs className="profile-icon" /> Administrar
-                  </Link>
-                )}
-                <button
-                  className="profile-link logout-button"
-                  onClick={handleLogout}
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            {username && (
+              <li className="nav-item">
+                <IoAddCircleOutline
+                  className="add-product-icon"
+                  onClick={() => setIsModalOpen(true)}
+                />
+              </li>
+            )}
+            {username && (
+              <li className="nav-item dropdown">
+                <img
+                  src={imagem}
+                  alt="User"
+                  className="nav-user-image dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                />
+                <ul
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropdown"
                 >
-                  <FaSignOutAlt className="profile-icon" /> Logout
-                </button>
-              </div>
-            </li>
-          )}
-        </ul>
+                  <li>
+                    <span className="dropdown-item-text">
+                      Bem-vindo, {username}!
+                    </span>
+                  </li>
+                  <li>
+                    <Link to="/profile" className="dropdown-item">
+                      O meu perfil
+                    </Link>
+                  </li>
+                  {isAdmin && (
+                    <li>
+                      <Link to="/admin" className="dropdown-item">
+                        Administrar
+                      </Link>
+                    </li>
+                  )}
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
 
       {/* Modal de criação de produto */}

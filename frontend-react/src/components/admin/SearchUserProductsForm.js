@@ -90,11 +90,14 @@ const SearchUserProductsForm = () => {
         <div className="search-user-products">
           <input
             type="text"
+            className="form-control"
             placeholder="Digite o nome do usuário"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <button onClick={fetchUserProducts}>Pesquisar</button>
+          <button className="btn btn-primary" onClick={fetchUserProducts}>
+            Pesquisar
+          </button>
         </div>
         {error && <p className="error">{error}</p>}
       </div>
@@ -106,40 +109,37 @@ const SearchUserProductsForm = () => {
         ) : userProducts.length > 0 ? (
           <div className="products-cards-container">
             {userProducts.map((product) => (
-              <div className="product-card" key={product.id}>
-                <div
-                  className="product-card-column"
-                  onClick={() => handleCardClick(product.id)} // Torna o card clicável
-                >
-                  <img
-                    src={product.imagem || "https://via.placeholder.com/70"}
-                    alt={product.title}
-                    className="product-card-image"
-                  />
-                  <h3>{product.title}</h3>
-                  <p>
+              <div className="card" key={product.id}>
+                <img
+                  src={product.imagem || "https://via.placeholder.com/70"}
+                  alt={product.title}
+                  className="card-img-top"
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{product.title}</h5>
+                  <p className="card-text">
                     <strong>Categoria:</strong> {product.category.nome}
                   </p>
-                  <p>
+                  <p className="card-text">
                     <strong>Preço:</strong> {product.price} €
                   </p>
-                  <p>
+                  <p className="card-text">
                     <strong>Estado:</strong> {product.state}
                   </p>
-                </div>
-                <div className="product-card-actions">
-                  <button
-                    className="edit-button"
-                    onClick={() => handleEditProduct(product)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteProduct(product.id)}
-                  >
-                    Apagar
-                  </button>
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteProduct(product.id)}
+                    >
+                      Apagar
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
