@@ -14,9 +14,12 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Botões principais */
 .admin-buttons {
   display: flex;
+  flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
   gap: 20px;
+  justify-content: center; /* Centraliza os botões */
   margin-bottom: 20px;
 }
 
@@ -39,6 +42,10 @@ h1 {
   align-items: center;
   gap: 10px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  flex: 1 1 calc(25% - 20px); /* Cada botão ocupa 25% da largura menos o gap */
+  min-width: 200px; /* Define uma largura mínima */
+  max-width: 300px; /* Define uma largura máxima */
+  text-align: center;
 }
 
 .admin-button:hover {
@@ -49,6 +56,23 @@ h1 {
 .admin-button.active {
   background-color: #ffd700; /* Cor dourada para o botão ativo */
   color: black;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 768px) {
+  .admin-button {
+    flex: 1 1 calc(50% - 20px); /* Cada botão ocupa 50% da largura menos o gap */
+    font-size: 14px; /* Reduz o tamanho da fonte */
+    padding: 8px 16px; /* Reduz o padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-button {
+    flex: 1 1 100%; /* Cada botão ocupa 100% da largura */
+    font-size: 12px; /* Reduz ainda mais o tamanho da fonte */
+    padding: 6px 12px; /* Reduz o padding */
+  }
 }
 
 .admin-icon {
@@ -76,7 +100,10 @@ h1 {
 /* Container dos cards */
 .users-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta dinamicamente para 3 ou 4 cards */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Ajusta dinamicamente para 3 ou 4 cards */
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
@@ -320,7 +347,10 @@ h1 {
 /* Container dos cards de produtos */
 .products-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta dinamicamente para 3 ou 4 cards */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Ajusta dinamicamente para 3 ou 4 cards */
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
@@ -347,7 +377,11 @@ h1 {
 }
 
 .product-card:hover {
-background: linear-gradient(135deg, #444, #555); /* Gradiente mais claro no hover */
+  background: linear-gradient(
+    135deg,
+    #444,
+    #555
+  ); /* Gradiente mais claro no hover */
   transform: translateY(-5px); /* Eleva o cartão levemente */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Aumenta a sombra no hover */
 }
@@ -361,7 +395,7 @@ background: linear-gradient(135deg, #444, #555); /* Gradiente mais claro no hove
 .product-card-image {
   width: 100%;
   height: 60%;
-object-fit: contain; /* Garante que a imagem seja cortada proporcionalmente */
+  object-fit: contain; /* Garante que a imagem seja cortada proporcionalmente */
   border-radius: 8px;
   margin-bottom: 10px;
 }
