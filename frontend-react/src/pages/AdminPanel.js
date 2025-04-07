@@ -10,6 +10,7 @@ import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
 import { updateUser } from "../services/userService";
+import SearchUserProductsForm from "../components/admin/SearchUserProductsForm";
 
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
@@ -765,52 +766,7 @@ function AdminPanel() {
       )}
 
       {/* Painel de Pesquisa de Produtos de Usuário */}
-      {activePanel === "user-products" && (
-        <div className="admin-panel-content">
-          <h2>Pesquisar Produtos de Usuário</h2>
-          <div className="search-user-products">
-            <input
-              type="text"
-              placeholder="Digite o nome do usuário"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <button onClick={fetchUserProducts}>Pesquisar</button>
-          </div>
-          {error && <p className="error">{error}</p>}
-          {loading ? (
-            <p>Carregando produtos...</p>
-          ) : (
-            <div className="products-cards-container">
-              {userProducts.length > 0 ? (
-                userProducts.map((product) => (
-                  <div className="product-card" key={product.id}>
-                    <div className="product-card-column">
-                      <img
-                        src={product.imagem || "https://via.placeholder.com/70"}
-                        alt={product.title}
-                        className="product-card-image"
-                      />
-                      <h3>{product.title}</h3>
-                      <p>
-                        <strong>Categoria:</strong> {product.category.nome}
-                      </p>
-                      <p>
-                        <strong>Preço:</strong> {product.price} €
-                      </p>
-                      <p>
-                        <strong>Estado:</strong> {product.state}
-                      </p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>Nenhum produto encontrado para este usuário.</p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+      {activePanel === "user-products" && <SearchUserProductsForm />}
 
       {activePanel === "categories" && <CategoryManager token={token} />}
     </div>
