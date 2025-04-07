@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
 import CategoryManager from "../components/category/CategoryManager";
-import { FaUsersCog, FaEdit, FaTrash } from "react-icons/fa";
+import { FaUsersCog, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
 import { FaRegEyeSlash, FaEye } from "react-icons/fa";
 import api from "../services/apiService"; // Importa o serviço Axios configurado
@@ -10,9 +10,6 @@ import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
 import { updateUser } from "../services/userService";
-
-//todo user não admin poder editar o seu perfil
-//fixme comprar produto não funciona. 403 error response
 
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
@@ -50,6 +47,10 @@ function AdminPanel() {
     state: "DISPONIVEL",
   }); // Novo produto
   const [error, setError] = useState(null);
+
+  // Estados para a funcionalidade de pesquisa de produtos de um usuário
+  const [username, setUsername] = useState(""); // Nome do usuário para pesquisa
+  const [userProducts, setUserProducts] = useState([]); // Produtos do usuário
 
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
@@ -102,6 +103,30 @@ function AdminPanel() {
         "Erro ao buscar categorias:",
         error.response?.data || error.message
       );
+    }
+  };
+
+  // Função para buscar produtos de um usuário
+  const fetchUserProducts = async () => {
+    if (!username.trim()) {
+      setError("Por favor, insira um nome de usuário.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await api.get(`/products/user-products/${username}`);
+      setUserProducts(response.data);
+    } catch (error) {
+      console.error(
+        "Erro ao buscar produtos do usuário:",
+        error.response?.data || error.message
+      );
+      setError("Erro ao buscar produtos. Verifique o nome do usuário.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -338,7 +363,21 @@ function AdminPanel() {
           <TbBuildingCog className="admin-icon" />
           Gerir Categorias
         </button>
+        <button
+          className={`admin-button ${
+            activePanel === "user-products" ? "active" : ""
+          }`}
+          onClick={() =>
+            setActivePanel(
+              activePanel === "user-products" ? null : "user-products"
+            )
+          }
+        >
+          <FaSearch className="admin-icon" />
+          Pesquisar Produtos de Usuário
+        </button>
       </div>
+
       {/* Painel de Gerir Utilizadores */}
       {activePanel === "users" && (
         <div className="admin-panel-content">
@@ -723,6 +762,54 @@ function AdminPanel() {
           onChange={setEditProduct}
           error={error}
         />
+      )}
+
+      {/* Painel de Pesquisa de Produtos de Usuário */}
+      {activePanel === "user-products" && (
+        <div className="admin-panel-content">
+          <h2>Pesquisar Produtos de Usuário</h2>
+          <div className="search-user-products">
+            <input
+              type="text"
+              placeholder="Digite o nome do usuário"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <button onClick={fetchUserProducts}>Pesquisar</button>
+          </div>
+          {error && <p className="error">{error}</p>}
+          {loading ? (
+            <p>Carregando produtos...</p>
+          ) : (
+            <div className="products-cards-container">
+              {userProducts.length > 0 ? (
+                userProducts.map((product) => (
+                  <div className="product-card" key={product.id}>
+                    <div className="product-card-column">
+                      <img
+                        src={product.imagem || "https://via.placeholder.com/70"}
+                        alt={product.title}
+                        className="product-card-image"
+                      />
+                      <h3>{product.title}</h3>
+                      <p>
+                        <strong>Categoria:</strong> {product.category.nome}
+                      </p>
+                      <p>
+                        <strong>Preço:</strong> {product.price} €
+                      </p>
+                      <p>
+                        <strong>Estado:</strong> {product.state}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>Nenhum produto encontrado para este usuário.</p>
+              )}
+            </div>
+          )}
+        </div>
       )}
 
       {activePanel === "categories" && <CategoryManager token={token} />}
