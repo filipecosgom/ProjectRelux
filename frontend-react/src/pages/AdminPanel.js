@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
 import CategoryManager from "../components/category/CategoryManager";
 import { FaUsersCog, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
@@ -16,6 +16,7 @@ function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
   const token = userStore((state) => state.token);
   const navigate = useNavigate();
+  const location = useLocation();
   const [activePanel, setActivePanel] = useState(null);
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
@@ -59,6 +60,20 @@ function AdminPanel() {
       navigate("/", { replace: true });
     }
   }, [isAdmin, navigate]);
+
+  useEffect(() => {
+    // Define o painel ativo com base no URL ao carregar a página
+    const panelFromUrl = new URLSearchParams(location.search).get("panel");
+    if (panelFromUrl) {
+      setActivePanel(panelFromUrl);
+    }
+  }, [location.search]);
+
+  const handlePanelChange = (panel) => {
+    const newPanel = activePanel === panel ? null : panel;
+    setActivePanel(newPanel);
+    navigate(newPanel ? `?panel=${newPanel}` : ""); // Atualiza o URL
+  };
 
   // Função para buscar todos os utilizadores
   const fetchUsers = async () => {
@@ -335,9 +350,7 @@ function AdminPanel() {
       <div className="admin-buttons">
         <button
           className={`admin-button ${activePanel === "users" ? "active" : ""}`}
-          onClick={() =>
-            setActivePanel(activePanel === "users" ? null : "users")
-          }
+          onClick={() => handlePanelChange("users")}
         >
           <FaUsersCog className="admin-icon" />
           Gerir Utilizadores
@@ -346,9 +359,7 @@ function AdminPanel() {
           className={`admin-button ${
             activePanel === "products" ? "active" : ""
           }`}
-          onClick={() =>
-            setActivePanel(activePanel === "products" ? null : "products")
-          }
+          onClick={() => handlePanelChange("products")}
         >
           <TbBasketCog className="admin-icon" />
           Gerir Produtos
@@ -357,9 +368,7 @@ function AdminPanel() {
           className={`admin-button ${
             activePanel === "categories" ? "active" : ""
           }`}
-          onClick={() =>
-            setActivePanel(activePanel === "categories" ? null : "categories")
-          }
+          onClick={() => handlePanelChange("categories")}
         >
           <TbBuildingCog className="admin-icon" />
           Gerir Categorias
@@ -368,11 +377,7 @@ function AdminPanel() {
           className={`admin-button ${
             activePanel === "user-products" ? "active" : ""
           }`}
-          onClick={() =>
-            setActivePanel(
-              activePanel === "user-products" ? null : "user-products"
-            )
-          }
+          onClick={() => handlePanelChange("user-products")}
         >
           <FaSearch className="admin-icon" />
           Pesquisar Produtos de Usuário
