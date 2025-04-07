@@ -70,6 +70,7 @@ public class CategoryService {
 
     @PUT
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateCategory(
             @HeaderParam("Authorization") String token,
             @PathParam("id") int id,
