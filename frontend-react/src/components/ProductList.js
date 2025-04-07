@@ -41,7 +41,7 @@ function ProductList() {
     <div className="product-list-container">
       {/* Ícone de categorias */}
       <div
-        className="categories-container" // Contêiner que envolve o ícone e o dropdown
+        className="categories-container" // Container que envolve o ícone e o dropdown
         onMouseEnter={() => setShowCategories(true)} // Exibe a lista ao passar o mouse
         onMouseLeave={() => setShowCategories(false)} // Oculta a lista ao sair do hover
       >
