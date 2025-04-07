@@ -48,7 +48,7 @@ function CategoryManager() {
       return toast.warn("O nome da categoria é obrigatório."); // Toast de aviso
     try {
       await api.put(`/categories/${editCategory.id}`, {
-        name: editCategoryName,
+        nome: editCategoryName, // Corrige o campo para "nome"
       }); // Faz o request com o serviço Axios
       toast.success("Categoria editada com sucesso!"); // Toast de sucesso
       setEditCategory(null);
