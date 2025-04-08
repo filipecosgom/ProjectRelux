@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import "./EditProductModal.css";
 
 const EditProductModal = ({
@@ -37,12 +38,12 @@ const EditProductModal = ({
     event.preventDefault();
 
     if (!product.title.trim()) {
-      alert("O título é obrigatório.");
+      toast.error("O título é obrigatório.");
       return;
     }
 
     if (priceError) {
-      alert("Corrija os erros antes de salvar.");
+      toast.error("Corrija os erros antes de salvar.");
       return;
     }
 
