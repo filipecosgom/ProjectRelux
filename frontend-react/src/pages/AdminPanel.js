@@ -11,6 +11,7 @@ import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
 import { updateUser } from "../services/userService";
 import SearchUserProductsForm from "../components/admin/SearchUserProductsForm";
+import { toast } from "react-toastify"; // Importa o toastify
 
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
@@ -190,7 +191,7 @@ function AdminPanel() {
     try {
       await api.post("/users/register", newUser); // Faz o request com o serviço Axios
 
-      alert(`O utilizador ${newUser.username} foi criado com sucesso!`);
+      toast.success(`O utilizador ${newUser.username} foi criado com sucesso!`);
       setShowCreateModal(false); // Fecha o modal
       fetchUsers(); // Atualiza a lista de utilizadores
     } catch (error) {
@@ -201,6 +202,7 @@ function AdminPanel() {
       setError(
         error.response?.data || "Erro ao criar utilizador. Tente novamente."
       );
+      toast.error("Erro ao criar utilizador. Tente novamente.");
     }
   };
 
@@ -223,14 +225,14 @@ function AdminPanel() {
 
     try {
       await api.delete(`/users/delete/${username}`); // Faz o request com o serviço Axios
-      alert(`O utilizador ${username} foi apagado com sucesso!`);
+      toast.success(`O utilizador ${username} foi apagado com sucesso!`);
       fetchUsers(); // Atualiza a lista de utilizadores
     } catch (error) {
       console.error(
         "Erro ao apagar utilizador:",
         error.response?.data || error.message
       );
-      alert("Erro ao apagar utilizador. Tente novamente.");
+      toast.error("Erro ao apagar utilizador. Tente novamente.");
     }
   };
 
@@ -251,7 +253,9 @@ function AdminPanel() {
       if (updatedUser) {
         // Atualiza a lista de utilizadores
         fetchUsers();
-        alert(`O utilizador ${editUser.username} foi atualizado com sucesso!`);
+        toast.success(
+          `O utilizador ${editUser.username} foi atualizado com sucesso!`
+        );
       }
 
       // Fecha o modal
@@ -284,7 +288,7 @@ function AdminPanel() {
     try {
       await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
 
-      alert(`O produto "${newProduct.title}" foi criado com sucesso!`);
+      toast.success(`O produto "${newProduct.title}" foi criado com sucesso!`);
       setShowCreateProductModal(false); // Fecha o modal
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
@@ -295,6 +299,7 @@ function AdminPanel() {
       setError(
         error.response?.data || "Erro ao criar produto. Tente novamente."
       );
+      toast.error("Erro ao criar produto. Tente novamente.");
     }
   };
 
@@ -306,14 +311,14 @@ function AdminPanel() {
 
     try {
       await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
-      alert("Produto apagado com sucesso!");
+      toast.success("Produto apagado com sucesso!");
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
       console.error(
         "Erro ao apagar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao apagar produto. Tente novamente.");
+      toast.error("Erro ao apagar produto. Tente novamente.");
     }
   };
 
@@ -330,7 +335,7 @@ function AdminPanel() {
 
     try {
       await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
-      alert(`O produto "${editProduct.title}" foi atualizado com sucesso!`);
+      toast.success(`O produto "${editProduct.title}" foi atualizado com sucesso!`);
       setShowProductModal(false); // Fecha o modal
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
@@ -341,6 +346,7 @@ function AdminPanel() {
       setError(
         error.response?.data || "Erro ao atualizar produto. Tente novamente."
       );
+      toast.error("Erro ao atualizar produto. Tente novamente.");
     }
   };
 
