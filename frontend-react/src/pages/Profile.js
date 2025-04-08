@@ -8,6 +8,7 @@ import "./Profile.css";
 import EditUserModal from "../components/user/EditUserModal"; // Modal de edição de utilizador
 import { updateUser } from "../services/userService";
 import api from "../services/apiService"; // Importa o serviço Axios
+import { toast } from "react-toastify";
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -112,7 +113,7 @@ function Profile() {
               }));
 
               // Exibe uma mensagem de sucesso
-              alert("Perfil atualizado com sucesso!");
+              toast.success("Perfil atualizado com sucesso!");
 
               // Fecha o modal
               setShowEditModal(false);
@@ -122,7 +123,7 @@ function Profile() {
             } catch (error) {
               // Exibe uma mensagem de erro, caso algo dê errado
               console.error("Erro ao atualizar o perfil:", error);
-              alert("Erro ao atualizar o perfil. Tente novamente.");
+              toast.error("Erro ao atualizar o perfil. Tente novamente.");
             }
           }}
           onChange={(e) => {
