@@ -87,7 +87,7 @@ function AdminPanel() {
         "Erro ao buscar utilizadores:",
         error.response?.data || error.message
       );
-      alert("Erro ao carregar utilizadores. Tente novamente.");
+      toast.error("Erro ao carregar utilizadores. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -104,7 +104,7 @@ function AdminPanel() {
         "Erro ao buscar produtos:",
         error.response?.data || error.message
       );
-      alert("Erro ao carregar produtos. Tente novamente.");
+      toast.error("Erro ao carregar produtos. Tente novamente.");
     } finally {
       setLoading(false);
     }
