@@ -13,6 +13,8 @@ import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 
 @Stateless
@@ -24,7 +26,10 @@ public class UserBean implements Serializable {
     @EJB
     ProductDao productDao;
 
+    private static final Logger logger = LogManager.getLogger(UserBean.class);
+
     public String loginUser(UserDto user) {
+        logger.info("Login attempt for user: {}", user.getUsername());
         UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
         if (userEntity != null) {
             // Verifica se a password inserida corresponde ao hash armazenado
@@ -32,8 +37,15 @@ public class UserBean implements Serializable {
                 String token = generateNewToken();
                 userEntity.setToken(token);
                 userDao.merge(userEntity);
+                logger.info("Teste de logger ao fazer login");
+                logger.info("Login successful for user: {}", user.getUsername());
                 return token;
+            } else {
+                logger.warn("Invalid password for user: {}", user.getUsername());
             }
+        } else {
+            logger.warn("User not found: {}", user.getUsername());
+
         }
         return null;
     }

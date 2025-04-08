@@ -1,0 +1,6 @@
+16:36:17.671 [main] [32mINFO[m - Login attempt for user: testUser
+16:36:17.684 [main] [33mWARN[m - User not found: testUser
+16:36:18.163 [main] [32mINFO[m - Login attempt for user: testUser
+16:36:18.293 [main] [33mWARN[m - Invalid password for user: testUser
+16:36:18.574 [main] [32mINFO[m - Login attempt for user: testUser
+16:36:18.703 [main] [32mINFO[m - Login successful for user: testUser
