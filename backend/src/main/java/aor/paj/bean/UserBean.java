@@ -13,6 +13,7 @@ import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Stateless
 public class UserBean implements Serializable {
@@ -61,7 +62,7 @@ public class UserBean implements Serializable {
     UserEntity convertUserDtotoUserEntity(UserDto user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.getUsername());
-        userEntity.setPassword(user.getPassword());
+        userEntity.setPassword(hashPassword(user.getPassword()));
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setEmail(user.getEmail());
@@ -173,6 +174,11 @@ public class UserBean implements Serializable {
             userDtos.add(convertUserEntityToUserDto(userEntity));
         }
         return userDtos;
+    }
+
+    public String hashPassword(String password) {
+//        logger.info("Hashing password.");
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
 
