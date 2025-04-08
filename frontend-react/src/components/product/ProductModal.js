@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"; // Importado para verificar muda
 import api from "../../services/apiService"; // Importa o serviço Axios configurado
 import { userStore } from "../../stores/UserStore";
 import "./ProductModal.css";
+import { toast } from "react-toastify";
 
 Modal.setAppElement("#root"); // Define o elemento principal para acessibilidade
 
@@ -53,7 +54,7 @@ const ProductModal = ({ isOpen, onClose }) => {
           "Erro ao buscar categorias:",
           error.response?.data || error.message
         );
-        alert("Erro ao carregar categorias. Tente novamente.");
+        toast.error("Erro ao carregar categorias. Tente novamente.");
       }
     };
 
@@ -90,12 +91,12 @@ const ProductModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) {
-      alert("Token não encontrado. Por favor, faça login novamente.");
+      toast.error("Token não encontrado. Por favor, faça login novamente.");
       return;
     }
 
     if (priceError) {
-      alert("Corrija os erros antes de enviar o formulário.");
+      toast.error("Corrija os erros antes de enviar o formulário.");
       return;
     }
 
@@ -104,7 +105,7 @@ const ProductModal = ({ isOpen, onClose }) => {
       console.log("Dados enviados:", formData);
 
       const response = await api.post("/products/add", formData); // Faz o request com o serviço Axios
-      alert(response.data); // Exibe a mensagem de sucesso
+      toast.success(response.data); // Exibe a mensagem de sucesso
       onClose(); // Fecha o modal
       window.location.reload(); // Atualiza a página para exibir o novo produto
     } catch (error) {
@@ -112,7 +113,7 @@ const ProductModal = ({ isOpen, onClose }) => {
         "Erro ao criar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao criar produto. Tente novamente.");
+      toast.error("Erro ao criar produto. Tente novamente.");
     }
   };
 
