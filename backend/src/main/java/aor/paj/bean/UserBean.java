@@ -37,7 +37,6 @@ public class UserBean implements Serializable {
                 String token = generateNewToken();
                 userEntity.setToken(token);
                 userDao.merge(userEntity);
-                logger.info("Teste de logger ao fazer login");
                 logger.info("Login successful for user: {}", user.getUsername());
                 return token;
             } else {
