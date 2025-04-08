@@ -27,7 +27,8 @@ public class UserBean implements Serializable {
     public String loginUser(UserDto user) {
         UserEntity userEntity = userDao.findUserByUsername(user.getUsername());
         if (userEntity != null) {
-            if (userEntity.getPassword().equals(user.getPassword())) {
+            // Verifica se a password inserida corresponde ao hash armazenado
+            if (userEntity.checkPassword(user.getPassword())) {
                 String token = generateNewToken();
                 userEntity.setToken(token);
                 userDao.merge(userEntity);

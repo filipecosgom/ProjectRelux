@@ -7,6 +7,7 @@ import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -16,6 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserBeanTest {
 
@@ -42,7 +45,7 @@ public class UserBeanTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername("testUser");
-        userEntity.setPassword("password");
+        userEntity.setPassword(BCrypt.hashpw("password", BCrypt.gensalt())); // Hash the password
 
         when(userDao.findUserByUsername(userDto.getUsername())).thenReturn(userEntity);
 
@@ -81,7 +84,7 @@ public class UserBeanTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername("testUser");
-        userEntity.setPassword("password");
+        userEntity.setPassword(BCrypt.hashpw("password", BCrypt.gensalt())); // Hash the password
 
         when(userDao.findUserByUsername(userDto.getUsername())).thenReturn(userEntity);
 
@@ -405,6 +408,7 @@ public class UserBeanTest {
         // Assert
         assertTrue(userDtos.isEmpty());
     }
+
     @Test
     public void testConvertUserDtotoUserEntity() {
         // Arrange
@@ -421,7 +425,7 @@ public class UserBeanTest {
 
         // Assert
         assertEquals("testUser", userEntity.getUsername());
-        assertEquals("password", userEntity.getPassword());
+        assertTrue(BCrypt.checkpw("password", userEntity.getPassword())); // Verify hashed password
         assertEquals("FirstName", userEntity.getFirstName());
         assertEquals("LastName", userEntity.getLastName());
         assertEquals("test@example.com", userEntity.getEmail());

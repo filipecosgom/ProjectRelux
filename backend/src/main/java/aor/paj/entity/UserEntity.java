@@ -1,6 +1,7 @@
 package aor.paj.entity;
 
 import jakarta.persistence.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.Serializable;
 import java.util.List;
@@ -78,6 +79,10 @@ public class UserEntity implements Serializable {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean checkPassword(String plainPassword) {
+        return BCrypt.checkpw(plainPassword, this.password);
     }
 
     public void setPassword(String password) {
