@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"; // Importa o hook useNavigate
 import api from "../../services/apiService";
 import EditProductModal from "../product/EditProductModal"; // Importa o modal de edição
 import "./SearchUserProductsForm.css";
+import { toast } from "react-toastify";
 
 const SearchUserProductsForm = () => {
   const [username, setUsername] = useState(""); // Nome do usuário para pesquisa
@@ -53,7 +54,7 @@ const SearchUserProductsForm = () => {
     event.preventDefault(); // Evita o comportamento padrão do formulário
     try {
       await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
-      alert("Produto atualizado com sucesso!");
+      toast.success("Produto atualizado com sucesso!");
       setShowEditModal(false); // Fecha o modal
       fetchUserProducts(); // Atualiza a lista de produtos
     } catch (error) {
@@ -61,7 +62,7 @@ const SearchUserProductsForm = () => {
         "Erro ao atualizar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao atualizar produto. Tente novamente.");
+      toast.error("Erro ao atualizar produto. Tente novamente.");
     }
   };
 
@@ -71,14 +72,14 @@ const SearchUserProductsForm = () => {
 
     try {
       await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
-      alert("Produto apagado com sucesso!");
+      toast.success("Produto apagado com sucesso!");
       fetchUserProducts(); // Atualiza a lista de produtos
     } catch (error) {
       console.error(
         "Erro ao apagar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao apagar produto. Tente novamente.");
+      toast.error("Erro ao apagar produto. Tente novamente.");
     }
   };
 
