@@ -4,6 +4,7 @@ import api from "../../services/apiService"; // Importa o serviço Axios configu
 import { userStore as useUserStore } from "../../stores/UserStore";
 import "./ProductDetails.css";
 import EditProductModal from "./EditProductModal";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Obtém o ID do produto da URL
@@ -26,7 +27,7 @@ const ProductDetails = () => {
           "Erro ao buscar produto:",
           error.response?.data || error.message
         );
-        alert("Produto não encontrado!");
+        toast.error("Produto não encontrado!");
         navigate("/"); // Redireciona para a página inicial se o produto não for encontrado
       }
     };
@@ -42,14 +43,14 @@ const ProductDetails = () => {
   const handleDelete = async () => {
     try {
       await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
-      alert("Produto excluído com sucesso!");
+      toast.success("Produto excluído com sucesso!");
       navigate("/"); // Redireciona para a página inicial após a exclusão
     } catch (error) {
       console.error(
         "Erro ao excluir produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao excluir produto.");
+      toast.error("Erro ao excluir produto.");
     }
   };
 
@@ -58,14 +59,14 @@ const ProductDetails = () => {
       console.log("Token enviado:", token);
       console.log("Enviando estado:", { state: "COMPRADO" });
       await api.put(`/products/update-state/${id}`, { state: "COMPRADO" }); // Faz o request com o serviço Axios
-      alert("Compra efetuada com sucesso!");
+      toast.success("Compra efetuada com sucesso!");
       navigate("/"); // Redireciona para a página inicial após a compra
     } catch (error) {
       console.error(
         "Erro ao comprar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao comprar produto.");
+      toast.error("Erro ao comprar produto.");
     }
   };
 
@@ -73,7 +74,7 @@ const ProductDetails = () => {
     event.preventDefault(); // Evita o comportamento padrão do formulário
     try {
       await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
-      alert("Produto atualizado com sucesso!");
+      toast.success("Produto atualizado com sucesso!");
       setShowEditModal(false); // Fecha o modal
       setProduct(editProduct); // Atualiza o produto exibido na página
     } catch (error) {
@@ -81,7 +82,7 @@ const ProductDetails = () => {
         "Erro ao atualizar produto:",
         error.response?.data || error.message
       );
-      alert("Erro ao atualizar produto. Tente novamente.");
+      toast.error("Erro ao atualizar produto. Tente novamente.");
     }
   };
 
@@ -126,7 +127,7 @@ const ProductDetails = () => {
                 if (username) {
                   setShowConfirmation(true);
                 } else {
-                  alert("Necessita estar logado para comprar. Faça login aqui");
+                  toast.error("Necessita estar logado para comprar. Faça login aqui");
                   navigate("/Login");
                 }
               }}
