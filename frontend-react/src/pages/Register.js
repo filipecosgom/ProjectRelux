@@ -3,6 +3,7 @@ import "../pages/Register.css";
 import { useNavigate, Link } from "react-router-dom";
 import { FaUserPlus } from "react-icons/fa";
 import api from "../services/apiService"; // Importa o serviço Axios configurado
+import { toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
