@@ -5,7 +5,9 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement
 public class UserDto {
     private String username;
@@ -19,13 +21,17 @@ public class UserDto {
     private int id;
     private boolean isAdmin;
     private boolean isDeleted;
+    private boolean isVerified; // Adicionado
+    private String verificationToken; // Adicionado
+    private String passwordRecoveryToken; // Adicionado
 
     public UserDto() {
         this.produtos = new ArrayList<>();
     }
 
-    public UserDto(String username, String password, String firstName,String lastName, String email,
-                   String phone, String imagem, List<String> produtos, int id, boolean isAdmin, boolean isDeleted) {
+    public UserDto(String username, String password, String firstName, String lastName, String email,
+                   String phone, String imagem, List<String> produtos, int id, boolean isAdmin, boolean isDeleted,
+                   boolean isVerified, String verificationToken, String passwordRecoveryToken) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -37,7 +43,9 @@ public class UserDto {
         this.id = id;
         this.isAdmin = isAdmin;
         this.isDeleted = isDeleted;
-
+        this.isVerified = isVerified; // Adicionado
+        this.verificationToken = verificationToken; // Adicionado
+        this.passwordRecoveryToken = passwordRecoveryToken; // Adicionado
     }
 
     @XmlElement
@@ -126,6 +134,33 @@ public class UserDto {
 
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+        @XmlElement
+    public boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    @XmlElement
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    @XmlElement
+    public String getPasswordRecoveryToken() {
+        return passwordRecoveryToken;
+    }
+
+    public void setPasswordRecoveryToken(String passwordRecoveryToken) {
+        this.passwordRecoveryToken = passwordRecoveryToken;
     }
 }
 

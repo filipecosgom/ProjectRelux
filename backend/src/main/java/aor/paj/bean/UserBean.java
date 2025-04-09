@@ -49,21 +49,25 @@ public class UserBean implements Serializable {
         return null;
     }
 
-    public boolean registerUser(UserDto user) {
-        UserEntity u_temp = userDao.findUserByUsername(user.getUsername());
-        if (u_temp == null) {
-            UserEntity userEntity = convertUserDtotoUserEntity(user);
-            try {
-                userDao.persist(userEntity);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            return true;
-        } else {
-            throw new RuntimeException("Já existe um utilizador com esse username");
+public boolean registerUser(UserDto user) {
+    UserEntity u_temp = userDao.findUserByUsername(user.getUsername());
+    if (u_temp == null) {
+        UserEntity userEntity = convertUserDtotoUserEntity(user);
+        userEntity.setIsVerified(false); // Conta não verificada
+        userEntity.setVerificationToken(generateNewToken()); // Gera o token de verificação
+        try {
+            userDao.persist(userEntity);
+            // Exibe o link de verificação na consola
+            String verificationLink = "http://localhost:8080/filipe-proj5/rest/users/verify?token=" + userEntity.getVerificationToken();
+            System.out.println("Link de verificação: " + verificationLink);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+        return true;
+    } else {
+        throw new RuntimeException("Já existe um utilizador com esse username");
     }
+}
 
     public List<UserDto> getAllUsers() {
         List<UserEntity> users = userDao.findAll();
@@ -82,6 +86,9 @@ public class UserBean implements Serializable {
         userEntity.setImagem(user.getImagem());
         userEntity.setIsAdmin(user.getIsAdmin());
         userEntity.setDeleted(user.getIsDeleted());
+        userEntity.setIsVerified(user.getIsVerified()); // Adicionado
+        userEntity.setVerificationToken(user.getVerificationToken()); // Adicionado
+        userEntity.setPasswordRecoveryToken(user.getPasswordRecoveryToken()); // Adicionado
         return userEntity;
     }
 
@@ -97,10 +104,13 @@ public class UserBean implements Serializable {
         userDto.setAdmin(user.isAdmin());
         userDto.setId(user.getId());
         userDto.setDeleted(user.isDeleted());
+        userDto.setIsVerified(user.getIsVerified()); // Adicionado
+        userDto.setVerificationToken(user.getVerificationToken()); // Adicionado
+        userDto.setPasswordRecoveryToken(user.getPasswordRecoveryToken()); // Adicionado
         return userDto;
     }
 
-    private String generateNewToken() {
+    public String generateNewToken() {
         SecureRandom secureRandom = new SecureRandom();
         Base64.Encoder base64Encoder = Base64.getUrlEncoder();
         byte[] randomBytes = new byte[24];

@@ -12,3 +12,27 @@
 16:59:15.382 [main] [32mINFO[m - Login attempt for user: testUser
 16:59:15.513 [main] [32mINFO[m - Teste de logger ao fazer login
 16:59:15.513 [main] [32mINFO[m - Login successful for user: testUser
+15:03:07.674 [main] [32mINFO[m - Login attempt for user: testUser
+15:03:07.689 [main] [33mWARN[m - User not found: testUser
+15:03:08.156 [main] [32mINFO[m - Login attempt for user: testUser
+15:03:08.284 [main] [33mWARN[m - Invalid password for user: testUser
+15:03:08.567 [main] [32mINFO[m - Login attempt for user: testUser
+15:03:08.696 [main] [32mINFO[m - Login successful for user: testUser
+15:31:37.756 [main] [32mINFO[m - Login attempt for user: testUser
+15:31:37.770 [main] [33mWARN[m - User not found: testUser
+15:31:38.230 [main] [32mINFO[m - Login attempt for user: testUser
+15:31:38.361 [main] [33mWARN[m - Invalid password for user: testUser
+15:31:38.652 [main] [32mINFO[m - Login attempt for user: testUser
+15:31:38.783 [main] [32mINFO[m - Login successful for user: testUser
+18:01:03.700 [main] [32mINFO[m - Login attempt for user: testUser
+18:01:03.713 [main] [33mWARN[m - User not found: testUser
+18:01:04.174 [main] [32mINFO[m - Login attempt for user: testUser
+18:01:04.304 [main] [33mWARN[m - Invalid password for user: testUser
+18:01:04.588 [main] [32mINFO[m - Login attempt for user: testUser
+18:01:04.716 [main] [32mINFO[m - Login successful for user: testUser
+18:15:56.477 [main] [32mINFO[m - Login attempt for user: testUser
+18:15:56.490 [main] [33mWARN[m - User not found: testUser
+18:15:56.953 [main] [32mINFO[m - Login attempt for user: testUser
+18:15:57.081 [main] [33mWARN[m - Invalid password for user: testUser
+18:15:57.367 [main] [32mINFO[m - Login attempt for user: testUser
+18:15:57.495 [main] [32mINFO[m - Login successful for user: testUser

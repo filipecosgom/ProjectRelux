@@ -52,4 +52,39 @@ public class UserDao extends AbstratDao<UserEntity> {
             return null;
         }
     }
+
+    public UserEntity findByVerificationToken(String token) {
+        try {
+            return em.createQuery("SELECT u FROM UserEntity u WHERE u.verificationToken = :token", UserEntity.class)
+                    .setParameter("token", token)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Retorna null se nenhum resultado for encontrado
+        }
+    }
+ 
+    public UserEntity findByPasswordRecoveryToken(String token) {
+        try {
+            return em.createQuery("SELECT u FROM UserEntity u WHERE u.passwordRecoveryToken = :token", UserEntity.class)
+                    .setParameter("token", token)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Retorna null se nenhum resultado for encontrado
+        }
+    }
+
+    public UserEntity findUserByEmail(String email) {
+        try {
+            return em.createQuery("SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Retorna null se nenhum resultado for encontrado
+        }
+    }
+
+    public List<UserEntity> findUnverifiedUsers() {
+    return em.createQuery("SELECT u FROM UserEntity u WHERE u.isVerified = false", UserEntity.class)
+             .getResultList();
+}
 }

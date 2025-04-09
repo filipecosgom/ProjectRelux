@@ -54,6 +54,15 @@ public class UserEntity implements Serializable {
     @Column(name ="isDeleted", nullable= false, unique = false)
     private boolean isDeleted;
 
+    @Column(name = "isVerified", nullable = false)
+    private boolean isVerified; // Indica se a conta foi verificada
+
+    @Column(name = "verificationToken", nullable = true, unique = true)
+    private String verificationToken; // Armazena o token de verificação
+
+    @Column(name = "password_recovery_token", nullable = true, unique = true)
+    private String passwordRecoveryToken;
+    
     @OneToMany (mappedBy = "userAutor")
     private List<ProductEntity> products;
 
@@ -163,4 +172,28 @@ public class UserEntity implements Serializable {
         isDeleted = deleted;
         return this;
     }
+
+    public boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public String getPasswordRecoveryToken() {
+    return passwordRecoveryToken;
+}
+
+    public void setPasswordRecoveryToken(String passwordRecoveryToken) {
+    this.passwordRecoveryToken = passwordRecoveryToken;
+}
 }
