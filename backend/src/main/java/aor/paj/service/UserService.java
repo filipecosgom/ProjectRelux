@@ -233,7 +233,7 @@ public Response buyProduct(@HeaderParam("Authorization") String token, @PathPara
         return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
     }
 
-    if (!user.getIsVerified()) {
+    if (!user.isVerified()) {
         return Response.status(Response.Status.FORBIDDEN)
                 .entity("Necessita verificar a sua conta antes de comprar produtos.").build();
     }
@@ -292,7 +292,7 @@ public Response resendVerificationToken(@QueryParam("email") String email) {
         return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
     }
 
-    if (user.getIsVerified()) {
+    if (user.isVerified()) {
         return Response.status(Response.Status.BAD_REQUEST).entity("Conta já verificada").build();
     }
 

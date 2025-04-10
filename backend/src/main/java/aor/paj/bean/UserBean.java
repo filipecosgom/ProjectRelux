@@ -86,7 +86,7 @@ public boolean registerUser(UserDto user) {
         userEntity.setImagem(user.getImagem());
         userEntity.setIsAdmin(user.getIsAdmin());
         userEntity.setDeleted(user.getIsDeleted());
-        userEntity.setIsVerified(user.getIsVerified()); // Adicionado
+        userEntity.setIsVerified(user.isVerified()); // Adicionado
         userEntity.setVerificationToken(user.getVerificationToken()); // Adicionado
         userEntity.setPasswordRecoveryToken(user.getPasswordRecoveryToken()); // Adicionado
         return userEntity;
@@ -104,7 +104,7 @@ public boolean registerUser(UserDto user) {
         userDto.setAdmin(user.isAdmin());
         userDto.setId(user.getId());
         userDto.setDeleted(user.isDeleted());
-        userDto.setIsVerified(user.getIsVerified()); // Adicionado
+        userDto.setIsVerified(user.isVerified()); // Adicionado
         userDto.setVerificationToken(user.getVerificationToken()); // Adicionado
         userDto.setPasswordRecoveryToken(user.getPasswordRecoveryToken()); // Adicionado
         return userDto;

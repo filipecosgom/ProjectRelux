@@ -36,3 +36,9 @@
 18:15:57.081 [main] [33mWARN[m - Invalid password for user: testUser
 18:15:57.367 [main] [32mINFO[m - Login attempt for user: testUser
 18:15:57.495 [main] [32mINFO[m - Login successful for user: testUser
+11:51:01.378 [main] [32mINFO[m - Login attempt for user: testUser
+11:51:01.394 [main] [33mWARN[m - User not found: testUser
+11:51:01.908 [main] [32mINFO[m - Login attempt for user: testUser
+11:51:02.042 [main] [33mWARN[m - Invalid password for user: testUser
+11:51:02.356 [main] [32mINFO[m - Login attempt for user: testUser
+11:51:02.492 [main] [32mINFO[m - Login successful for user: testUser

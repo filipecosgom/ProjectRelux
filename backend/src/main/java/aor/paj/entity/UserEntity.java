@@ -29,7 +29,6 @@ public class UserEntity implements Serializable {
     @Column(name = "password", nullable = false, unique = false, updatable = true)
     private String password;
 
-    //user's name
     @Column(name = "firstName", nullable = false, unique = false, updatable = true)
     private String firstName;
 
@@ -141,10 +140,12 @@ public class UserEntity implements Serializable {
     public String getImagem() {
         return imagem;
     }
+
     public UserEntity setImagem(String imagem) {
         this.imagem = imagem;
         return this;
     }
+
     public boolean isAdmin() {
         return isAdmin;
     }
@@ -173,7 +174,7 @@ public class UserEntity implements Serializable {
         return this;
     }
 
-    public boolean getIsVerified() {
+    public boolean isVerified() {
         return isVerified;
     }
 

@@ -7,7 +7,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement
 public class UserDto {
     private String username;
@@ -79,6 +79,7 @@ public class UserDto {
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -120,12 +121,22 @@ public class UserDto {
     }
 
     @XmlElement
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @XmlElement
-    public boolean getIsAdmin() { return isAdmin; }
-    public void setAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 
     @XmlElement
     public boolean getIsDeleted() {
@@ -136,8 +147,8 @@ public class UserDto {
         this.isDeleted = isDeleted;
     }
 
-        @XmlElement
-    public boolean getIsVerified() {
+    @XmlElement
+    public boolean isVerified() {
         return isVerified;
     }
 
