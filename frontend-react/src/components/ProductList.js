@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { RxDropdownMenu } from "react-icons/rx"; // Importa o ícone
 import api from "../services/apiService"; // Importa o serviço Axios configurado
 import "./ProductList.css";
+import { toast } from "react-toastify";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
@@ -13,10 +14,11 @@ function ProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get("/products/"); // Faz o request com o serviço Axios
+        const response = await api.get("/products/available"); // Faz o request com o serviço Axios
         setProducts(response.data);
       } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error("Erro ao buscar produtos disponíveis:", error);
+        toast.error("Erro ao carregar produtos.");
       }
     };
 
@@ -26,6 +28,7 @@ function ProductList() {
         setCategories(response.data);
       } catch (error) {
         console.error("Erro ao buscar categorias:", error);
+        toast.error("Erro ao carregar categorias.");
       }
     };
 
