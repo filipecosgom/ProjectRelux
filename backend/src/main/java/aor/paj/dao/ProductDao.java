@@ -64,6 +64,12 @@ public class ProductDao extends AbstratDao<ProductEntity> {
         }
     }
 
+    public List<ProductEntity> findPurchasedProducts() {
+        return em.createNamedQuery("Product.findPurchasedProducts", ProductEntity.class)
+                .setParameter("state", EstadosDoProduto.COMPRADO)
+                .getResultList();
+    }
+
 }
 
 

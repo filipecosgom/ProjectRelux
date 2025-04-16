@@ -171,6 +171,11 @@ public class ProductBean implements Serializable {
         return convertProductEntityListtoProductDtoList(availableProducts);
     }
 
+    public List<ProductDto> getPurchasedProducts() {
+        // Obtém os produtos comprados do DAO
+        List<ProductEntity> purchasedProducts = productDao.findPurchasedProducts();
+        return convertProductEntityListtoProductDtoList(purchasedProducts);
+    }
 }
 
 

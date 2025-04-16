@@ -234,6 +234,15 @@ public class ProductService {
         List<ProductDto> availableProducts = productBean.getAvailableProducts();
         return Response.ok(availableProducts).build();
     }
+
+    @GET
+    @Path("/purchased")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPurchasedProducts() {
+        // Obtém os produtos comprados do ProductBean
+        List<ProductDto> purchasedProducts = productBean.getPurchasedProducts();
+        return Response.ok(purchasedProducts).build();
+    }
 }
 
 
