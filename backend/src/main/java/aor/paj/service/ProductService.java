@@ -225,6 +225,15 @@ public class ProductService {
         }
         return Response.status(Response.Status.OK).entity(products).build();
     }
+
+    @GET
+    @Path("/available")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAvailableProducts() {
+        // Obtém todos os produtos disponíveis
+        List<ProductDto> availableProducts = productBean.getAvailableProducts();
+        return Response.ok(availableProducts).build();
+    }
 }
 
 

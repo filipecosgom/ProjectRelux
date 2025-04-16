@@ -165,6 +165,11 @@ public class ProductBean implements Serializable {
 
     }
 
+    public List<ProductDto> getAvailableProducts() {
+        // Obtém os produtos disponíveis do DAO
+        List<ProductEntity> availableProducts = productDao.findProductsByState(EstadosDoProduto.DISPONIVEL);
+        return convertProductEntityListtoProductDtoList(availableProducts);
+    }
 
 }
 

@@ -54,15 +54,15 @@ public class ProductDao extends AbstratDao<ProductEntity> {
         em.remove(em.contains(productEntity) ? productEntity : em.merge(productEntity));
     }
 
-//    public List<ProductEntity> findProductsByState(EstadosDoProduto state) {
-//        try {
-//            return em.createNamedQuery("ProductEntity.findByState", ProductEntity.class)
-//                    .setParameter("state", state)
-//                    .getResultList();
-//        } catch (NoResultException e) {
-//            return null;
-//        }
-//    }
+    public List<ProductEntity> findProductsByState(EstadosDoProduto state) {
+        try {
+            return em.createNamedQuery("Product.findProductsByState", ProductEntity.class)
+            .setParameter("state", state)
+            .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
 }
 

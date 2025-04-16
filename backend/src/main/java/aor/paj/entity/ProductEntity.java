@@ -13,7 +13,9 @@ import java.io.Serializable;
 @NamedQuery(name = "Product.findProductsById", query = "SELECT a FROM ProductEntity a WHERE a.id= :id")
 @NamedQuery(name = "Product.findProductByUser", query = "SELECT a FROM ProductEntity a WHERE a.userAutor= :owner")
 @NamedQuery(name = "Product.findProductByCategory", query = "SELECT a FROM ProductEntity a WHERE a.category.id = :categoryId")
+@NamedQuery(name = "Product.findProductsByState", query = "SELECT a FROM ProductEntity a WHERE a.state= :state")
 public class ProductEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
