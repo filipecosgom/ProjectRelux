@@ -1,0 +1,24 @@
+.filter-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.clear-filter-button {
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.clear-filter-button:hover {
+  background-color: #0056b3;
+}

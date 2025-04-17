@@ -11,6 +11,7 @@ import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
 import { updateUser } from "../services/userService";
 import SearchUserProductsForm from "../components/admin/SearchUserProductsForm";
+import FilterDropdown from "../components/admin/FilterDropdown"; // Importa o componente de filtro
 import { toast } from "react-toastify"; // Importa o toastify
 
 function AdminPanel() {
@@ -55,6 +56,8 @@ function AdminPanel() {
   const [username, setUsername] = useState(""); // Nome do usuário para pesquisa
   const [userProducts, setUserProducts] = useState([]); // Produtos do usuário
 
+  const [selectedState, setSelectedState] = useState(""); // Estado selecionado no filtro
+
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
     if (!isAdmin) {
@@ -94,21 +97,27 @@ function AdminPanel() {
   };
 
   // Função para buscar todos os produtos
-  const fetchProducts = async () => {
+  const fetchProducts = async (state) => {
     setLoading(true);
     try {
-      const response = await api.get("/products/"); // Faz o request com o serviço Axios
+      const response = await api.get("/products", {
+        params: { state }, // Passa o estado como parâmetro de consulta
+      });
       setProducts(response.data);
     } catch (error) {
       console.error(
         "Erro ao buscar produtos:",
         error.response?.data || error.message
       );
-      toast.error("Erro ao carregar produtos. Tente novamente.");
     } finally {
       setLoading(false);
     }
   };
+
+  // Chama fetchProducts sempre que selectedState mudar
+  useEffect(() => {
+    fetchProducts(selectedState); // Busca produtos com base no estado selecionado
+  }, [selectedState]);
 
   // Função para buscar categorias
   const fetchCategories = async () => {
@@ -335,7 +344,9 @@ function AdminPanel() {
 
     try {
       await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
-      toast.success(`O produto "${editProduct.title}" foi atualizado com sucesso!`);
+      toast.success(
+        `O produto "${editProduct.title}" foi atualizado com sucesso!`
+      );
       setShowProductModal(false); // Fecha o modal
       fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
@@ -596,9 +607,14 @@ function AdminPanel() {
           >
             + Criar Novo Produto
           </button>
+          <FilterDropdown
+            selectedState={selectedState}
+            onStateChange={setSelectedState}
+            onClearFilter={() => setSelectedState("")}
+          />
           {loading ? (
             <p>Carregando produtos...</p>
-          ) : (
+          ) : products.length > 0 ? (
             <div className="products-cards-container">
               {products.map((product) => (
                 <div className="product-card" key={product.id}>
@@ -635,7 +651,9 @@ function AdminPanel() {
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+                  ) : (
+      <p>Sem produtos com o estado selecionado.</p>
           )}
         </div>
       )}
