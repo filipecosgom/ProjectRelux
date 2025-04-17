@@ -601,17 +601,19 @@ function AdminPanel() {
       {activePanel === "products" && (
         <div className="admin-panel-content">
           <h2>Gerir Produtos</h2>
+          <div className="admin-panel-header">
           <button
             className="create-product-button"
             onClick={() => setShowCreateProductModal(true)}
           >
-            + Criar Novo Produto
+            + 
           </button>
           <FilterDropdown
             selectedState={selectedState}
             onStateChange={setSelectedState}
             onClearFilter={() => setSelectedState("")}
           />
+          </div>
           {loading ? (
             <p>Carregando produtos...</p>
           ) : products.length > 0 ? (

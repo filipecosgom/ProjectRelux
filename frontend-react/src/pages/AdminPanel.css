@@ -407,7 +407,7 @@ h1 {
 }
 
 .create-product-button {
-  background-color: #007bff;
+  background-color: #ccaa14;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -419,6 +419,14 @@ h1 {
 }
 
 .create-product-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
+  background-color: #866302;
+  transform: scale(1.15);
+}
+
+.admin-panel-header {
+  display: flex; /* Define o layout como flexbox */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+  justify-content: space-between; /* Adiciona espaço entre o botão e o filtro */
+  gap: 20px; /* Espaçamento entre os itens */
+  margin-bottom: 20px; /* Espaçamento inferior */
 }
