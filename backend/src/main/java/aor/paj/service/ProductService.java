@@ -5,6 +5,7 @@ import java.util.List;
 
 import aor.paj.bean.ProductBean;
 import aor.paj.bean.UserBean;
+import aor.paj.dto.EstadosDoProduto;
 import aor.paj.dto.ProductDto;
 import aor.paj.entity.UserEntity;
 import jakarta.inject.Inject;
@@ -24,22 +25,37 @@ public class ProductService {
     @GET
     @Path("")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllProducts(@HeaderParam("Authorization") String token) {
-        if (token == null || token.isEmpty()) {
-            List<ProductDto> products = productBean.getAllProducts();
-            return Response.ok(products).build();
-        }
-        UserEntity user = userBean.getUserByToken(token);
-        if (user == null) {
-            return Response.status(401).entity("Token inválido").build();
-        }
-        if (user.isAdmin()) {
-            List<ProductDto> products = productBean.getAllProducts();
-            return Response.ok(products).build();
+    public Response getAllProducts(@HeaderParam("Authorization") String token, @QueryParam("state") String state) {
+        List<ProductDto> products;
+
+        // Se o estado for fornecido, filtrar os produtos com base no estado
+        if (state != null && !state.isEmpty()) {
+            try {
+                EstadosDoProduto estado = EstadosDoProduto.valueOf(state.toUpperCase());
+                products = productBean.getProductsByState(estado);
+            } catch (IllegalArgumentException e) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Estado inválido: " + state)
+                        .build();
+            }
         } else {
-            List<ProductDto> products = productBean.getProductsByUser(user);
-            return Response.ok(products).build();
+            // Se o estado não for fornecido, seguir a lógica existente
+            if (token == null || token.isEmpty()) {
+                products = productBean.getAllProducts();
+            } else {
+                UserEntity user = userBean.getUserByToken(token);
+                if (user == null) {
+                    return Response.status(401).entity("Token inválido").build();
+                }
+                if (user.isAdmin()) {
+                    products = productBean.getAllProducts();
+                } else {
+                    products = productBean.getProductsByUser(user);
+                }
+            }
         }
+
+        return Response.ok(products).build();
     }
 
 
