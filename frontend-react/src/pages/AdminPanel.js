@@ -22,7 +22,8 @@ function AdminPanel() {
   const location = useLocation();
   const [activePanel, setActivePanel] = useState(null);
   const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
+  const { products, setProducts, addProduct, updateProduct, removeProduct } =
+    useProductStore(); // Usa a store de produtos
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({});
@@ -290,28 +291,25 @@ function AdminPanel() {
   };
 
   // Função para criar um novo produto
-  const handleCreateProduct = async (event) => {
-    event.preventDefault();
-    console.log("Dados enviados:", newProduct);
-    setError(null);
+const handleCreateProduct = async (event) => {
+  event.preventDefault();
+  console.log("Dados enviados:", newProduct);
+  setError(null);
 
-    try {
-      await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
-
-      toast.success(`O produto "${newProduct.title}" foi criado com sucesso!`);
-      setShowCreateProductModal(false); // Fecha o modal
-      fetchProducts(); // Atualiza a lista de produtos
-    } catch (error) {
-      console.error(
-        "Erro ao criar produto:",
-        error.response?.data || error.message
-      );
-      setError(
-        error.response?.data || "Erro ao criar produto. Tente novamente."
-      );
-      toast.error("Erro ao criar produto. Tente novamente.");
-    }
-  };
+  try {
+    const response = await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
+    addProduct(response.data); // Adiciona o novo produto à store
+    toast.success(`O produto "${newProduct.title}" foi criado com sucesso!`);
+    setShowCreateProductModal(false); // Fecha o modal
+  } catch (error) {
+    console.error(
+      "Erro ao criar produto:",
+      error.response?.data || error.message
+    );
+    setError(error.response?.data || "Erro ao criar produto. Tente novamente.");
+    toast.error("Erro ao criar produto. Tente novamente.");
+  }
+};
 
   // Função para apagar um produto
   const handleDeleteProduct = async (id) => {
@@ -361,6 +359,27 @@ function AdminPanel() {
       toast.error("Erro ao atualizar produto. Tente novamente.");
     }
   };
+
+  // Função para carregar os produtos do backend e armazená-los na store
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get("/products"); // Faz o request ao backend
+        setProducts(response.data); // Armazena os produtos na store
+      } catch (error) {
+        console.error(
+          "Erro ao buscar produtos:",
+          error.response?.data || error.message
+        );
+        toast.error("Erro ao carregar produtos.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [setProducts]);
 
   return (
     <div className="admin-panel-container">
@@ -603,17 +622,17 @@ function AdminPanel() {
         <div className="admin-panel-content">
           <h2>Gerir Produtos</h2>
           <div className="admin-panel-header">
-          <button
-            className="create-product-button"
-            onClick={() => setShowCreateProductModal(true)}
-          >
-            + 
-          </button>
-          <FilterDropdown
-            selectedState={selectedState}
-            onStateChange={setSelectedState}
-            onClearFilter={() => setSelectedState("")}
-          />
+            <button
+              className="create-product-button"
+              onClick={() => setShowCreateProductModal(true)}
+            >
+              + Criar Novo Produto
+            </button>
+            <FilterDropdown
+              selectedState={selectedState}
+              onStateChange={setSelectedState}
+              onClearFilter={() => setSelectedState("")}
+            />
           </div>
           {loading ? (
             <p>Carregando produtos...</p>
@@ -654,9 +673,9 @@ function AdminPanel() {
                   </div>
                 </div>
               ))}
-              </div>
-                  ) : (
-      <p>Sem produtos com o estado selecionado.</p>
+            </div>
+          ) : (
+            <p>Sem produtos com o estado selecionado.</p>
           )}
         </div>
       )}
