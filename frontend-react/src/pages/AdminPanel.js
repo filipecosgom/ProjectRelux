@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { userStore } from "../stores/UserStore";
+import { useProductStore } from "../stores/ProductStore";
 import CategoryManager from "../components/category/CategoryManager";
 import { FaUsersCog, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
