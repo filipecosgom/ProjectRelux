@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RxDropdownMenu } from "react-icons/rx"; // Importa o ícone
 import api from "../services/apiService"; // Importa o serviço Axios configurado
+import { useProductStore } from "../stores/ProductStore";
 import "./ProductList.css";
 import { toast } from "react-toastify";
 
@@ -10,12 +11,14 @@ function ProductList() {
   const [categories, setCategories] = useState([]); // Estado para armazenar as categorias
   const [showCategories, setShowCategories] = useState(false); // Estado para controlar a exibição da lista de categorias
   const navigate = useNavigate();
+  const { setProducts: setStoreProducts } = useProductStore(); // Acessa a função para definir os produtos na store
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await api.get("/products/available"); // Faz o request com o serviço Axios
         setProducts(response.data);
+        setStoreProducts(response.data); // Atualiza a ProductStore
       } catch (error) {
         console.error("Erro ao buscar produtos disponíveis:", error);
         toast.error("Erro ao carregar produtos.");
@@ -34,7 +37,7 @@ function ProductList() {
 
     fetchProducts();
     fetchCategories();
-  }, []);
+  }, [setStoreProducts]); // Adiciona setStoreProducts como dependência
 
   const handleCardClick = (id) => {
     navigate(`/product/${id}`); // Redireciona para a página de detalhes do produto

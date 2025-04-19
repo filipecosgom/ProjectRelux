@@ -312,23 +312,23 @@ const handleCreateProduct = async (event) => {
 };
 
   // Função para apagar um produto
-  const handleDeleteProduct = async (id) => {
-    if (!window.confirm(`Tem certeza que deseja apagar o produto?`)) {
-      return;
-    }
+const handleDeleteProduct = async (id) => {
+  if (!window.confirm(`Tem certeza que deseja apagar o produto?`)) {
+    return;
+  }
 
-    try {
-      await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
-      toast.success("Produto apagado com sucesso!");
-      fetchProducts(); // Atualiza a lista de produtos
-    } catch (error) {
-      console.error(
-        "Erro ao apagar produto:",
-        error.response?.data || error.message
-      );
-      toast.error("Erro ao apagar produto. Tente novamente.");
-    }
-  };
+  try {
+    await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
+    removeProduct(id); // Remove o produto da store
+    toast.success("Produto apagado com sucesso!");
+  } catch (error) {
+    console.error(
+      "Erro ao apagar produto:",
+      error.response?.data || error.message
+    );
+    toast.error("Erro ao apagar produto. Tente novamente.");
+  }
+};
 
   // Função para abrir o modal de edição de produto
   const handleEditProduct = (product) => {
@@ -342,12 +342,15 @@ const handleCreateProduct = async (event) => {
     setError(null);
 
     try {
-      await api.put(`/products/${editProduct.id}`, editProduct); // Faz o request com o serviço Axios
+      const response = await api.put(
+        `/products/${editProduct.id}`,
+        editProduct
+      ); // Faz o request com o serviço Axios
+      updateProduct(response.data); // Atualiza o produto na store
       toast.success(
         `O produto "${editProduct.title}" foi atualizado com sucesso!`
       );
       setShowProductModal(false); // Fecha o modal
-      fetchProducts(); // Atualiza a lista de produtos
     } catch (error) {
       console.error(
         "Erro ao atualizar produto:",
