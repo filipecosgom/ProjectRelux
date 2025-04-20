@@ -242,45 +242,57 @@ public Response buyProduct(@HeaderParam("Authorization") String token, @PathPara
     return Response.status(Response.Status.OK).entity("Produto comprado com sucesso!").build();
 }
 
-@POST
-@Path("/recover-password")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response recoverPassword(@QueryParam("email") String email) {
-    UserEntity user = userDao.findUserByEmail(email);
-    if (user == null) {
-        return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+    @POST
+    @Path("/recover-password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response recoverPassword(@QueryParam("email") String email) {
+        // Busca o utilizador pelo email
+        UserEntity user = userDao.findUserByEmail(email);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+
+        // Gera um novo token de recuperação
+        String recoveryToken = userBean.generateNewToken();
+        user.setPasswordRecoveryToken(recoveryToken);
+
+        // Define a validade do token (10 minutos a partir de agora)
+        user.setPasswordRecoveryTokenExpiration(java.time.LocalDateTime.now().plusMinutes(10));
+        userDao.merge(user);
+
+        // Exibe o link de recuperação na consola
+        System.out.println(
+                "Link de recuperação: http://localhost:8080/filipe-proj5/rest/users/reset-password?token=" + recoveryToken);
+
+        return Response.status(Response.Status.OK).entity("Link de recuperação gerado com sucesso. Verifique a consola.").build();
     }
 
-    // Gera um novo token de recuperação
-    String recoveryToken = userBean.generateNewToken();
-    user.setPasswordRecoveryToken(recoveryToken);
-    userDao.merge(user);
+    @POST
+    @Path("/reset-password")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resetPassword(@QueryParam("token") String token, @QueryParam("newPassword") String newPassword) {
+        // Busca o utilizador pelo token de recuperação
+        UserEntity user = userDao.findByPasswordRecoveryToken(token);
+        if (user == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Token inválido ou expirado").build();
+        }
 
-    // Exibe o link de recuperação na consola (substituir por envio de email no futuro)
-    System.out.println(
-        "Link de recuperação: http://localhost:8080/filipe-proj5/rest/users/reset-password?token=" + recoveryToken);
+        // Verifica se o token expirou
+        if (user.getPasswordRecoveryTokenExpiration() == null ||
+                user.getPasswordRecoveryTokenExpiration().isBefore(java.time.LocalDateTime.now())) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Token expirado").build();
+        }
 
-    return Response.status(Response.Status.OK).entity("Link de recuperação enviado para o email").build();
-}
+        // Atualiza a senha do utilizador
+        user.setPassword(userBean.hashPassword(newPassword));
+        user.setPasswordRecoveryToken(null); // Remove o token após redefinir a senha
+        user.setPasswordRecoveryTokenExpiration(null); // Remove a validade do token
+        userDao.merge(user);
 
-@POST
-@Path("/reset-password")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response resetPassword(@QueryParam("token") String token, @QueryParam("newPassword") String newPassword) {
-    UserEntity user = userDao.findByPasswordRecoveryToken(token);
-    if (user == null) {
-        return Response.status(Response.Status.BAD_REQUEST).entity("Token inválido ou expirado").build();
+        return Response.status(Response.Status.OK).entity("Senha redefinida com sucesso!").build();
     }
-
-    // Atualiza a senha do utilizador
-    user.setPassword(userBean.hashPassword(newPassword));
-    user.setPasswordRecoveryToken(null); // Remove o token após redefinir a senha
-    userDao.merge(user);
-
-    return Response.status(Response.Status.OK).entity("Senha redefinida com sucesso!").build();
-}
 
 @POST
 @Path("/resend-verification")

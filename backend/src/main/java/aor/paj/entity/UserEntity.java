@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -61,6 +62,9 @@ public class UserEntity implements Serializable {
 
     @Column(name = "password_recovery_token", nullable = true, unique = true)
     private String passwordRecoveryToken;
+
+    @Column(name = "password_recovery_token_expiration", nullable = true)
+    private LocalDateTime passwordRecoveryTokenExpiration;
     
     @OneToMany (mappedBy = "userAutor")
     private List<ProductEntity> products;
@@ -149,13 +153,16 @@ public class UserEntity implements Serializable {
     public boolean isAdmin() {
         return isAdmin;
     }
+
     public UserEntity setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
     }
+
     public List<ProductEntity> getProducts() {
         return products;
     }
+
     public void setProducts(List<ProductEntity> products) {
         this.products = products;
     }
@@ -197,4 +204,13 @@ public class UserEntity implements Serializable {
     public void setPasswordRecoveryToken(String passwordRecoveryToken) {
     this.passwordRecoveryToken = passwordRecoveryToken;
 }
+
+    // Getter e Setter para passwordRecoveryTokenExpiration
+    public LocalDateTime getPasswordRecoveryTokenExpiration() {
+        return passwordRecoveryTokenExpiration;
+    }
+
+    public void setPasswordRecoveryTokenExpiration(LocalDateTime passwordRecoveryTokenExpiration) {
+        this.passwordRecoveryTokenExpiration = passwordRecoveryTokenExpiration;
+    }
 }
