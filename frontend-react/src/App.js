@@ -10,6 +10,8 @@ import AdminPanel from "./pages/AdminPanel";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/product/ProductDetails";
 import CategoryProducts from "./components/category/CategoryProducts";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import { ToastContainer } from "react-toastify"; // Importa o ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Importa os estilos do React-Toastify
 import "./App.css";
@@ -51,6 +53,8 @@ function App() {
               </>
             }
           />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
         <Footer />
         <ToastContainer theme="dark" />{" "}

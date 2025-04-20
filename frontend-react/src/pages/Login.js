@@ -96,6 +96,7 @@ function Login() {
         <p>
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
+        <Link to="/forgot-password">Esqueceu a sua password?</Link>
       </div>
     </div>
   );
