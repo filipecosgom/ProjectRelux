@@ -20,10 +20,14 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import aor.paj.config.ApplicationConfig;
+
 
 //Gere os nossos endpoints de utilizadores
 @Path("/users")
 public class UserService {
+
+    private static final String FRONTEND_BASE_URL = "http://localhost:3000";
 
     @Inject
     UserBean userBean;
@@ -201,46 +205,46 @@ public class UserService {
         return Response.status(Response.Status.OK).entity(allUsers).build();
     }
 
-@GET
-@Path("/verify")
-@Produces(MediaType.APPLICATION_JSON)
-public Response verifyAccount(@QueryParam("token") String token) {
-    UserEntity user = userDao.findByVerificationToken(token);
-    if (user == null) {
-        return Response.status(Response.Status.BAD_REQUEST)
-        .entity("{\"message\": \"Token inválido ou expirado\"}")
-        .type(MediaType.APPLICATION_JSON)
-        .build();
+    @GET
+    @Path("/verify")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response verifyAccount(@QueryParam("token") String token) {
+        UserEntity user = userDao.findByVerificationToken(token);
+        if (user == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"message\": \"Token inválido ou expirado\"}")
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+
+        user.setIsVerified(true); // Marca a conta como verificada
+        user.setVerificationToken(null); // Remove o token de verificação por motivos de segurança
+        userDao.merge(user);
+
+        return Response.status(Response.Status.OK)
+                .entity("{\"message\": \"Conta confirmada com sucesso!\"}")
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
-    user.setIsVerified(true); // Marca a conta como verificada
-    user.setVerificationToken(null); // Remove o token de verificação por motivos de segurança
-    userDao.merge(user);
+    @PUT
+    @Path("/products/buy/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response buyProduct(@HeaderParam("Authorization") String token, @PathParam("id") int productId) {
+        UserEntity user = userBean.getUserByToken(token);
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
 
-    return Response.status(Response.Status.OK)
-    .entity("{\"message\": \"Conta confirmada com sucesso!\"}")
-    .type(MediaType.APPLICATION_JSON)
-    .build();
-}
+        if (!user.isVerified()) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("Necessita verificar a sua conta antes de comprar produtos.").build();
+        }
 
-@PUT
-@Path("/products/buy/{id}")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response buyProduct(@HeaderParam("Authorization") String token, @PathParam("id") int productId) {
-    UserEntity user = userBean.getUserByToken(token);
-    if (user == null) {
-        return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        // Lógica para processar a compra...
+        return Response.status(Response.Status.OK).entity("Produto comprado com sucesso!").build();
     }
-
-    if (!user.isVerified()) {
-        return Response.status(Response.Status.FORBIDDEN)
-                .entity("Necessita verificar a sua conta antes de comprar produtos.").build();
-    }
-
-    // Lógica para processar a compra...
-    return Response.status(Response.Status.OK).entity("Produto comprado com sucesso!").build();
-}
 
     @POST
     @Path("/recover-password")
@@ -262,8 +266,8 @@ public Response buyProduct(@HeaderParam("Authorization") String token, @PathPara
         userDao.merge(user);
 
         // Exibe o link de recuperação na consola
-        System.out.println(
-                "Link de recuperação: http://localhost:8080/filipe-proj5/rest/users/reset-password?token=" + recoveryToken);
+        String recoveryLink = ApplicationConfig.FRONTEND_BASE_URL + "/reset-password?token=" + recoveryToken;
+        System.out.println("Link de recuperação: " + recoveryLink);
 
         return Response.status(Response.Status.OK).entity("Link de recuperação gerado com sucesso. Verifique a consola.").build();
     }
@@ -294,50 +298,50 @@ public Response buyProduct(@HeaderParam("Authorization") String token, @PathPara
         return Response.status(Response.Status.OK).entity("Senha redefinida com sucesso!").build();
     }
 
-@POST
-@Path("/resend-verification")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public Response resendVerificationToken(@QueryParam("email") String email) {
-    UserEntity user = userDao.findUserByEmail(email);
-    if (user == null) {
-        return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+    @POST
+    @Path("/resend-verification")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resendVerificationToken(@QueryParam("email") String email) {
+        UserEntity user = userDao.findUserByEmail(email);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+
+        if (user.isVerified()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Conta já verificada").build();
+        }
+
+        String newToken = userBean.generateNewToken();
+        user.setVerificationToken(newToken);
+        userDao.merge(user);
+
+        // Exibe o link de verificação na consola (substituir por envio de email no futuro)
+        System.out.println(
+                "Novo link de verificação: http://localhost:8080/filipe-proj5/rest/users/verify?token=" + newToken);
+
+        return Response.status(Response.Status.OK).entity("Novo link de verificação enviado").build();
     }
 
-    if (user.isVerified()) {
-        return Response.status(Response.Status.BAD_REQUEST).entity("Conta já verificada").build();
+    @PUT
+    @Path("/activate/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response activateUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação").build();
+        }
+
+        UserEntity user = userDao.findUserByUsername(username);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
+        }
+
+        user.setIsVerified(true);
+        user.setVerificationToken(null);
+        userDao.merge(user);
+
+        return Response.status(Response.Status.OK).entity("Conta ativada com sucesso").build();
     }
-
-    String newToken = userBean.generateNewToken();
-    user.setVerificationToken(newToken);
-    userDao.merge(user);
-
-    // Exibe o link de verificação na consola (substituir por envio de email no futuro)
-    System.out.println(
-            "Novo link de verificação: http://localhost:8080/filipe-proj5/rest/users/verify?token=" + newToken);
-
-    return Response.status(Response.Status.OK).entity("Novo link de verificação enviado").build();
-}
-
-@PUT
-@Path("/activate/{username}")
-@Produces(MediaType.APPLICATION_JSON)
-public Response activateUser(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
-    UserEntity loggedInUser = userBean.getUserByToken(token);
-    if (loggedInUser == null || !loggedInUser.isAdmin()) {
-        return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação").build();
-    }
-
-    UserEntity user = userDao.findUserByUsername(username);
-    if (user == null) {
-        return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
-    }
-
-    user.setIsVerified(true);
-    user.setVerificationToken(null);
-    userDao.merge(user);
-
-    return Response.status(Response.Status.OK).entity("Conta ativada com sucesso").build();
-}
 
 }
