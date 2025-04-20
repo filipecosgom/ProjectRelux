@@ -2,6 +2,7 @@ package aor.paj.bean;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -115,7 +116,12 @@ public boolean registerUser(UserDto user) {
         Base64.Encoder base64Encoder = Base64.getUrlEncoder();
         byte[] randomBytes = new byte[24];
         secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
+        String token = base64Encoder.encodeToString(randomBytes);
+
+        // Log para rastrear a geração do token
+        logger.info("Novo token gerado: {}", token);
+
+        return token;
     }
 
     public boolean tokenExist(String token) {
@@ -203,5 +209,55 @@ public boolean registerUser(UserDto user) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
+    // Mét0do para recuperar a senha
+    public boolean recoverPassword(String email) {
+        UserEntity user = userDao.findUserByEmail(email);
+        if (user == null) {
+            logger.warn("Tentativa de recuperação de senha para email inexistente: {}", email);
+            return false;
+        }
+
+        // Gera um novo token de recuperação
+        String recoveryToken = generateNewToken();
+        user.setPasswordRecoveryToken(recoveryToken);
+
+        // Define a validade do token (10 minutos a partir de agora)
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(10);
+        user.setPasswordRecoveryTokenExpiration(expirationTime);
+        userDao.merge(user);
+
+        // Logs para rastrear o fluxo de recuperação de senha
+        logger.info("Token de recuperação gerado para o utilizador: {}", user.getEmail());
+        logger.info("Token expira em: {}", expirationTime);
+        logger.info("Link de recuperação gerado: http://localhost:8080/filipe-proj5/rest/users/reset-password?token={}", recoveryToken);
+
+        return true;
+    }
+
+    // Mét0do para redefinir a senha
+    public boolean resetPassword(String token, String newPassword) {
+        UserEntity user = userDao.findByPasswordRecoveryToken(token);
+        if (user == null) {
+            logger.warn("Tentativa de redefinição de senha com token inválido: {}", token);
+            return false;
+        }
+
+        // Verifica se o token expirou
+        if (user.getPasswordRecoveryTokenExpiration() == null ||
+                user.getPasswordRecoveryTokenExpiration().isBefore(LocalDateTime.now())) {
+            logger.warn("Tentativa de redefinição de senha com token expirado: {}", token);
+            return false;
+        }
+
+        // Atualiza a senha do utilizador
+        user.setPassword(hashPassword(newPassword));
+        user.setPasswordRecoveryToken(null); // Remove o token após redefinir a senha
+        user.setPasswordRecoveryTokenExpiration(null); // Remove a validade do token
+        userDao.merge(user);
+
+        // Logs para rastrear a redefinição de senha
+        logger.info("Senha redefinida com sucesso para o utilizador: {}", user.getEmail());
+        return true;
+    }
 
 }
