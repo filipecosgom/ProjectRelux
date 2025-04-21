@@ -178,7 +178,7 @@
 
 .nav-icon {
   font-size: 1.5rem;
-  color: #fff;
+  color: #535353;
   vertical-align: middle;
   transition: color 0.3s ease;
 }
@@ -202,4 +202,41 @@
   margin-right: 8px; /* Espaçamento entre o ícone e o texto */
   font-size: 16px; /* Tamanho do ícone */
   vertical-align: middle; /* Alinha o ícone ao texto */
+}
+
+/* Container do ícone de notificações */
+.notification-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Ícone de notificações */
+.notification-icon {
+  font-size: 1.3rem;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.notification-icon:hover {
+  color: #ffd700; /* Cor dourada no hover */
+}
+
+/* Badge de notificações */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff4500; /* Vermelho para o badge */
+  color: white;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }

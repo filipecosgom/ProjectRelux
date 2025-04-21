@@ -10,6 +10,7 @@ import {
   FaSignOutAlt,
   FaSignInAlt,
   FaUsers,
+  FaBell,
 } from "react-icons/fa";
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService";
@@ -22,6 +23,7 @@ const Navbar = () => {
   const clearUser = userStore((state) => state.clearUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
+  const [notifications, setNotifications] = useState(3); // Número de notificações (exemplo, remover o número)
 
   // Exibe uma toast de boas-vindas após o login
   useEffect(() => {
@@ -74,6 +76,18 @@ const Navbar = () => {
           <ul className="navbar-nav ms-auto">
             {username ? (
               <>
+                {/* Ícone de notificações */}
+                <li className="nav-item">
+                  <div className="notification-icon-container">
+                    <FaBell className="notification-icon" />
+                    {notifications > 0 && (
+                      <span className="notification-badge">
+                        {notifications}
+                      </span>
+                    )}
+                  </div>
+                </li>
+
                 <li className="nav-item">
                   <IoAddCircleOutline
                     className="add-product-icon"
