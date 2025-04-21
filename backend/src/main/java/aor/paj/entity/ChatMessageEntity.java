@@ -1,6 +1,7 @@
 package aor.paj.entity;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -8,7 +9,9 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "chat_messages")
-public class ChatMessageEntity {
+public class ChatMessageEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L; // Add a serialVersionUID for serialization
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
