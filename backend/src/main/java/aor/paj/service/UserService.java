@@ -250,12 +250,25 @@ public class UserService {
     @Path("/recover-password")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response recoverPassword(@QueryParam("email") String email) {
+public Response recoverPassword(@HeaderParam("Authorization") String token, @QueryParam("email") String email) {
+    UserEntity user;
+
+    // Verifica se o token de autenticação foi enviado
+    if (token != null && !token.isEmpty()) {
+        user = userBean.getUserByToken(token); // Identifica o utilizador logado pelo token
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
+        }
+    } else if (email != null && !email.isEmpty()) {
+        user = userDao.findUserByEmail(email); // Identifica o utilizador pelo email
+        
         // Busca o utilizador pelo email
-        UserEntity user = userDao.findUserByEmail(email);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
         }
+            } else {
+        return Response.status(Response.Status.BAD_REQUEST).entity("Token ou email são necessários").build();
+    }
 
         // Gera um novo token de recuperação
         String recoveryToken = userBean.generateNewToken();
@@ -269,7 +282,10 @@ public class UserService {
         String recoveryLink = ApplicationConfig.FRONTEND_BASE_URL + "/reset-password?token=" + recoveryToken;
         System.out.println("Link de recuperação: " + recoveryLink);
 
-        return Response.status(Response.Status.OK).entity("Link de recuperação gerado com sucesso. Verifique a consola.").build();
+            return Response.status(Response.Status.OK)
+            .entity("{\"recoveryToken\": \"" + recoveryToken + "\"}")
+            .type(MediaType.APPLICATION_JSON)
+            .build();
     }
 
     @POST
