@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom"; // Importa o Link para navegação
 import api from "../services/apiService";
 import EditUserModal from "../components/user/EditUserModal";
 import "./UserProfile.css";
@@ -98,16 +98,22 @@ function UserProfile() {
       <div className="user-products-container">
         {userProducts.length > 0 ? (
           userProducts.map((product) => (
-            <div key={product.id} className="user-profile-product-card">
-              <img
-                src={product.imagem || "https://via.placeholder.com/100"}
-                alt={product.title}
-              />
-              <div className="product-info">
-                <h3>{product.title}</h3>
-                <p className="product-price">Preço: {product.price}€</p>
+            <Link
+              to={`/product/${product.id}`} // Redireciona para a página de detalhes do produto
+              key={product.id}
+              className="user-profile-product-card-link" // Classe para estilizar o link
+            >
+              <div className="user-profile-product-card">
+                <img
+                  src={product.imagem || "https://via.placeholder.com/100"}
+                  alt={product.title}
+                />
+                <div className="product-info">
+                  <h3>{product.title}</h3>
+                  <p className="product-price">Preço: {product.price}€</p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <p>Este utilizador não possui produtos.</p>

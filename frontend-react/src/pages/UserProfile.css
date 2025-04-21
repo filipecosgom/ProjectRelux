@@ -129,3 +129,15 @@
   color: #aaa; /* Cinza claro para a descrição */
   font-size: 0.85rem;
 }
+
+/* Link ao redor do card de produto */
+.user-profile-product-card-link {
+  text-decoration: none; /* Remove o sublinhado do link */
+  color: inherit; /* Mantém a cor do texto */
+  display: block; /* Garante que o link ocupe todo o espaço do card */
+}
+
+.user-profile-product-card-link:hover .user-profile-product-card {
+  transform: scale(1.02); /* Leve aumento no hover */
+  transition: transform 0.2s ease; /* Animação suave */
+}
