@@ -7,6 +7,7 @@ import "./UserProfile.css";
 function UserProfile() {
   const { username } = useParams(); // Obtém o username da URL
   const [userProfile, setUserProfile] = useState(null);
+  const [userProducts, setUserProducts] = useState([]); // Estado para armazenar os produtos do utilizador
   const [showEditModal, setShowEditModal] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,7 +25,21 @@ function UserProfile() {
       }
     };
 
+    const fetchProducts = async () => {
+      try {
+        const token = sessionStorage.getItem("mystore"); // Obtém o token do sessionStorage
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const response = await api.get(`/products/user-products/${username}`, {
+          headers,
+        });
+        setUserProducts(response.data); // Armazena os produtos no estado
+      } catch (err) {
+        console.error("Erro ao carregar os produtos do utilizador:", err);
+      }
+    };
+
     fetchProfile();
+    fetchProducts();
   }, [username]);
 
   if (error) {
@@ -77,6 +92,27 @@ function UserProfile() {
           }}
         />
       )}
+
+      {/* Lista de Produtos do Utilizador */}
+      <h2>Produtos de {userProfile.username}</h2>
+      <div className="user-products-container">
+        {userProducts.length > 0 ? (
+          userProducts.map((product) => (
+            <div key={product.id} className="user-profile-product-card">
+              <img
+                src={product.imagem || "https://via.placeholder.com/100"}
+                alt={product.title}
+              />
+              <div className="product-info">
+                <h3>{product.title}</h3>
+                <p className="product-price">Preço: {product.price}€</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>Este utilizador não possui produtos.</p>
+        )}
+      </div>
     </div>
   );
 }

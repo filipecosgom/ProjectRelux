@@ -67,3 +67,65 @@
   color: #ccc;
   margin-top: 20px;
 }
+
+/* Container para os produtos */
+.user-products-container {
+  margin-top: 20px;
+  display: grid; /* Usar grid para organizar os cartões */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* 2 colunas lado a lado */
+  gap: 15px; /* Espaço entre os cartões */
+  width: 100%;
+}
+
+/* Card de produto */
+.user-profile-product-card {
+  display: flex; /* Layout flexível */
+  flex-direction: column; /* Alinha os elementos verticalmente */
+  align-items: center; /* Centraliza horizontalmente */
+  background: #444; /* Fundo escuro */
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 15px; /* Espaçamento interno */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+  color: white; /* Texto branco */
+  height: auto; /* Altura flexível */
+  width: 100%;
+  overflow: hidden; /* Esconde conteúdo que ultrapasse os limites */
+  text-align: center; /* Centraliza o texto */
+}
+
+/* Imagem do produto */
+.user-profile-product-card img {
+  width: 100px; /* Largura da imagem */
+  height: 100%; /* Altura da imagem */
+  border-radius: 8px; /* Bordas arredondadas */
+  margin-bottom: 10px; /* Espaço entre a imagem e o texto */
+  object-fit: cover; /* Garante que a imagem se ajuste ao espaço */
+}
+
+/* Informações do produto */
+.user-profile-product-card .product-info {
+  display: flex;
+  flex-direction: column; /* Alinha as informações verticalmente */
+  gap: 5px; /* Espaço entre os elementos */
+}
+
+.user-profile-product-card h3 {
+  margin: 0;
+  font-size: 1rem; /* Tamanho da fonte do título */
+  color: #ffd700; /* Cor dourada para o título */
+}
+
+.user-profile-product-card .product-price {
+  font-weight: bold;
+  color: #28a745; /* Verde para o preço */
+  font-size: 0.9rem;
+}
+
+.user-profile-product-card .product-description {
+  font-style: italic;
+  color: #aaa; /* Cinza claro para a descrição */
+  font-size: 0.85rem;
+}
