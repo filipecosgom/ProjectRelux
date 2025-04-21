@@ -103,7 +103,7 @@ public class UserService {
         }
         return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
     }
-    
+
 // ENDPOINT A FUNCIONAR ANTES DE IMPLEMENTAR PERFIS PUBLICOS
 //    @GET
 //    @Path("/profile/{username}")
