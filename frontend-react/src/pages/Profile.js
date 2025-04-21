@@ -9,6 +9,7 @@ import EditUserModal from "../components/user/EditUserModal"; // Modal de ediç�
 import { updateUser } from "../services/userService";
 import api from "../services/apiService"; // Importa o serviço Axios
 import { toast } from "react-toastify";
+import ChangePasswordModal from "../components/user/ChangePasswordModal";
 
 function Profile() {
   const [userDetails, setUserDetails] = useState(null);
@@ -17,6 +18,7 @@ function Profile() {
   const navigate = useNavigate(); // Hook para redirecionar o usuário
   const [showEditModal, setShowEditModal] = useState(false); // Estado para mostrar/ocultar o modal de edição
   const [editUser, setEditUser] = useState(null); // Estado para armazenar o utilizador a ser editado
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false); // Estado para mostrar/ocultar o modal de alteração de senha
 
   // Redireciona para a homepage se o token for removido
   useEffect(() => {
@@ -28,7 +30,11 @@ function Profile() {
   // Atualiza o método fetchUserDetails para usar Axios
   const fetchUserDetails = async () => {
     try {
-      const response = await api.get("/users/me"); // Faz o request com o serviço Axios
+      const response = await api.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }); // Faz o request com o serviço Axios
       setUserDetails(response.data); // Atualiza o estado com os detalhes do usuário
     } catch (error) {
       console.error(
@@ -48,7 +54,6 @@ function Profile() {
     console.log("A abrir o modal de edição...");
     setEditUser(userDetails); // Define os detalhes do utilizador como o utilizador a ser editado
     setShowEditModal(true); // Abre o modal
-
   };
 
   if (!userDetails) {
@@ -94,6 +99,12 @@ function Profile() {
         <button className="edit-profile-button" onClick={handleEditProfile}>
           Editar Perfil
         </button>
+        <button
+          className="change-password-button"
+          onClick={() => setShowChangePasswordModal(true)}
+        >
+          Alterar Senha
+        </button>
       </div>
       {showEditModal && (
         <EditUserModal
@@ -133,6 +144,11 @@ function Profile() {
           error={null}
         />
       )}
+      <ChangePasswordModal
+        isVisible={showChangePasswordModal}
+        onClose={() => setShowChangePasswordModal(false)}
+        authToken={token} // Passa o token de autenticação corretamente
+      />
     </div>
   );
 }
