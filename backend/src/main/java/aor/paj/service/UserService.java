@@ -220,14 +220,27 @@ public class UserService {
         return Response.status(Response.Status.OK).entity(userDto).build();
     }
 
+// ENDPOINT A FUNCIONAR ATÉ IMPLEMENTAÇÃO DE OBTENCAO DA LISTA DE UTILIZADORES
+//    @GET
+//    @Path("/all")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getAllUsers(@HeaderParam("Authorization") String token) {
+//        UserEntity loggedInUser = userBean.getUserByToken(token);
+//        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+//            return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação.").build();
+//        }
+//
+//        List<UserDto> allUsers = userBean.getAllUsers();
+//        return Response.status(Response.Status.OK).entity(allUsers).build();
+//    }
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers(@HeaderParam("Authorization") String token) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
-        if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(Response.Status.FORBIDDEN).entity("Sem permissões para esta ação.").build();
+        if (loggedInUser == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
         }
 
         List<UserDto> allUsers = userBean.getAllUsers();

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import UserProfile from "./pages/UserProfile";
+import UserList from "./pages/UserList";
 import AdminPanel from "./pages/AdminPanel";
 import ProductList from "./components/ProductList";
 import ProductDetails from "./components/product/ProductDetails";
@@ -35,8 +36,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:username" element={<UserProfile />} />
+          <Route
+            path="/profile/:username"
+            element={
+              <>
+                <Breadcrumbs />
+                <UserProfile />
+              </>
+            }
+          />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/users" element={<UserList />} />
           <Route
             path="/product/:id"
             element={

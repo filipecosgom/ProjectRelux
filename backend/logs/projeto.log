@@ -78,3 +78,27 @@
 03:12:45.025 [main] [32mINFO[m - Login attempt for user: testUser
 03:12:45.157 [main] [32mINFO[m - Novo token gerado: _WoR7hT1BoEI2UyN6Ho5EcipLGRXR8Gr
 03:12:45.158 [main] [32mINFO[m - Login successful for user: testUser
+14:44:56.091 [main] [32mINFO[m - Login attempt for user: testUser
+14:44:56.106 [main] [33mWARN[m - User not found: testUser
+14:44:56.628 [main] [32mINFO[m - Login attempt for user: testUser
+14:44:56.784 [main] [33mWARN[m - Invalid password for user: testUser
+14:44:56.950 [main] [32mINFO[m - Novo token gerado: OlfNdAbsSx5pt-9GelrV9-coqybcc8vY
+14:44:57.127 [main] [32mINFO[m - Login attempt for user: testUser
+14:44:57.284 [main] [32mINFO[m - Novo token gerado: v0uRO1vhxuC9iA_n6khhL5sPas2swMPu
+14:44:57.286 [main] [32mINFO[m - Login successful for user: testUser
+16:34:21.931 [main] [32mINFO[m - Login attempt for user: testUser
+16:34:21.948 [main] [33mWARN[m - User not found: testUser
+16:34:22.430 [main] [32mINFO[m - Login attempt for user: testUser
+16:34:22.559 [main] [33mWARN[m - Invalid password for user: testUser
+16:34:22.702 [main] [32mINFO[m - Novo token gerado: 0c7M-0snstDou8j_f2lBGaxTIPmQlji9
+16:34:22.852 [main] [32mINFO[m - Login attempt for user: testUser
+16:34:22.980 [main] [32mINFO[m - Novo token gerado: QzsUsHxICbochFDPnBVyApExyzWDCj-D
+16:34:22.981 [main] [32mINFO[m - Login successful for user: testUser
+16:41:18.090 [main] [32mINFO[m - Login attempt for user: testUser
+16:41:18.106 [main] [33mWARN[m - User not found: testUser
+16:41:18.574 [main] [32mINFO[m - Login attempt for user: testUser
+16:41:18.703 [main] [33mWARN[m - Invalid password for user: testUser
+16:41:18.843 [main] [32mINFO[m - Novo token gerado: Lz4dgY9cuKJV9YKPT-NIkHkCw9itLCqE
+16:41:18.993 [main] [32mINFO[m - Login attempt for user: testUser
+16:41:19.121 [main] [32mINFO[m - Novo token gerado: 4zAK8Vf_j_kaRyipThKhXJAx8serm1Lu
+16:41:19.121 [main] [32mINFO[m - Login successful for user: testUser

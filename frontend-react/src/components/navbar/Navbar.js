@@ -4,7 +4,13 @@ import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { FaUser, FaCogs, FaSignOutAlt, FaSignInAlt } from "react-icons/fa"; // Importa os ícones FontAwesome
+import {
+  FaUser,
+  FaCogs,
+  FaSignOutAlt,
+  FaSignInAlt,
+  FaUsers,
+} from "react-icons/fa";
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService";
 import { toast } from "react-toastify";
@@ -98,6 +104,11 @@ const Navbar = () => {
                         O meu perfil
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/users" className="dropdown-item">
+                        <FaUsers className="nav-icon" /> Lista de Utilizadores
+                      </Link>
+                    </li>
                     {isAdmin && (
                       <li>
                         <Link to="/admin" className="dropdown-item">
@@ -107,7 +118,7 @@ const Navbar = () => {
                     )}
                     <li>
                       <button className="dropdown-item" onClick={handleLogout}>
-                        Logout
+                        <FaSignOutAlt className="nav-icon" /> Logout
                       </button>
                     </li>
                   </ul>
@@ -116,7 +127,7 @@ const Navbar = () => {
             ) : (
               <li className="nav-item">
                 <Link to="/login" className="nav-link">
-                  <FaSignInAlt className="nav-icon" />
+                  <FaSignInAlt className="nav-icon" /> Login
                 </Link>
               </li>
             )}
