@@ -141,3 +141,16 @@
   transform: scale(1.02); /* Leve aumento no hover */
   transition: transform 0.2s ease; /* Animação suave */
 }
+
+.product-states-info {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.product-states-chart {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

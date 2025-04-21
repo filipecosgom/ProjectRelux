@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom"; // Importa o Link para navegação
+import { useParams, Link } from "react-router-dom";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts"; // Import Recharts components
 import api from "../services/apiService";
 import EditUserModal from "../components/user/EditUserModal";
 import "./UserProfile.css";
@@ -8,6 +9,7 @@ function UserProfile() {
   const { username } = useParams(); // Obtém o username da URL
   const [userProfile, setUserProfile] = useState(null);
   const [userProducts, setUserProducts] = useState([]); // Estado para armazenar os produtos do utilizador
+  const [productStates, setProductStates] = useState([]); // Estado para os estados dos produtos
   const [showEditModal, setShowEditModal] = useState(false);
   const [error, setError] = useState(null);
 
@@ -33,6 +35,17 @@ function UserProfile() {
           headers,
         });
         setUserProducts(response.data); // Armazena os produtos no estado
+
+        // Calcula os estados dos produtos
+const states = response.data.reduce((acc, product) => {
+  acc[product.state] = (acc[product.state] || 0) + 1; // Usa o campo correto "state"
+  return acc;
+}, {});
+        const stateData = Object.keys(states).map((key) => ({
+          name: key,
+          value: states[key],
+        }));
+        setProductStates(stateData);
       } catch (err) {
         console.error("Erro ao carregar os produtos do utilizador:", err);
       }
@@ -49,6 +62,8 @@ function UserProfile() {
   if (!userProfile) {
     return <div>Carregando...</div>;
   }
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]; // Cores para o gráfico de pizza
 
   const handleEditProfile = () => {
     setShowEditModal(true);
@@ -118,6 +133,41 @@ function UserProfile() {
         ) : (
           <p>Este utilizador não possui produtos.</p>
         )}
+      </div>
+
+      {/* Informações sobre os estados dos produtos */}
+      <h2>Estados dos Produtos</h2>
+      <div className="product-states-info">
+        {productStates.map((state) => (
+          <p key={state.name}>
+            <strong>{state.name}:</strong> {state.value}
+          </p>
+        ))}
+      </div>
+
+      {/* Gráfico de Pizza */}
+      <div className="product-states-chart">
+        <PieChart width={400} height={400}>
+          <Pie
+            data={productStates}
+            dataKey="value"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={150}
+            fill="#8884d8"
+            label
+          >
+            {productStates.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend />
+        </PieChart>
       </div>
     </div>
   );
