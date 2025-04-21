@@ -103,23 +103,52 @@ public class UserService {
         }
         return Response.status(Response.Status.UNAUTHORIZED).entity("Token inválido").build();
     }
+    
+// ENDPOINT A FUNCIONAR ANTES DE IMPLEMENTAR PERFIS PUBLICOS
+//    @GET
+//    @Path("/profile/{username}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getUserProfile(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
+//        UserEntity loggedInUser = userBean.getUserByToken(token);
+//        if (loggedInUser == null || !loggedInUser.isAdmin()) {
+//            return Response.status(401).entity("Sem permissões para esta ação.").build();
+//        }
+//
+//        UserEntity user = userDao.findUserByUsername(username);
+//        if (user == null) {
+//            return Response.status(404).entity("Utilizador não encontrado").build();
+//        }
+//
+//        UserDto userDto = userBean.convertUserEntityToUserDto(user);
+//        return Response.status(200).entity(userDto).build();
+//    }
+
 
     @GET
     @Path("/profile/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserProfile(@HeaderParam("Authorization") String token, @PathParam("username") String username) {
-        UserEntity loggedInUser = userBean.getUserByToken(token);
-        if (loggedInUser == null || !loggedInUser.isAdmin()) {
-            return Response.status(401).entity("Sem permissões para esta ação.").build();
+        UserEntity loggedInUser = null;
+
+        // Verifica se o token foi enviado e tenta identificar o utilizador logado
+        if (token != null && !token.isEmpty()) {
+            loggedInUser = userBean.getUserByToken(token);
         }
 
+        // Busca o utilizador pelo username
         UserEntity user = userDao.findUserByUsername(username);
         if (user == null) {
-            return Response.status(404).entity("Utilizador não encontrado").build();
+            return Response.status(Response.Status.NOT_FOUND).entity("Utilizador não encontrado").build();
         }
 
+        // Converte os dados do utilizador para DTO
         UserDto userDto = userBean.convertUserEntityToUserDto(user);
-        return Response.status(200).entity(userDto).build();
+
+        // Determina se o utilizador logado pode editar este perfil
+        boolean canEdit = loggedInUser != null && (loggedInUser.isAdmin() || loggedInUser.getUsername().equals(username));
+        userDto.setCanEdit(canEdit);
+
+        return Response.status(Response.Status.OK).entity(userDto).build();
     }
 
     @DELETE

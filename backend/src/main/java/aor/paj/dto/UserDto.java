@@ -5,7 +5,7 @@ import java.util.List;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement
@@ -24,6 +24,7 @@ public class UserDto {
     private boolean isVerified; // Adicionado
     private String verificationToken; // Adicionado
     private String passwordRecoveryToken; // Adicionado
+    private boolean canEdit; // Adicionado
 
     public UserDto() {
         this.produtos = new ArrayList<>();
@@ -172,6 +173,15 @@ public class UserDto {
 
     public void setPasswordRecoveryToken(String passwordRecoveryToken) {
         this.passwordRecoveryToken = passwordRecoveryToken;
+    }
+
+    @XmlElement
+    public boolean isCanEdit() {
+    return canEdit;
+    }
+
+    public void setCanEdit(boolean canEdit) {
+    this.canEdit = canEdit;
     }
 }
 
