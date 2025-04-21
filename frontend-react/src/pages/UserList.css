@@ -34,6 +34,49 @@
   color: #0056b3;
 }
 
+/* Estilo do filtro */
+.user-list-filter {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Alinha verticalmente */
+  gap: 10px; /* Espaço entre o input e o botão */
+}
+
+.user-list-filter-input {
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #2a2a2a; /* Fundo escuro */
+  color: white;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 300px; /* Largura máxima */
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.user-list-filter-input:focus {
+  border-color: #007bff; /* Azul no foco */
+  outline: none;
+}
+
+/* Botão para limpar o filtro */
+.user-list-clear-button {
+  background: #ff4d4d; /* Vermelho */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-list-clear-button:hover {
+  background: #cc0000; /* Vermelho mais escuro no hover */
+}
+
 .user-list-cards-container {
   display: flex;
   flex-direction: column; /* Garante que os cards fiquem alinhados verticalmente */
