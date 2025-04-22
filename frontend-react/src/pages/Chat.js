@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Importa o hook useParams
+import { useParams } from "react-router-dom";
 import webSocketService from "../services/websocketService";
 import "./Chat.css";
 
 const Chat = ({ loggedInUser }) => {
   const { username } = useParams(); // Obtém o destinatário da URL
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState(""); // Estado para a mensagem digitada
+  const [messages, setMessages] = useState([]); // Estado para as mensagens do chat
   const [recipient, setRecipient] = useState(username); // Define o destinatário inicial como o username da URL
 
   useEffect(() => {
     console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
-    webSocketService.connect(loggedInUser); // Conecta como o usuário logado
+    webSocketService.connect(loggedInUser); // Conecta ao WebSocket como o usuário logado
 
     webSocketService.onMessage((data) => {
       console.log("Nova mensagem recebida:", data);
 
-      // Remove o prefixo "recipient:" da mensagem recebida
+      // Remove o prefixo "recipient:" da mensagem recebida, se existir
       const formattedMessage = data.includes(":")
         ? data.split(":")[1].trim()
         : data;

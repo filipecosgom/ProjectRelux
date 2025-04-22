@@ -15,11 +15,14 @@ import CategoryProducts from "./components/category/CategoryProducts";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Chat from "./pages/Chat";
-import { ToastContainer } from "react-toastify"; // Importa o ToastContainer
-import "react-toastify/dist/ReactToastify.css"; // Importa os estilos do React-Toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { userStore } from "./stores/UserStore"; // Importa a store do usuário
 
 function App() {
+  const { username } = userStore(); // Obtém o username do usuário logado da store
+
   return (
     <Router>
       <div className="App">
@@ -70,12 +73,11 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route
             path="/chat/:username"
-            element={<Chat username="teste" />} // Adiciona a rota para o chat
+            element={<Chat loggedInUser={username} />} // Passa o username da store como prop
           />
         </Routes>
         <Footer />
-        <ToastContainer theme="dark" />{" "}
-        {/* Adiciona o ToastContainer para exibir notificações */}
+        <ToastContainer theme="dark" />
       </div>
     </Router>
   );
