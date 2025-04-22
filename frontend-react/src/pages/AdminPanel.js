@@ -10,10 +10,12 @@ import api from "../services/apiService"; // Importa o serviço Axios configurad
 import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
-import { updateUser } from "../services/userService";
 import SearchUserProductsForm from "../components/admin/SearchUserProductsForm";
 import FilterDropdown from "../components/admin/FilterDropdown"; // Importa o componente de filtro
 import { toast } from "react-toastify"; // Importa o toastify
+
+// Fixme - Corrigir o CSS do UserList na Gestão de Utilizadores
+// Fixme - Update do user não está a funcionar!
 
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
@@ -259,22 +261,41 @@ function AdminPanel() {
     setError(null);
 
     try {
-      const updatedUser = await updateUser(editUser, token); // Chama o serviço
+      // Certifique-se de que todos os campos esperados estão presentes e no formato correto
+      const userPayload = {
+        username: editUser.username,
+        password: editUser.password || "", // Envia uma string vazia se o campo estiver ausente
+        firstName: editUser.firstName,
+        lastName: editUser.lastName,
+        email: editUser.email,
+        phone: editUser.phone,
+        imagem: editUser.imagem,
+        produtos: editUser.produtos || [], // Envia uma lista vazia se o campo estiver ausente
+        id: editUser.id,
+        isAdmin: !!editUser.isAdmin, // Converte para booleano
+        isDeleted: editUser.isDeleted,
+        isVerified: editUser.isVerified, // Inclui o valor atual de isVerified
+        verificationToken: editUser.verificationToken || null, // Envia null se o campo estiver ausente
+        passwordRecoveryToken: editUser.passwordRecoveryToken || null, // Envia null se o campo estiver ausente
+        canEdit: editUser.canEdit || false, // Envia false se o campo estiver ausente
+      };
+
+      const updatedUser = await api.put(`/users/${editUser.username}`, userPayload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (updatedUser) {
-        // Atualiza a lista de utilizadores
-        fetchUsers();
+        fetchUsers(); // Atualiza a lista de utilizadores
         toast.success(
           `O utilizador ${editUser.username} foi atualizado com sucesso!`
         );
       }
 
-      // Fecha o modal
-      setShowModal(false);
+      setShowModal(false); // Fecha o modal
     } catch (error) {
       console.error("Erro ao atualizar utilizador:", error);
-
-      // Exibe a mensagem de erro no modal
       setError(
         error.message || "Erro ao atualizar utilizador. Tente novamente."
       );
