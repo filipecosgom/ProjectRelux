@@ -11,6 +11,9 @@ import {
   FaSignInAlt,
   FaUsers,
   FaBell,
+  FaRegCommentAlt,
+  FaTools,
+  FaUserInjured,
 } from "react-icons/fa";
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService";
@@ -115,18 +118,23 @@ const Navbar = () => {
                     </li>
                     <li>
                       <Link to="/profile" className="dropdown-item">
-                        O meu perfil
+                        <FaUserInjured className="nav-icon" /> O meu perfil
                       </Link>
                     </li>
                     <li>
                       <Link to="/users" className="dropdown-item">
-                        <FaUsers className="nav-icon" /> Lista de Utilizadores
+                        <FaUsers className="nav-icon" /> Utilizadores
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/chat" className="dropdown-item">
+                        <FaRegCommentAlt className="nav-icon" /> Chat
                       </Link>
                     </li>
                     {isAdmin && (
                       <li>
                         <Link to="/admin" className="dropdown-item">
-                          Administrar
+                          <FaTools className="nav-icon" /> Administrar
                         </Link>
                       </li>
                     )}
