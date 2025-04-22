@@ -14,6 +14,7 @@ import ProductDetails from "./components/product/ProductDetails";
 import CategoryProducts from "./components/category/CategoryProducts";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Chat from "./pages/Chat";
 import { ToastContainer } from "react-toastify"; // Importa o ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Importa os estilos do React-Toastify
 import "./App.css";
@@ -67,6 +68,10 @@ function App() {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/chat/:username"
+            element={<Chat username="teste" />} // Adiciona a rota para o chat
+          />
         </Routes>
         <Footer />
         <ToastContainer theme="dark" />{" "}
