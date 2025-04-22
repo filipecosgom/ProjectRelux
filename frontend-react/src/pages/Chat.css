@@ -57,8 +57,8 @@
 }
 
 .chat-message {
-  max-width: 70%; /* Limita a largura das mensagens */
-  margin-bottom: 10px;
+  max-width: 50%; /* Limita a largura das mensagens */
+  margin-bottom: 25px; /* Aumenta o espaço entre as mensagens */
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
@@ -68,19 +68,22 @@
 .chat-message.received {
   background-color: #444; /* Fundo para mensagens recebidas */
   align-self: flex-start; /* Alinha à esquerda */
+  text-align: left; /* Texto alinhado à esquerda */
 }
 
 .chat-message.sent {
   background-color: #007bff; /* Fundo para mensagens enviadas */
   color: white;
   align-self: flex-end; /* Alinha à direita */
+  margin-left: auto; /* Garante que a mensagem fique colada ao lado direito */
+  text-align: left; /* Texto alinhado à esquerda */
 }
 
 .chat-message .timestamp {
   font-size: 0.8rem;
   color: #aaa; /* Cor discreta para a timestamp */
   position: absolute;
-  bottom: -15px;
+  bottom: -20px; /* Ajusta a posição para evitar sobreposição */
   right: 10px;
 }
 
