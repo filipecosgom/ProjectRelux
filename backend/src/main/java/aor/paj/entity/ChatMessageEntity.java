@@ -15,23 +15,23 @@ public class ChatMessageEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id") // Explicitly map to the "id" column
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "sender", nullable = false) // Explicitly map to the "sender" column
     private String sender;
 
-    @Column(nullable = false)
+    @Column(name = "recipient", nullable = false) // Explicitly map to the "recipient" column
     private String recipient;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT") // Explicitly map to the "content" column
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "timestamp", nullable = false) // Explicitly map to the "timestamp" column
     private LocalDateTime timestamp;
 
-    @Column(nullable = false)
+    @Column(name = "is_read", nullable = false) // Explicitly map to the "is_read" column
     private boolean isRead;
-    //todo verificar se o nome da coluna é isRead ou como na base de dados is_read
 
     // Getters and Setters
     public int getId() {
