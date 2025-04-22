@@ -16,12 +16,16 @@ const Chat = ({ loggedInUser }) => {
     webSocketService.onMessage((data) => {
       console.log("Nova mensagem recebida:", data);
 
-      // Remove o prefixo "recipient:" da mensagem recebida, se existir
-      const formattedMessage = data.includes(":")
-        ? data.split(":")[1].trim()
-        : data;
+      // Divide a mensagem no formato "remetente:mensagem"
+      const [sender, content] = data.includes(":")
+        ? data.split(":").map((part) => part.trim())
+        : [null, data];
 
-      setMessages((prevMessages) => [...prevMessages, formattedMessage]);
+      // Adiciona a mensagem ao estado, incluindo o remetente
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: sender || "Desconhecido", content },
+      ]);
     });
 
     return () => {
@@ -56,7 +60,7 @@ const Chat = ({ loggedInUser }) => {
         <div className="chat-messages">
           {messages.map((msg, index) => (
             <div key={index} className="chat-message">
-              {msg}
+              {msg.sender ? `${msg.sender}: ${msg.content}` : msg}
             </div>
           ))}
         </div>
