@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import webSocketService from "../services/websocketService";
 import "./Chat.css";
@@ -8,6 +8,7 @@ const Chat = ({ loggedInUser }) => {
   const [message, setMessage] = useState(""); // Estado para a mensagem digitada
   const [messages, setMessages] = useState([]); // Estado para as mensagens do chat
   const [recipient, setRecipient] = useState(username); // Define o destinatário inicial como o username da URL
+  const messagesEndRef = useRef(null); // Ref para o elemento final da lista de mensagens
 
   // Função para formatar a data e hora
   const formatTimestamp = () => {
@@ -47,6 +48,13 @@ const Chat = ({ loggedInUser }) => {
       webSocketService.disconnect();
     };
   }, [loggedInUser]);
+
+  // Faz scroll para o final da lista de mensagens
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (message.trim() && recipient.trim()) {
@@ -90,6 +98,8 @@ const Chat = ({ loggedInUser }) => {
               <div className="timestamp">{msg.timestamp}</div>
             </div>
           ))}
+          {/* Elemento vazio para rolar até o final */}
+          <div ref={messagesEndRef} />
         </div>
         <div className="chat-input">
           <input
