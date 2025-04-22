@@ -8,7 +8,9 @@ class WebSocketService {
    * @param {string} username - Nome do usuário que está se conectando.
    */
   connect(username) {
-    this.socket = new WebSocket(`ws://localhost:8080/filipe-proj5/chat/${username}`);
+    this.socket = new WebSocket(
+      `ws://localhost:8080/filipe-proj5/chat/${username}`
+    );
 
     this.socket.onopen = () => {
       console.log("Conectado ao WebSocket como:", username);
