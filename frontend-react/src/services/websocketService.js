@@ -1,6 +1,7 @@
 class WebSocketService {
   constructor() {
     this.socket = null;
+    this.pingInterval = null; // Intervalo para enviar pings
   }
 
   /**
@@ -14,10 +15,18 @@ class WebSocketService {
 
     this.socket.onopen = () => {
       console.log("Conectado ao WebSocket como:", username);
+
+      // Inicia o envio de pings a cada 30 segundos
+      this.pingInterval = setInterval(() => {
+        if (this.socket.readyState === WebSocket.OPEN) {
+          this.socket.send("ping");
+        }
+      }, 30000); // 30 segundos
     };
 
     this.socket.onclose = () => {
       console.log("Desconectado do WebSocket");
+      clearInterval(this.pingInterval); // Para o envio de pings
     };
 
     this.socket.onerror = (error) => {
