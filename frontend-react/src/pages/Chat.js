@@ -9,6 +9,16 @@ const Chat = ({ loggedInUser }) => {
   const [messages, setMessages] = useState([]); // Estado para as mensagens do chat
   const [recipient, setRecipient] = useState(username); // Define o destinatário inicial como o username da URL
 
+  // Função para formatar a data e hora
+  const formatTimestamp = () => {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
+    const year = now.getFullYear();
+    const time = now.toLocaleTimeString("pt-PT"); // Formato HH:MM:SS
+    return `${day}/${month}/${year} ${time}`;
+  };
+
   useEffect(() => {
     console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
     webSocketService.connect(loggedInUser); // Conecta ao WebSocket como o usuário logado
@@ -27,7 +37,7 @@ const Chat = ({ loggedInUser }) => {
         {
           sender: sender || "Desconhecido",
           content,
-          timestamp: new Date().toLocaleTimeString(), // Adiciona a hora atual
+          timestamp: formatTimestamp(), // Adiciona a data e hora
         },
       ]);
     });
@@ -47,7 +57,7 @@ const Chat = ({ loggedInUser }) => {
         {
           sender: "Você",
           content: message,
-          timestamp: new Date().toLocaleTimeString(), // Adiciona a hora atual
+          timestamp: formatTimestamp(), // Adiciona a data e hora
         },
       ]);
       setMessage("");
