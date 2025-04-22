@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom"; // Importa o hook useParams
 import webSocketService from "../services/websocketService";
 import "./Chat.css";
 
-const Chat = ({ username }) => {
+const Chat = () => {
+  const { username } = useParams(); // Obtém o username da URL
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [recipient, setRecipient] = useState("");
