@@ -28,16 +28,28 @@
 }
 
 .chat-users li {
+  display: flex;
+  align-items: center;
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #444; /* Linha divisória entre os itens */
-  color: white;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid #444; /* Linha divisória */
+  transition: background-color 0.3s ease;
 }
 
 .chat-users li:hover {
   background-color: #444; /* Fundo mais claro no hover */
-  color: #ffd700; /* Texto dourado no hover */
+}
+
+.chat-users img.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Torna a imagem circular */
+  margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+.chat-users span {
+  color: white;
+  font-size: 1rem;
 }
 
 .chat-window {
