@@ -21,10 +21,14 @@ const Chat = ({ loggedInUser }) => {
         ? data.split(":").map((part) => part.trim())
         : [null, data];
 
-      // Adiciona a mensagem ao estado, incluindo o remetente
+      // Adiciona a mensagem ao estado, incluindo o remetente e a timestamp
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: sender || "Desconhecido", content },
+        {
+          sender: sender || "Desconhecido",
+          content,
+          timestamp: new Date().toLocaleTimeString(), // Adiciona a hora atual
+        },
       ]);
     });
 
@@ -38,7 +42,14 @@ const Chat = ({ loggedInUser }) => {
     if (message.trim() && recipient.trim()) {
       console.log("Enviando mensagem para:", recipient);
       webSocketService.sendMessage(recipient, message);
-      setMessages((prevMessages) => [...prevMessages, `Você: ${message}`]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          sender: "Você",
+          content: message,
+          timestamp: new Date().toLocaleTimeString(), // Adiciona a hora atual
+        },
+      ]);
       setMessage("");
     } else {
       console.warn("Mensagem ou destinatário vazio. Mensagem não enviada.");
@@ -59,8 +70,14 @@ const Chat = ({ loggedInUser }) => {
         <h3>Chat com {recipient || "..."}</h3>
         <div className="chat-messages">
           {messages.map((msg, index) => (
-            <div key={index} className="chat-message">
-              {msg.sender ? `${msg.sender}: ${msg.content}` : msg}
+            <div
+              key={index}
+              className={`chat-message ${
+                msg.sender === "Você" ? "sent" : "received"
+              }`}
+            >
+              <strong>{msg.sender}:</strong> {msg.content}
+              <div className="timestamp">{msg.timestamp}</div>
             </div>
           ))}
         </div>

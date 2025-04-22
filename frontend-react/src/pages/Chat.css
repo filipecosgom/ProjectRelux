@@ -1,70 +1,127 @@
 .chat-container {
   display: flex;
   height: 80vh;
+  background-color: #333; /* Fundo escuro */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar o container */
+  overflow: hidden; /* Evita overflow */
 }
 
 .chat-users {
   width: 25%;
-  background-color: #f4f4f4;
+  background-color: #2a2a2a; /* Fundo escuro para a lista de usuários */
   padding: 10px;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #444; /* Linha divisória */
+  color: white;
+}
+
+.chat-users h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #ffd700; /* Título em dourado */
 }
 
 .chat-users ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .chat-users li {
   padding: 10px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #444; /* Linha divisória entre os itens */
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .chat-users li:hover {
-  background-color: #eaeaea;
+  background-color: #444; /* Fundo mais claro no hover */
+  color: #ffd700; /* Texto dourado no hover */
 }
 
 .chat-window {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background-color: #1a1a1a; /* Fundo escuro para a janela de chat */
+  color: white;
 }
 
 .chat-messages {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
-  background-color: #fff;
+  background-color: #2a2a2a; /* Fundo escuro para as mensagens */
+  border-bottom: 1px solid #444; /* Linha divisória */
 }
 
 .chat-message {
+  max-width: 70%; /* Limita a largura das mensagens */
   margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  position: relative;
+}
+
+.chat-message.received {
+  background-color: #444; /* Fundo para mensagens recebidas */
+  align-self: flex-start; /* Alinha à esquerda */
+}
+
+.chat-message.sent {
+  background-color: #007bff; /* Fundo para mensagens enviadas */
+  color: white;
+  align-self: flex-end; /* Alinha à direita */
+}
+
+.chat-message .timestamp {
+  font-size: 0.8rem;
+  color: #aaa; /* Cor discreta para a timestamp */
+  position: absolute;
+  bottom: -15px;
+  right: 10px;
 }
 
 .chat-input {
   display: flex;
   padding: 10px;
-  border-top: 1px solid #ddd;
+  background-color: #2a2a2a; /* Fundo escuro para a entrada */
+  border-top: 1px solid #444; /* Linha divisória */
 }
 
 .chat-input input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
   border-radius: 4px;
+  background-color: #333; /* Fundo escuro para o input */
+  color: white;
+  box-sizing: border-box;
+}
+
+.chat-input input::placeholder {
+  color: #aaa; /* Cor do placeholder */
+}
+
+.chat-input input:focus {
+  border-color: #007bff; /* Azul no foco */
+  outline: none;
 }
 
 .chat-input button {
   margin-left: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #007bff; /* Azul para o botão */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .chat-input button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Azul mais escuro no hover */
+  transform: scale(1.05); /* Leve aumento no hover */
 }
