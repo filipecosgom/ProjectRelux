@@ -15,7 +15,13 @@ const Chat = ({ loggedInUser }) => {
 
     webSocketService.onMessage((data) => {
       console.log("Nova mensagem recebida:", data);
-      setMessages((prevMessages) => [...prevMessages, data]);
+
+      // Remove o prefixo "recipient:" da mensagem recebida
+      const formattedMessage = data.includes(":")
+        ? data.split(":")[1].trim()
+        : data;
+
+      setMessages((prevMessages) => [...prevMessages, formattedMessage]);
     });
 
     return () => {
