@@ -25,6 +25,7 @@ public class ChatWebSocket {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) {
+        System.out.println("Tentando conectar: " + username);
         sessions.put(username, session); // Add the user to the active sessions
         System.out.println(username + " connected to the chat.");
     }

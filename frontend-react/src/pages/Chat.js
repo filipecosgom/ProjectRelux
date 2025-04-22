@@ -3,32 +3,35 @@ import { useParams } from "react-router-dom"; // Importa o hook useParams
 import webSocketService from "../services/websocketService";
 import "./Chat.css";
 
-const Chat = () => {
-  const { username } = useParams(); // Obtém o username da URL
+const Chat = ({ loggedInUser }) => {
+  const { username } = useParams(); // Obtém o destinatário da URL
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [recipient, setRecipient] = useState("");
+  const [recipient, setRecipient] = useState(username); // Define o destinatário inicial como o username da URL
 
   useEffect(() => {
-    // Conecta ao WebSocket ao carregar o componente
-    webSocketService.connect(username);
+    console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
+    webSocketService.connect(loggedInUser); // Conecta como o usuário logado
 
-    // Recebe mensagens
     webSocketService.onMessage((data) => {
+      console.log("Nova mensagem recebida:", data);
       setMessages((prevMessages) => [...prevMessages, data]);
     });
 
-    // Desconecta ao desmontar o componente
     return () => {
+      console.log("Desconectando do WebSocket...");
       webSocketService.disconnect();
     };
-  }, [username]);
+  }, [loggedInUser]);
 
   const handleSendMessage = () => {
     if (message.trim() && recipient.trim()) {
+      console.log("Enviando mensagem para:", recipient);
       webSocketService.sendMessage(recipient, message);
       setMessages((prevMessages) => [...prevMessages, `Você: ${message}`]);
       setMessage("");
+    } else {
+      console.warn("Mensagem ou destinatário vazio. Mensagem não enviada.");
     }
   };
 
@@ -36,8 +39,6 @@ const Chat = () => {
     <div className="chat-container">
       <div className="chat-users">
         <h3>Usuários</h3>
-        {/* Lista de usuários com quem o usuário já conversou */}
-        {/* Substituir por dados reais */}
         <ul>
           <li onClick={() => setRecipient("john")}>John</li>
           <li onClick={() => setRecipient("jane")}>Jane</li>
