@@ -1,7 +1,7 @@
 .footer {
   background-color: #333;
   color: white;
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 .footer-content {
@@ -58,8 +58,8 @@
 
 .footer-bottom {
   text-align: center;
-  margin-top: 20px;
-  padding-top: 10px;
+  margin-top: 0px;
+  padding-top: 0px;
   border-top: 1px solid #555;
 }
 

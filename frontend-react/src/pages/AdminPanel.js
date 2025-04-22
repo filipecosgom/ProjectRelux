@@ -280,11 +280,15 @@ function AdminPanel() {
         canEdit: editUser.canEdit || false, // Envia false se o campo estiver ausente
       };
 
-      const updatedUser = await api.put(`/users/${editUser.username}`, userPayload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const updatedUser = await api.put(
+        `/users/${editUser.username}`,
+        userPayload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (updatedUser) {
         fetchUsers(); // Atualiza a lista de utilizadores
@@ -312,44 +316,46 @@ function AdminPanel() {
   };
 
   // Função para criar um novo produto
-const handleCreateProduct = async (event) => {
-  event.preventDefault();
-  console.log("Dados enviados:", newProduct);
-  setError(null);
+  const handleCreateProduct = async (event) => {
+    event.preventDefault();
+    console.log("Dados enviados:", newProduct);
+    setError(null);
 
-  try {
-    const response = await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
-    addProduct(response.data); // Adiciona o novo produto à store
-    toast.success(`O produto "${newProduct.title}" foi criado com sucesso!`);
-    setShowCreateProductModal(false); // Fecha o modal
-  } catch (error) {
-    console.error(
-      "Erro ao criar produto:",
-      error.response?.data || error.message
-    );
-    setError(error.response?.data || "Erro ao criar produto. Tente novamente.");
-    toast.error("Erro ao criar produto. Tente novamente.");
-  }
-};
+    try {
+      const response = await api.post("/products/add", newProduct); // Faz o request com o serviço Axios
+      addProduct(response.data); // Adiciona o novo produto à store
+      toast.success(`O produto "${newProduct.title}" foi criado com sucesso!`);
+      setShowCreateProductModal(false); // Fecha o modal
+    } catch (error) {
+      console.error(
+        "Erro ao criar produto:",
+        error.response?.data || error.message
+      );
+      setError(
+        error.response?.data || "Erro ao criar produto. Tente novamente."
+      );
+      toast.error("Erro ao criar produto. Tente novamente.");
+    }
+  };
 
   // Função para apagar um produto
-const handleDeleteProduct = async (id) => {
-  if (!window.confirm(`Tem certeza que deseja apagar o produto?`)) {
-    return;
-  }
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm(`Tem certeza que deseja apagar o produto?`)) {
+      return;
+    }
 
-  try {
-    await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
-    removeProduct(id); // Remove o produto da store
-    toast.success("Produto apagado com sucesso!");
-  } catch (error) {
-    console.error(
-      "Erro ao apagar produto:",
-      error.response?.data || error.message
-    );
-    toast.error("Erro ao apagar produto. Tente novamente.");
-  }
-};
+    try {
+      await api.delete(`/products/${id}`); // Faz o request com o serviço Axios
+      removeProduct(id); // Remove o produto da store
+      toast.success("Produto apagado com sucesso!");
+    } catch (error) {
+      console.error(
+        "Erro ao apagar produto:",
+        error.response?.data || error.message
+      );
+      toast.error("Erro ao apagar produto. Tente novamente.");
+    }
+  };
 
   // Função para abrir o modal de edição de produto
   const handleEditProduct = (product) => {
