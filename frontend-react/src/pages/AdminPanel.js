@@ -503,7 +503,7 @@ function AdminPanel() {
                   {/* Segunda Coluna */}
                   <div className="user-card-column">
                     <p>
-                      <strong>Nome completo:</strong> {user.firstName}{" "}
+                      <strong>Nome:</strong> {user.firstName}{" "}
                       {user.lastName}
                     </p>
                     <p>
@@ -511,24 +511,6 @@ function AdminPanel() {
                     </p>
                     <p>
                       <strong>Telefone:</strong> {user.phone}
-                    </p>
-                    <p>
-                      <strong>Password:</strong>{" "}
-                      <span className="password-mask">
-                        {showPasswords[user.username]
-                          ? user.password
-                          : "*".repeat(user.password.length)}
-                      </span>{" "}
-                      <button
-                        className="toggle-password-button"
-                        onClick={() => togglePasswordVisibility(user.username)}
-                      >
-                        {showPasswords[user.username] ? (
-                          <FaRegEyeSlash />
-                        ) : (
-                          <FaEye />
-                        )}
-                      </button>
                     </p>
                     <div className="user-card-actions">
                       <button

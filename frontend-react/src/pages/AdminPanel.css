@@ -97,17 +97,16 @@ h1 {
   margin: 0;
 }
 
-/* Container dos cards */
+/* Container dos cards de utilizadores */
 .users-cards-container {
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
     minmax(250px, 1fr)
-  ); /* Ajusta dinamicamente para 3 ou 4 cards */
+  ); /* Ajusta dinamicamente para caber na largura */
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
-  max-height: none; /* Respeita a altura do container */
   padding: 10px;
 }
 
@@ -121,46 +120,55 @@ h1 {
   flex-direction: column;
   gap: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-  height: auto; /* Ajusta a altura automaticamente */
-
   overflow: hidden; /* Evita overflow interno */
-}
-
-.user-card:hover {
-  background-color: #5b5b5b;
+  text-align: left; /* Garante alinhamento do texto */
+  height: auto; /* Ajusta a altura automaticamente */
+  width: 100%; /* Garante que o card ocupe 100% do espaço disponível */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
 }
 
 /* Colunas do card */
 .user-card-column {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%; /* Limita a largura ao tamanho do card */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+  overflow: hidden; /* Evita que o conteúdo ultrapasse os limites */
 }
 
 /* Centraliza os itens da primeira coluna */
 .user-card-column-center {
+display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
+gap: 10px; /* Espaçamento entre os elementos */
+  width: 100%; /* Garante que a coluna respeite a largura do card */
+  box-sizing: border-box;
 }
 
 /* Linha de informações do utilizador na primeira coluna */
 .user-card-info-line {
   display: flex;
-  align-items: center;
-  gap: 10px; /* Espaçamento entre os itens */
-  justify-content: center; /* Centraliza os itens */
+  flex-direction: column; /* Alinha o texto verticalmente */
+  align-items: center; /* Centraliza os itens horizontalmente */
+  gap: 5px; /* Espaçamento entre os itens */
   font-size: 0.9rem;
   color: #ccc;
+  width: 100%; /* Limita a largura ao tamanho do card */
+  box-sizing: border-box;
+  margin-bottom: 15px;
 }
 
 /* Imagem do utilizador */
 .user-card-image {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  margin-bottom: 10px;
+  width: 70px; /* Largura fixa */
+  height: 70px; /* Altura fixa */
+  border-radius: 50%; /* Torna a imagem circular */
+  object-fit: contain; /* Garante que a imagem seja cortada proporcionalmente */
+  margin-bottom: 10px; /* Espaçamento inferior */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para destaque */
 }
 
 /* Username */
@@ -311,9 +319,12 @@ h1 {
 .user-card-actions {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: auto; /* Empurra os botões para o final do card */
+  justify-content: center; /* Centraliza os botões */
+  padding-top: 10px; /* Espaçamento superior */
 }
 
+/* Botões individuais */
 .edit-button,
 .delete-button {
   padding: 5px 10px;
@@ -324,6 +335,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 5px;
+  width: 100px; /* Define uma largura consistente */
+  justify-content: center; /* Centraliza o texto dentro do botão */
 }
 
 .edit-button {
