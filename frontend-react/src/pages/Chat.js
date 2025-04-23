@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import webSocketService from "../services/websocketService";
 import api from "../services/apiService"; // Importa o serviço para chamadas à API
 import "./Chat.css";
 
 const Chat = ({ loggedInUser }) => {
   const { username } = useParams(); // Obtém o destinatário da URL
-  const [message, setMessage] = useState(""); // Estado para a mensagem digitada
-  const [messages, setMessages] = useState([]); // Estado para as mensagens do chat
-  const [recipient, setRecipient] = useState(username || ""); // Define o destinatário inicial como o username da URL
-  const [users, setUsers] = useState([]); // Estado para armazenar a lista de usuários
-  const [loading, setLoading] = useState(true); // Estado para indicar carregamento
-  const messagesEndRef = useRef(null); // Ref para o elemento final da lista de mensagens
+  const navigate = useNavigate(); // Hook para navegação
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [recipient, setRecipient] = useState(username || ""); // Define o destinatário inicial
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const messagesEndRef = useRef(null);
 
   // Função para buscar a lista de usuários do backend
   const fetchUsers = async () => {
@@ -29,16 +30,12 @@ const Chat = ({ loggedInUser }) => {
     fetchUsers();
   }, []);
 
-  // Função para formatar a data e hora
-  const formatTimestamp = () => {
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, "0");
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
-    const year = now.getFullYear();
-    const time = now.toLocaleTimeString("pt-PT"); // Formato HH:MM:SS
-    return `${day}/${month}/${year} ${time}`;
-  };
+  // Atualiza o destinatário ao mudar o URL
+  useEffect(() => {
+    setRecipient(username || "");
+  }, [username]);
 
+  // Conecta ao WebSocket
   useEffect(() => {
     console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
     webSocketService.connect(loggedInUser); // Conecta ao WebSocket como o usuário logado
@@ -46,18 +43,19 @@ const Chat = ({ loggedInUser }) => {
     webSocketService.onMessage((data) => {
       console.log("Nova mensagem recebida:", data);
 
-      // Divide a mensagem no formato "remetente:mensagem"
+
+// Divide a mensagem no formato "remetente:mensagem"
       const [sender, content] = data.includes(":")
         ? data.split(":").map((part) => part.trim())
         : [null, data];
 
-      // Adiciona a mensagem ao estado, incluindo o remetente e a timestamp
+// Adiciona a mensagem ao estado, incluindo o remetente e a timestamp
       setMessages((prevMessages) => [
         ...prevMessages,
         {
           sender: sender || "Desconhecido",
           content,
-          timestamp: formatTimestamp(), // Adiciona a data e hora
+          timestamp: new Date().toLocaleString("pt-PT"),
         },
       ]);
     });
@@ -75,13 +73,10 @@ const Chat = ({ loggedInUser }) => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (!recipient) {
-      console.log(
-        "Nenhum destinatário selecionado. Exibindo lista de usuários."
-      );
-    }
-  }, [recipient]);
+  const handleUserSelection = (user) => {
+    setRecipient(user.username);
+    navigate(`/chat/${user.username}`); // Atualiza o URL
+  };
 
   const handleSendMessage = () => {
     if (message.trim() && recipient.trim()) {
@@ -92,7 +87,7 @@ const Chat = ({ loggedInUser }) => {
         {
           sender: "Você",
           content: message,
-          timestamp: formatTimestamp(), // Adiciona a data e hora
+          timestamp: new Date().toLocaleString("pt-PT"),
         },
       ]);
       setMessage("");
@@ -103,7 +98,7 @@ const Chat = ({ loggedInUser }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSendMessage(); // Envia a mensagem ao pressionar Enter
+      handleSendMessage();
     }
   };
 
@@ -118,10 +113,10 @@ const Chat = ({ loggedInUser }) => {
             {users.map((user) => (
               <li
                 key={user.username}
-                onClick={() => setRecipient(user.username)}
+                onClick={() => handleUserSelection(user)} // Atualiza o URL e o destinatário
               >
                 <img
-                  src={user.imagem || "https://via.placeholder.com/50"} // Substitua pelo campo correto da imagem
+                  src={user.imagem || "https://via.placeholder.com/50"}
                   alt={user.username}
                   className="user-avatar"
                 />
@@ -147,7 +142,6 @@ const Chat = ({ loggedInUser }) => {
                 <div className="timestamp">{msg.timestamp}</div>
               </div>
             ))}
-            {/* Elemento vazio para rolar até o final */}
             <div ref={messagesEndRef} />
           </div>
           <div className="chat-input">
@@ -156,7 +150,7 @@ const Chat = ({ loggedInUser }) => {
               placeholder="Digite sua mensagem..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown} // Adiciona o evento para capturar a tecla Enter
+              onKeyDown={handleKeyDown}
             />
             <button onClick={handleSendMessage}>Enviar</button>
           </div>
