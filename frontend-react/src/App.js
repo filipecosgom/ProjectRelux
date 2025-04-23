@@ -71,6 +71,7 @@ function App() {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/chat" element={<Chat loggedInUser={username} />} />
           <Route
             path="/chat/:username"
             element={<Chat loggedInUser={username} />} // Passa o username da store como prop
