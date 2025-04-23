@@ -5,8 +5,13 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import aor.paj.dao.ChatMessageDao;
+import aor.paj.entity.ChatMessageEntity;
+import jakarta.inject.Inject;
 
 /**
  * WebSocket endpoint for real-time chat communication.
@@ -16,6 +21,9 @@ public class ChatWebSocket {
 
     // Stores all active WebSocket sessions mapped by username
     private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
+
+    @Inject
+    private ChatMessageDao chatMessageDao; // Injeta o DAO para salvar mensagens
 
     /**
      * Called when a new WebSocket connection is established.
@@ -36,16 +44,26 @@ public class ChatWebSocket {
      * @param message  The message sent by the client.
      * @param username The username of the sender.
      */
-    @OnMessage
+@OnMessage
     public void onMessage(String message, @PathParam("username") String username) {
         System.out.println("Message from " + username + ": " + message);
 
-        // Broadcast the message to the recipient
-        String[] parts = message.split(":", 2); // Format: recipient:message
+        // Divide a mensagem no formato "recipient:message"
+        String[] parts = message.split(":", 2);
         if (parts.length == 2) {
             String recipient = parts[0].trim();
             String chatMessage = parts[1].trim();
 
+            // Salva a mensagem na base de dados
+            ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
+            chatMessageEntity.setSender(username);
+            chatMessageEntity.setRecipient(recipient);
+            chatMessageEntity.setContent(chatMessage);
+            chatMessageEntity.setTimestamp(LocalDateTime.now());
+            chatMessageEntity.setRead(false); // Define como não lida inicialmente
+            chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+
+            // Envia a mensagem para o destinatário, se ele estiver conectado
             Session recipientSession = sessions.get(recipient);
             if (recipientSession != null && recipientSession.isOpen()) {
                 try {
