@@ -50,14 +50,14 @@ class WebSocketService {
    * @param {string} recipient - Nome do destinatário.
    * @param {string} message - Conteúdo da mensagem.
    */
-  sendMessage(recipient, message) {
+  sendMessage(message) {
     console.log(
       "Tentando enviar mensagem. Estado do WebSocket:",
       this.socket.readyState
     );
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      this.socket.send(`${recipient}:${message}`);
-      console.log("Mensagem enviada:", `${recipient}:${message}`);
+      this.socket.send(message);
+      console.log("Mensagem enviada:", `${message}`);
     } else {
       console.error("WebSocket não está conectado. Mensagem não enviada.");
     }

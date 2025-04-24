@@ -49,39 +49,41 @@ public class ChatWebSocket {
      * @param message  The message sent by the client.
      * @param username The username of the sender.
      */
-@OnMessage
-public void onMessage(String message, @PathParam("username") String username) {
-    System.out.println("Message from " + username + ": " + message);
+    @OnMessage
+    public void onMessage(String message, @PathParam("username") String username) {
+        System.out.println("Message from " + username + ": '" + message + "'");
+// todo verificar se a sessao se autenticou, com um mapa de users. a primeira mensagem deve ser o token de autenticacao.
 
-    try (JsonReader jsonReader = Json.createReader(new StringReader(message))) {
-        JsonObject jsonMessage = jsonReader.readObject();
 
-        String recipient = jsonMessage.getString("recipient");
-        String chatMessage = jsonMessage.getString("content");
+        try (JsonReader jsonReader = Json.createReader(new StringReader(message))) {
+            JsonObject jsonMessage = jsonReader.readObject();
 
-        // Salva a mensagem na base de dados
-        ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
-        chatMessageEntity.setSender(username);
-        chatMessageEntity.setRecipient(recipient);
-        chatMessageEntity.setContent(chatMessage);
-        chatMessageEntity.setTimestamp(LocalDateTime.now());
-        chatMessageEntity.setRead(false); // Define como não lida inicialmente
-        chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+            String recipient = jsonMessage.getString("recipient");
+            String chatMessage = jsonMessage.getString("content");
 
-        // Envia a mensagem para o destinatário, se ele estiver conectado
-        Session recipientSession = sessions.get(recipient);
-        if (recipientSession != null && recipientSession.isOpen()) {
-            try {
-                recipientSession.getBasicRemote().sendText(username + ": " + chatMessage);
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Salva a mensagem na base de dados
+            ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
+            chatMessageEntity.setSender(username);
+            chatMessageEntity.setRecipient(recipient);
+            chatMessageEntity.setContent(chatMessage);
+            chatMessageEntity.setTimestamp(LocalDateTime.now());
+            chatMessageEntity.setRead(false); // Define como não lida inicialmente
+            chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+
+            // Envia a mensagem para o destinatário, se ele estiver conectado
+            Session recipientSession = sessions.get(recipient);
+            if (recipientSession != null && recipientSession.isOpen()) {
+                try {
+                    recipientSession.getBasicRemote().sendText(message); // Envia o JSON original
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Erro ao processar mensagem JSON: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        System.err.println("Erro ao processar mensagem JSON: " + e.getMessage());
-        e.printStackTrace();
     }
-}
 
     /**
      * Called when a WebSocket connection is closed.

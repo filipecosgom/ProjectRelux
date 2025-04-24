@@ -37,6 +37,7 @@ public class ChatMessageController {
     public void saveMessage(ChatMessageEntity message) {
         System.out.println("Recebendo mensagem para salvar: " + message.getContent());
         message.setTimestamp(LocalDateTime.now()); // Define o timestamp atual
+        message.setRead(false); // Define como não lida inicialmente
         chatMessageDao.persist(message); // Salva a mensagem no banco de dados
     }
 }

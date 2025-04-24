@@ -66,10 +66,8 @@ const Chat = ({ loggedInUser }) => {
       webSocketService.onMessage((data) => {
         console.log("Nova mensagem recebida via WebSocket:", data);
 
-        // Processa a mensagem recebida
-        const [sender, content] = data.includes(":")
-          ? data.split(":").map((part) => part.trim())
-          : [null, data];
+        const dataJSON = JSON.parse(data); // Converte a string JSON em objeto
+        const { sender, content } = dataJSON; // Desestrutura o objeto
 
         setMessages((prevMessages) => [
           ...prevMessages,
@@ -114,7 +112,14 @@ const Chat = ({ loggedInUser }) => {
 
       try {
         console.log("Enviando mensagem:", newMessage);
+
+        // Envia a mensagem para o backend via POST
         await api.post("/messages", newMessage); // Salva a mensagem no backend
+
+        // Envia a mensagem via WebSocket
+        webSocketService.sendMessage(JSON.stringify(newMessage)); // Envia a mensagem como JSON pelo WebSocket
+
+        // Atualiza o estado local com a mensagem enviada
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -122,6 +127,7 @@ const Chat = ({ loggedInUser }) => {
             timestamp: new Date().toLocaleString("pt-PT"),
           },
         ]);
+
         setMessage(""); // Limpa o campo de entrada
       } catch (err) {
         console.error("Erro ao enviar mensagem:", err);
