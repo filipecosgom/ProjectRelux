@@ -5,8 +5,6 @@ import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
 import { IoAddCircleOutline } from "react-icons/io5";
 import {
-  FaUser,
-  FaCogs,
   FaSignOutAlt,
   FaSignInAlt,
   FaUsers,

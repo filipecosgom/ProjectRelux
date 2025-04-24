@@ -59,33 +59,34 @@ const Chat = ({ loggedInUser }) => {
 
   // Conecta ao WebSocket
   useEffect(() => {
-    console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
-    webSocketService.connect(loggedInUser); // Conecta ao WebSocket como o usuário logado
+    if (recipient) {
+      console.log("Conectando ao WebSocket com usuário logado:", loggedInUser);
+      webSocketService.connect(loggedInUser); // Conecta ao WebSocket como o usuário logado
 
-    webSocketService.onMessage((data) => {
-      console.log("Nova mensagem recebida via WebSocket:", data);
+      webSocketService.onMessage((data) => {
+        console.log("Nova mensagem recebida via WebSocket:", data);
 
-      // Divide a mensagem no formato "remetente:mensagem"
-      const [sender, content] = data.includes(":")
-        ? data.split(":").map((part) => part.trim())
-        : [null, data];
+        // Processa a mensagem recebida
+        const [sender, content] = data.includes(":")
+          ? data.split(":").map((part) => part.trim())
+          : [null, data];
 
-      // Adiciona a mensagem ao estado, incluindo o remetente e a timestamp
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: sender || "Desconhecido",
-          content,
-          timestamp: new Date().toLocaleString("pt-PT"),
-        },
-      ]);
-    });
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: sender || "Desconhecido",
+            content,
+            timestamp: new Date().toLocaleString("pt-PT"),
+          },
+        ]);
+      });
 
-    return () => {
-      console.log("Desconectando do WebSocket...");
-      webSocketService.disconnect();
-    };
-  }, [loggedInUser]);
+      return () => {
+        console.log("Desconectando do WebSocket...");
+        webSocketService.disconnect();
+      };
+    }
+  }, [loggedInUser, recipient]);
 
   // Faz scroll para o final da lista de mensagens
   useEffect(() => {
