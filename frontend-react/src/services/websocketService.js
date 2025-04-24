@@ -2,6 +2,7 @@ class WebSocketService {
   constructor() {
     this.socket = null;
     this.pingInterval = null; // Intervalo para enviar pings
+    this.onMessageCallback = null; // Callback para mensagens recebidas
   }
 
   /**
@@ -22,22 +23,20 @@ class WebSocketService {
       `ws://localhost:8080/filipe-proj5/chat/${username}`
     );
 
-    console.log("Estado inicial do WebSocket:", this.socket.readyState);
-
     this.socket.onopen = () => {
-      console.log("Conectado ao WebSocket como:", username);
-
-      // Inicia o envio de pings a cada 30 segundos
-      this.pingInterval = setInterval(() => {
-        if (this.socket.readyState === WebSocket.OPEN) {
-          this.socket.send("ping");
-        }
-      }, 30000); // 30 segundos
+      console.log(`Conexão WebSocket aberta para o usuário: ${username}`);
+      console.log("Estado do WebSocket:", this.socket.readyState); // Deve ser 1 (OPEN)
     };
 
-    this.socket.onclose = () => {
-      console.log("Conexão WebSocket fechada. Estado:", this.socket.readyState);
-      clearInterval(this.pingInterval); // Para o envio de pings
+    this.socket.onmessage = (event) => {
+      console.log("Mensagem recebida do WebSocket:", event.data);
+      if (this.onMessageCallback) {
+        this.onMessageCallback(event.data);
+      }
+    };
+
+    this.socket.onclose = (event) => {
+      console.log("Conexão WebSocket fechada. Estado:", this.socket.readyState); // Deve ser 3 (CLOSED)
     };
 
     this.socket.onerror = (error) => {
@@ -69,12 +68,7 @@ class WebSocketService {
    * @param {function} callback - Função a ser chamada quando uma mensagem for recebida.
    */
   onMessage(callback) {
-    if (this.socket) {
-      this.socket.onmessage = (event) => {
-        console.log("Mensagem recebida do WebSocket:", event.data);
-        callback(event.data);
-      };
-    }
+    this.onMessageCallback = callback;
   }
 
   /**

@@ -97,8 +97,8 @@ const Chat = ({ loggedInUser }) => {
 
   // Atualiza o destinatário e carrega o histórico ao selecionar um usuário
   const handleUserSelection = (user) => {
-    console.log("Usuário selecionado:", user.username);
-    setRecipient(user.username);
+    console.log("Destinatário selecionado:", user.username);
+    setRecipient(user.username); // Define o destinatário
     navigate(`/chat/${user.username}`); // Atualiza o URL
     fetchMessages(loggedInUser, user.username); // Carrega o histórico de mensagens
   };
