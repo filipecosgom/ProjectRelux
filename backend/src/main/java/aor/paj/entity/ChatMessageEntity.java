@@ -1,8 +1,11 @@
 package aor.paj.entity;
 
+import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * Entity representing a chat message.
@@ -28,6 +31,7 @@ public class ChatMessageEntity implements Serializable {
     private String content;
 
     @Column(name = "timestamp", nullable = false) // Explicitly map to the "timestamp" column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timestamp;
 
     @Column(name = "is_read", nullable = false) // Explicitly map to the "is_read" column

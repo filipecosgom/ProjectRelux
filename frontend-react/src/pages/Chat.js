@@ -34,11 +34,15 @@ const Chat = ({ loggedInUser }) => {
   const fetchMessages = async (sender, recipient) => {
     try {
       console.log(
-        `Buscando histórico de mensagens entre ${sender} e ${recipient}...`
+        `A obter histórico de mensagens entre ${sender} e ${recipient}...`
       );
       const response = await api.get(`/messages/${sender}/${recipient}`);
-      setMessages(response.data); // Atualiza o estado com o histórico de mensagens
-      console.log("Histórico de mensagens carregado:", response.data);
+      const formattedMessages = response.data.map((message) => ({
+        ...message,
+        timestamp: new Date(message.timestamp).toLocaleString("pt-PT"), // Formata o timestamp
+      }));
+      setMessages(formattedMessages); // Atualiza o estado com o histórico de mensagens formatado
+      console.log("Histórico de mensagens carregado:", formattedMessages);
     } catch (err) {
       console.error("Erro ao carregar o histórico de mensagens:", err);
     }
