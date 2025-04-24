@@ -16,6 +16,7 @@ import {
 import ProductModal from "../product/ProductModal";
 import api from "../../services/apiService";
 import { toast } from "react-toastify";
+import notificationService from "../../services/notificationService";
 
 const Navbar = () => {
   const navigate = useNavigate(); // Hook para redirecionamento
@@ -25,7 +26,24 @@ const Navbar = () => {
   const clearUser = userStore((state) => state.clearUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
-  const [notifications, setNotifications] = useState(3); // Número de notificações (exemplo, remover o número)
+  const [notifications, setNotifications] = useState(0); // Número de notificações (exemplo, remover o número)
+
+  useEffect(() => {
+    if (username) {
+      // Conecta ao WebSocket de notificações
+      notificationService.connect(username);
+
+      // Define o callback para notificações recebidas
+      notificationService.onNotification((data) => {
+        console.log("Notificação recebida:", data);
+        setNotifications((prev) => prev + 1); // Incrementa o número de notificações
+      });
+
+      return () => {
+        notificationService.disconnect(); // Desconecta ao desmontar o componente
+      };
+    }
+  }, [username]);
 
   // Exibe uma toast de boas-vindas após o login
   useEffect(() => {

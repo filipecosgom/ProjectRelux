@@ -70,6 +70,9 @@ public class ChatWebSocket {
             chatMessageEntity.setRead(false); // Define como não lida inicialmente
             chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
 
+            // Envia uma notificação para o destinatário
+            NotificationWebSocket.sendNotification(recipient, "Você recebeu uma nova mensagem!");
+        
             // Envia a mensagem para o destinatário, se ele estiver conectado
             Session recipientSession = sessions.get(recipient);
             if (recipientSession != null && recipientSession.isOpen()) {
