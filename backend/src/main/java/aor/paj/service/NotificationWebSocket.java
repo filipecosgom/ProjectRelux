@@ -31,8 +31,10 @@ public class NotificationWebSocket {
         if (session != null && session.isOpen()) {
             try {
                 session.getBasicRemote().sendText(message);
+                System.out.println("Notificação enviada para " + username + ": " + message);
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("Erro ao enviar notificação para " + username + ": " + e.getMessage());
             }
         }
     }
