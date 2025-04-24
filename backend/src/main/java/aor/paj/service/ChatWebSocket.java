@@ -5,6 +5,7 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import aor.paj.dao.ChatMessageDao;
 import aor.paj.entity.ChatMessageEntity;
 import jakarta.inject.Inject;
+
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 /**
  * WebSocket endpoint for real-time chat communication.
@@ -45,35 +50,38 @@ public class ChatWebSocket {
      * @param username The username of the sender.
      */
 @OnMessage
-    public void onMessage(String message, @PathParam("username") String username) {
-        System.out.println("Message from " + username + ": " + message);
+public void onMessage(String message, @PathParam("username") String username) {
+    System.out.println("Message from " + username + ": " + message);
 
-        // Divide a mensagem no formato "recipient:message"
-        String[] parts = message.split(":", 2);
-        if (parts.length == 2) {
-            String recipient = parts[0].trim();
-            String chatMessage = parts[1].trim();
+    try (JsonReader jsonReader = Json.createReader(new StringReader(message))) {
+        JsonObject jsonMessage = jsonReader.readObject();
 
-            // Salva a mensagem na base de dados
-            ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
-            chatMessageEntity.setSender(username);
-            chatMessageEntity.setRecipient(recipient);
-            chatMessageEntity.setContent(chatMessage);
-            chatMessageEntity.setTimestamp(LocalDateTime.now());
-            chatMessageEntity.setRead(false); // Define como não lida inicialmente
-            chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+        String recipient = jsonMessage.getString("recipient");
+        String chatMessage = jsonMessage.getString("content");
 
-            // Envia a mensagem para o destinatário, se ele estiver conectado
-            Session recipientSession = sessions.get(recipient);
-            if (recipientSession != null && recipientSession.isOpen()) {
-                try {
-                    recipientSession.getBasicRemote().sendText(username + ": " + chatMessage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        // Salva a mensagem na base de dados
+        ChatMessageEntity chatMessageEntity = new ChatMessageEntity();
+        chatMessageEntity.setSender(username);
+        chatMessageEntity.setRecipient(recipient);
+        chatMessageEntity.setContent(chatMessage);
+        chatMessageEntity.setTimestamp(LocalDateTime.now());
+        chatMessageEntity.setRead(false); // Define como não lida inicialmente
+        chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+
+        // Envia a mensagem para o destinatário, se ele estiver conectado
+        Session recipientSession = sessions.get(recipient);
+        if (recipientSession != null && recipientSession.isOpen()) {
+            try {
+                recipientSession.getBasicRemote().sendText(username + ": " + chatMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+    } catch (Exception e) {
+        System.err.println("Erro ao processar mensagem JSON: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     /**
      * Called when a WebSocket connection is closed.
