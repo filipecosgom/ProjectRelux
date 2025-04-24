@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import StoreLogo from "../../images/icon.png";
 import { userStore } from "../../stores/UserStore";
@@ -20,6 +20,7 @@ import api from "../../services/apiService";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
+  const navigate = useNavigate(); // Hook para redirecionamento
   const username = userStore((state) => state.username);
   const imagem = userStore((state) => state.imagem);
   const isAdmin = userStore((state) => state.isAdmin);
@@ -48,6 +49,7 @@ const Navbar = () => {
       await api.post("/users/logout");
       clearUser();
       toast.success("Logout realizado com sucesso!");
+      navigate("/"); // Redireciona para a página inicial
     } catch (error) {
       console.error("Erro no logout:", error.response?.data || error.message);
       toast.error("Erro ao realizar logout. Tente novamente.");
