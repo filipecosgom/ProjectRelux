@@ -181,10 +181,13 @@ const Chat = ({ loggedInUser }) => {
               <div
                 key={index}
                 className={`chat-message ${
-                  msg.sender === "Você" ? "sent" : "received"
+                  msg.sender === loggedInUser ? "sent" : "received"
                 }`}
               >
-                <strong>{msg.sender}:</strong> {msg.content}
+                <strong>
+                  {msg.sender === loggedInUser ? "Você" : msg.sender}:
+                </strong>{" "}
+                {msg.content}
                 <div className="timestamp">{msg.timestamp}</div>
               </div>
             ))}

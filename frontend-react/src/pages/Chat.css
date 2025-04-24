@@ -80,17 +80,20 @@
 }
 
 .chat-message.received {
-  background-color: #444; /* Fundo para mensagens recebidas */
+  background-color: #444; /* Fundo cinza para mensagens recebidas */
+  color: white; /* Texto branco */
   align-self: flex-start; /* Alinha à esquerda */
   text-align: left; /* Texto alinhado à esquerda */
+  border-radius: 15px 15px 15px 0; /* Bordas arredondadas */
 }
 
 .chat-message.sent {
-  background-color: #007bff; /* Fundo para mensagens enviadas */
-  color: white;
+  background-color: #007bff; /* Fundo azul para mensagens enviadas */
+  color: white; /* Texto branco */
   align-self: flex-end; /* Alinha à direita */
   margin-left: auto; /* Garante que a mensagem fique colada ao lado direito */
   text-align: left; /* Texto alinhado à esquerda */
+  border-radius: 15px 15px 0 15px; /* Bordas arredondadas */
 }
 
 .chat-message .timestamp {
