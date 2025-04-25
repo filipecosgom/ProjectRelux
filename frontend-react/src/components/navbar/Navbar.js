@@ -26,17 +26,20 @@ const Navbar = () => {
   const clearUser = userStore((state) => state.clearUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
-  const [notifications, setNotifications] = useState(0); // Número de notificações (exemplo, remover o número)
+  const [notifications, setNotifications] = useState([]);
+  const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
   useEffect(() => {
     if (username) {
-      // Conecta ao WebSocket de notificações
       notificationService.connect(username);
 
-      // Define o callback para notificações recebidas
       notificationService.onNotification((data) => {
-        console.log("Notificação recebida:", data);
-        setNotifications((prev) => prev + 1); // Incrementa o número de notificações
+        try {
+          const notification = JSON.parse(data); // Parse do JSON recebido
+          setNotifications((prev) => [notification, ...prev]);
+        } catch (error) {
+          console.error("Erro ao processar mensagem do WebSocket:", error);
+        }
       });
 
       return () => {
@@ -72,6 +75,22 @@ const Navbar = () => {
     }
   };
 
+  const handleNotificationClick = (notification) => {
+    // Lógica para lidar com o clique na notificação
+    console.log("Notificação clicada:", notification);
+  };
+
+  const formatRelativeTime = (timestamp) => {
+    // Lógica para formatar o tempo relativo
+    const timeDiff = Date.now() - new Date(timestamp).getTime();
+    const minutes = Math.floor(timeDiff / 60000);
+    if (minutes < 60) return `${minutes} minutos atrás`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} horas atrás`;
+    const days = Math.floor(hours / 24);
+    return `${days} dias atrás`;
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -99,14 +118,57 @@ const Navbar = () => {
               <>
                 {/* Ícone de notificações */}
                 <li className="nav-item">
-                  <div className="notification-icon-container">
+                  <div
+                    className="notification-icon-container"
+                    onClick={() => setIsNotificationPanelOpen((prev) => !prev)}
+                  >
                     <FaBell className="notification-icon" />
-                    {notifications > 0 && (
+                    {notifications.filter((n) => !n.isRead).length > 0 && (
                       <span className="notification-badge">
-                        {notifications}
+                        {notifications.filter((n) => !n.isRead).length}
                       </span>
                     )}
                   </div>
+
+                  {isNotificationPanelOpen && (
+                    <div className="notification-panel">
+                      {notifications.length > 0 ? (
+                        notifications.map((notification) => (
+                          <div
+                            key={notification.id}
+                            className={`notification-item ${
+                              notification.isRead ? "read" : "unread"
+                            }`}
+                            onClick={() =>
+                              handleNotificationClick(notification)
+                            }
+                          >
+                            <img
+                              src={
+                                notification.senderImage ||
+                                "https://via.placeholder.com/40"
+                              }
+                              alt="Sender"
+                              className="notification-avatar"
+                            />
+                            <div className="notification-content">
+                              <p>
+                                <strong>{notification.sender}</strong>{" "}
+                                {notification.content}
+                              </p>
+                              <span className="notification-timestamp">
+                                {formatRelativeTime(notification.timestamp)}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="notification-empty">
+                          Sem notificações
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </li>
 
                 <li className="nav-item">

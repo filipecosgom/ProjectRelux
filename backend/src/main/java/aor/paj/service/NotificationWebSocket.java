@@ -26,12 +26,19 @@ public class NotificationWebSocket {
         System.out.println("Erro no WebSocket de notificações: " + throwable.getMessage());
     }
 
-    public static void sendNotification(String username, String message) {
+    public static void sendNotification(String username, String sender, String content, String timestamp) {
         Session session = sessions.get(username);
         if (session != null && session.isOpen()) {
             try {
-                session.getBasicRemote().sendText(message);
-                System.out.println("Notificação enviada para " + username + ": " + message);
+                // Construir o JSON manualmente
+                String jsonMessage = String.format(
+                    "{\"sender\":\"%s\", \"content\":\"%s\", \"timestamp\":\"%s\"}",
+                    sender, content, timestamp
+                );
+
+                // Enviar o JSON pelo WebSocket
+                session.getBasicRemote().sendText(jsonMessage);
+                System.out.println("Notificação enviada para " + username + ": " + jsonMessage);
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Erro ao enviar notificação para " + username + ": " + e.getMessage());
