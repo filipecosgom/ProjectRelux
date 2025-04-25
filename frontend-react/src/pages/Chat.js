@@ -21,8 +21,11 @@ const Chat = ({ loggedInUser }) => {
     try {
       console.log("Buscando lista de usuários...");
       const response = await api.get("/users/all"); // Faz a chamada ao endpoint
-      setUsers(response.data); // Armazena os usuários no estado
-      console.log("Usuários carregados:", response.data);
+      const filteredUsers = response.data.filter(
+        (user) => user.username !== loggedInUser // Filtra o usuário logado
+      );
+      setUsers(filteredUsers); // Armazena os usuários filtrados no estado
+      console.log("Usuários carregados:", filteredUsers);
     } catch (err) {
       console.error("Erro ao carregar a lista de usuários:", err);
     } finally {
