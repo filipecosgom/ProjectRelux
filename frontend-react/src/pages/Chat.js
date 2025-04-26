@@ -100,6 +100,30 @@ const Chat = ({ loggedInUser }) => {
     }
   }, [messages]);
 
+  // Marca mensagens como lidas após 5 segundos
+  useEffect(() => {
+    if (messages.length > 0) {
+      const timer = setTimeout(() => {
+        const unreadMessages = messages.filter((msg) => !msg.isRead);
+        if (unreadMessages.length > 0) {
+          unreadMessages.forEach((msg) => {
+            // Atualiza o estado local
+            setMessages((prevMessages) =>
+              prevMessages.map((m) =>
+                m.id === msg.id ? { ...m, isRead: true } : m
+              )
+            );
+
+            // Atualiza no backend
+            api.post(`/messages/mark-as-read/${msg.id}`);
+          });
+        }
+      }, 5000); // 5 segundos
+
+      return () => clearTimeout(timer); // Limpa o timer ao desmontar
+    }
+  }, [messages]);
+
   // Atualiza o destinatário e carrega o histórico ao selecionar um usuário
   const handleUserSelection = (user) => {
     console.log("Destinatário selecionado:", user.username);

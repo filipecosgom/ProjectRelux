@@ -28,6 +28,8 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o modal
   const [notifications, setNotifications] = useState([]);
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+  const [messages, setMessages] = useState([]); // Estado para mensagens
 
   useEffect(() => {
     if (username) {
@@ -77,6 +79,28 @@ const Navbar = () => {
 
     return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
   }, []);
+
+  useEffect(() => {
+    const updateNotifications = async () => {
+      const updatedNotifications = notifications.map((notification) => {
+        const relatedMessage = messages.find(
+          (msg) => msg.id === notification.messageId && msg.isRead
+        );
+        if (relatedMessage) {
+          return { ...notification, isRead: true };
+        }
+        return notification;
+      });
+
+      setNotifications(updatedNotifications);
+
+      // Atualiza o contador de notificações não lidas
+      const unreadCount = updatedNotifications.filter((n) => !n.isRead).length;
+      setUnreadNotificationCount(unreadCount);
+    };
+
+    updateNotifications();
+  }, [messages]);
 
   // Exibe uma toast de boas-vindas após o login
   useEffect(() => {
@@ -175,7 +199,15 @@ const Navbar = () => {
                     <div className="notification-panel">
                       {notifications.length > 0 ? (
                         notifications.map((notification, index) => (
-                          <div key={index} className="notification-item">
+                          <div
+                            key={index}
+                            className={`notification-item ${
+                              notification.isRead ? "read" : ""
+                            }`}
+                            onClick={() =>
+                              navigate(`/chat/${notification.sender}`)
+                            } // Redireciona para o chat
+                          >
                             <div className="notification-left">
                               <img
                                 src={notification.senderImage}

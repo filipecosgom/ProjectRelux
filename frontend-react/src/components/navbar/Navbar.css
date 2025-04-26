@@ -264,6 +264,11 @@
   border-bottom: 1px solid #ccc;
 }
 
+.notification-item.read {
+  background-color: #444; /* Fundo mais claro */
+  color: #aaa; /* Texto mais claro */
+}
+
 .notification-left {
   display: flex;
   flex-direction: column;
