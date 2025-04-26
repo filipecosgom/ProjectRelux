@@ -29,4 +29,18 @@ public class ChatMessageDao extends AbstratDao<ChatMessageEntity> {
                 .setParameter("recipient", recipient)
                 .getResultList();
     }
+
+    /**
+     * Marks all messages as read for a specific recipient.
+     *
+     * @param recipient The recipient's username.
+     * @return The number of messages updated.
+     */
+    public int markAllAsRead(String recipient) {
+        return em.createQuery(
+                "UPDATE ChatMessageEntity m SET m.isRead = true WHERE m.recipient = :recipient AND m.isRead = false"
+            )
+            .setParameter("recipient", recipient)
+            .executeUpdate();
+    }
 }

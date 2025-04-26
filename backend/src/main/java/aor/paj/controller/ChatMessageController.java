@@ -45,12 +45,24 @@ public class ChatMessageController {
     @PUT
     @Path("/mark-as-read/{id}")
     public Response markMessageAsRead(@PathParam("id") int id) {
+        System.out.println("Recebendo solicitação para marcar como lida a mensagem com ID: " + id);
         ChatMessageEntity message = chatMessageDao.find(id);
         if (message != null) {
             message.setRead(true);
             chatMessageDao.merge(message);
+            System.out.println("Mensagem marcada como lida: " + id);
             return Response.ok().build();
         }
+        System.out.println("Mensagem não encontrada: " + id);
         return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @PUT
+    @Path("/mark-all-as-read/{recipient}")
+    public Response markAllMessagesAsRead(@PathParam("recipient") String recipient) {
+        System.out.println("Marcando todas as mensagens como lidas para o destinatário: " + recipient);
+        int updatedCount = chatMessageDao.markAllAsRead(recipient);
+        System.out.println("Total de mensagens marcadas como lidas: " + updatedCount);
+        return Response.ok().build();
     }
 }
