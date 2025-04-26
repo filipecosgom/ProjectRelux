@@ -51,10 +51,6 @@ public class ChatWebSocket {
      */
     @OnMessage
     public void onMessage(String message, @PathParam("username") String username) {
-        System.out.println("Message from " + username + ": '" + message + "'");
-// todo verificar se a sessao se autenticou, com um mapa de users. a primeira mensagem deve ser o token de autenticacao.
-
-
         try (JsonReader jsonReader = Json.createReader(new StringReader(message))) {
             JsonObject jsonMessage = jsonReader.readObject();
 
@@ -68,16 +64,16 @@ public class ChatWebSocket {
             chatMessageEntity.setContent(chatMessage);
             chatMessageEntity.setTimestamp(LocalDateTime.now());
             chatMessageEntity.setRead(false); // Define como não lida inicialmente
-            //chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados (comentado para não duplicar)
+            // chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados (comentado para não duplicar)
 
             // Envia uma notificação para o destinatário
-            NotificationWebSocket.sendNotification(
+            NotificationWebSocket.getInstance().sendNotification(
                 recipient,
                 username, // remetente
                 "Você recebeu uma nova mensagem!",
                 LocalDateTime.now().toString() // timestamp
             );
-        
+
             // Envia a mensagem para o destinatário, se ele estiver conectado
             Session recipientSession = sessions.get(recipient);
             if (recipientSession != null && recipientSession.isOpen()) {

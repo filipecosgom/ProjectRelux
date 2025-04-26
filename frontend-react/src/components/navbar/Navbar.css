@@ -261,26 +261,15 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #444;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.notification-item.unread {
-  background-color: #444;
-  font-weight: bold;
-}
-
-.notification-item.read {
-  background-color: #333;
-  font-weight: normal;
+  border-bottom: 1px solid #ccc;
 }
 
 .notification-avatar {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover; /* Mantém o ratio da imagem */
 }
 
 .notification-content {
@@ -289,5 +278,5 @@
 
 .notification-timestamp {
   font-size: 0.8rem;
-  color: #aaa;
+  color: #888;
 }

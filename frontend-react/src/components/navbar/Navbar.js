@@ -133,22 +133,11 @@ const Navbar = () => {
                   {isNotificationPanelOpen && (
                     <div className="notification-panel">
                       {notifications.length > 0 ? (
-                        notifications.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className={`notification-item ${
-                              notification.isRead ? "read" : "unread"
-                            }`}
-                            onClick={() =>
-                              handleNotificationClick(notification)
-                            }
-                          >
+                        notifications.map((notification, index) => (
+                          <div key={index} className="notification-item">
                             <img
-                              src={
-                                notification.senderImage ||
-                                "https://via.placeholder.com/40"
-                              }
-                              alt="Sender"
+                              src={notification.senderImage}
+                              alt="Imagem do remetente"
                               className="notification-avatar"
                             />
                             <div className="notification-content">

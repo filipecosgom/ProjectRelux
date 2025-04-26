@@ -84,7 +84,19 @@ public class UserDao extends AbstratDao<UserEntity> {
     }
 
     public List<UserEntity> findUnverifiedUsers() {
-    return em.createQuery("SELECT u FROM UserEntity u WHERE u.isVerified = false", UserEntity.class)
-             .getResultList();
+        return em.createQuery("SELECT u FROM UserEntity u WHERE u.isVerified = false", UserEntity.class)
+                .getResultList();
+    }
+
+    public String getUserImageByUsername(String username) {
+    try {
+        return em.createQuery(
+                "SELECT u.imagem FROM UserEntity u WHERE u.username = :username", String.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    } catch (NoResultException e) {
+        System.out.println("Usuário não encontrado: " + username);
+        return null; // Retorna null se o usuário não for encontrado
+    }
 }
 }

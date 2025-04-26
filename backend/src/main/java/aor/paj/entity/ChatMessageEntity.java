@@ -1,6 +1,5 @@
 package aor.paj.entity;
 
-import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
