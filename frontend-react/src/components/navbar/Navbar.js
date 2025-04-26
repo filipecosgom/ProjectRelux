@@ -48,6 +48,22 @@ const Navbar = () => {
     }
   }, [username]);
 
+  // Fechar a janela de notificações ao clicar fora dela
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const notificationPanel = document.querySelector(".notification-panel");
+      if (notificationPanel && !notificationPanel.contains(event.target)) {
+        setIsNotificationPanelOpen(false); // Fecha o painel
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // Este bloco de código configura um intervalo para atualizar o estado das notificações periodicamente, garantindo que o tempo relativo exibido seja atualizado em tempo real.
   useEffect(() => {
     const interval = setInterval(() => {

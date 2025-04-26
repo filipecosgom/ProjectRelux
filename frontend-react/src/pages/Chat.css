@@ -152,3 +152,18 @@
   color: #ccc;
   margin: 3px 0;
 }
+
+.notification-panel {
+  position: absolute;
+  top: 50px;
+  right: 10px; /* Afasta 10px da borda direita */
+  width: 30%;
+  max-height: 360px; /* Limita a altura máxima */
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  overflow-y: auto; /* Adiciona scroll vertical */
+  z-index: 1000;
+  padding: 10px;
+}
