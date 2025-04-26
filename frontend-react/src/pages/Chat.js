@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import webSocketService from "../services/websocketService";
 import api from "../services/apiService"; // Serviço para chamadas à API
+import { RiCheckFill, RiCheckDoubleLine } from "react-icons/ri";
 import "./Chat.css";
 
 //TODO tentar fazer com que um link para um produto crie um card para esse produto dentro do chat
@@ -118,8 +119,6 @@ const Chat = ({ loggedInUser }) => {
     }
   }, [messages, recipient]);
 
-
-
   // Atualiza o destinatário e carrega o histórico ao selecionar um usuário
   const handleUserSelection = (user) => {
     console.log("Destinatário selecionado:", user.username);
@@ -212,6 +211,15 @@ const Chat = ({ loggedInUser }) => {
                 </strong>{" "}
                 {msg.content}
                 <div className="timestamp">{msg.timestamp}</div>
+                {msg.sender === loggedInUser && (
+                  <div className="message-status">
+                    {msg.isRead ? (
+                      <RiCheckDoubleLine className="double-check" />
+                    ) : (
+                      <RiCheckFill className="single-check" />
+                    )}
+                  </div>
+                )}
               </div>
             ))}
             <div ref={messagesEndRef} />
