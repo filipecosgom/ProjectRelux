@@ -145,3 +145,10 @@
   background-color: #554700;
   transform: scale(1.05); /* Leve aumento no hover */
 }
+
+.notification-preview {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin: 3px 0;
+}

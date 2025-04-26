@@ -174,6 +174,19 @@ const Navbar = () => {
                               <p className="notification-content">
                                 {notification.content}
                               </p>
+                              <p className="notification-preview">
+                                <i>
+                                  "
+                                  {notification.messagePreview &&
+                                  notification.messagePreview.length > 20
+                                    ? `${notification.messagePreview.substring(
+                                        0,
+                                        17
+                                      )}...`
+                                    : notification.messagePreview || ""}
+                                  "
+                                </i>
+                              </p>
                               <span className="notification-timestamp">
                                 {formatRelativeTime(notification.timestamp)}
                               </span>

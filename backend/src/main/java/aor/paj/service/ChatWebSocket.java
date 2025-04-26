@@ -64,13 +64,13 @@ public class ChatWebSocket {
             chatMessageEntity.setContent(chatMessage);
             chatMessageEntity.setTimestamp(LocalDateTime.now());
             chatMessageEntity.setRead(false); // Define como não lida inicialmente
-            // chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados (comentado para não duplicar)
+            // chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
 
             // Envia uma notificação para o destinatário
             NotificationWebSocket.getInstance().sendNotification(
                 recipient,
                 username, // remetente
-                "Você recebeu uma nova mensagem!",
+                chatMessage, // conteúdo real da mensagem
                 LocalDateTime.now().toString() // timestamp
             );
 

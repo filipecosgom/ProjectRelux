@@ -53,10 +53,13 @@ public class NotificationWebSocket {
                     senderImage = "https://placehold.co/35x35/transparent/F00"; // URL de uma imagem padrão
                 }
 
+                // Gerar a pré-visualização da mensagem (primeiros 20 caracteres do conteúdo real)
+                String messagePreview = content.length() > 20 ? content.substring(0, 17) + "..." : content;
+
                 // Construir o JSON manualmente
                 String jsonMessage = String.format(
-                    "{\"sender\":\"%s\", \"content\":\"%s\", \"timestamp\":\"%s\", \"senderImage\":\"%s\"}",
-                    sender, content, timestamp, senderImage
+                    "{\"sender\":\"%s\", \"content\":\"Você recebeu uma nova mensagem!\", \"timestamp\":\"%s\", \"senderImage\":\"%s\", \"messagePreview\":\"%s\"}",
+                    sender, timestamp, senderImage, messagePreview
                 );
 
                 // Enviar o JSON pelo WebSocket
