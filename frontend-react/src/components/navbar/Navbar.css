@@ -246,7 +246,7 @@
   position: absolute;
   top: 50px;
   right: 0;
-  width: 300px;
+  width: 30%;
   max-height: 400px;
   background-color: #333;
   color: white;
@@ -259,21 +259,41 @@
 
 .notification-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
 
-.notification-avatar {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
+.notification-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-right: 10px;
+  width: 60px; /* Define a largura da coluna esquerda */
+}
+
+.notification-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 10%;
   object-fit: cover; /* Mantém o ratio da imagem */
 }
 
+.notification-sender {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #fff;
+  text-align: center;
+}
+
+.notification-right {
+  flex: 1; /* Faz a coluna direita ocupar o restante do espaço */
+}
+
 .notification-content {
-  flex: 1;
+  font-size: 0.95rem;
+  color: #fff;
+  margin-bottom: 5px;
 }
 
 .notification-timestamp {

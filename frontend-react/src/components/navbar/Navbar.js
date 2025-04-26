@@ -48,6 +48,20 @@ const Navbar = () => {
     }
   }, [username]);
 
+  // Este bloco de código configura um intervalo para atualizar o estado das notificações periodicamente, garantindo que o tempo relativo exibido seja atualizado em tempo real.
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notification) => ({
+          ...notification,
+          timestamp: notification.timestamp, // Mantém o timestamp original
+        }))
+      );
+    }, 60000); // Atualiza a cada 60 segundos
+
+    return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
+  }, []);
+
   // Exibe uma toast de boas-vindas após o login
   useEffect(() => {
     if (username) {
@@ -84,11 +98,22 @@ const Navbar = () => {
     // Lógica para formatar o tempo relativo
     const timeDiff = Date.now() - new Date(timestamp).getTime();
     const minutes = Math.floor(timeDiff / 60000);
-    if (minutes < 60) return `${minutes} minutos atrás`;
+
+    if (minutes === 0) {
+      return "agora mesmo";
+    }
+
+    if (minutes < 60) {
+      return minutes === 1 ? "há 1 minuto" : `há ${minutes} minutos`;
+    }
+
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} horas atrás`;
+    if (hours < 24) {
+      return hours === 1 ? "há 1 hora" : `há ${hours} horas`;
+    }
+
     const days = Math.floor(hours / 24);
-    return `${days} dias atrás`;
+    return days === 1 ? "há 1 dia" : `há ${days} dias`;
   };
 
   return (
@@ -135,14 +160,18 @@ const Navbar = () => {
                       {notifications.length > 0 ? (
                         notifications.map((notification, index) => (
                           <div key={index} className="notification-item">
-                            <img
-                              src={notification.senderImage}
-                              alt="Imagem do remetente"
-                              className="notification-avatar"
-                            />
-                            <div className="notification-content">
-                              <p>
-                                <strong>{notification.sender}</strong>{" "}
+                            <div className="notification-left">
+                              <img
+                                src={notification.senderImage}
+                                alt="Imagem do remetente"
+                                className="notification-avatar"
+                              />
+                              <p className="notification-sender">
+                                {notification.sender}
+                              </p>
+                            </div>
+                            <div className="notification-right">
+                              <p className="notification-content">
                                 {notification.content}
                               </p>
                               <span className="notification-timestamp">
