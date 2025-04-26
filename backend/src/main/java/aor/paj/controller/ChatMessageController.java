@@ -5,6 +5,7 @@ import aor.paj.entity.ChatMessageEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,5 +40,17 @@ public class ChatMessageController {
         message.setTimestamp(LocalDateTime.now()); // Define o timestamp atual
         message.setRead(false); // Define como não lida inicialmente
         chatMessageDao.persist(message); // Salva a mensagem no banco de dados
+    }
+
+    @PUT
+    @Path("/mark-as-read/{id}")
+    public Response markMessageAsRead(@PathParam("id") int id) {
+        ChatMessageEntity message = chatMessageDao.find(id);
+        if (message != null) {
+            message.setRead(true);
+            chatMessageDao.merge(message);
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 }
