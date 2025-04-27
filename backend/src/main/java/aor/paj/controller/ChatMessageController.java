@@ -2,10 +2,15 @@ package aor.paj.controller;
 
 import aor.paj.dao.ChatMessageDao;
 import aor.paj.entity.ChatMessageEntity;
+import aor.paj.service.ChatWebSocket;
 import jakarta.inject.Inject;
+import jakarta.websocket.Session;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -61,8 +66,40 @@ public class ChatMessageController {
     @Path("/mark-all-as-read/{recipient}")
     public Response markAllMessagesAsRead(@PathParam("recipient") String recipient) {
         System.out.println("Marcando todas as mensagens como lidas para o destinatário: " + recipient);
-        int updatedCount = chatMessageDao.markAllAsRead(recipient);
-        System.out.println("Total de mensagens marcadas como lidas: " + updatedCount);
+
+        // Busca todas as mensagens não lidas do destinatário
+        List<ChatMessageEntity> unreadMessages = chatMessageDao.findUnreadMessagesByRecipient(recipient);
+
+        for (ChatMessageEntity message : unreadMessages) {
+            message.setRead(true); // Marca a mensagem como lida
+            chatMessageDao.merge(message); // Atualiza no banco de dados
+
+            System.out.println("Mensagem marcada como lida: " + message.getId());
+
+            // Notifica o remetente que a mensagem foi lida
+            Session senderSession = ChatWebSocket.sessions.get(message.getSender());
+            if (senderSession != null && senderSession.isOpen()) {
+                try {
+                    JsonObject readNotification = Json.createObjectBuilder()
+                        .add("sender", message.getSender())
+                        .add("recipient", message.getRecipient())
+                        .add("content", message.getContent())
+                        .add("timestamp", message.getTimestamp().toString())
+                        .add("isRead", true) // Atualiza para lida
+                        .build();
+
+                    senderSession.getBasicRemote().sendText(readNotification.toString());
+                    System.out.println("Notificação enviada ao remetente: " + message.getSender());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Erro ao enviar notificação ao remetente: " + message.getSender());
+                }
+            } else {
+                System.out.println("Sessão do remetente não encontrada ou não está aberta: " + message.getSender());
+            }
+        }
+
+        System.out.println("Total de mensagens marcadas como lidas: " + unreadMessages.size());
         return Response.ok().build();
     }
 }

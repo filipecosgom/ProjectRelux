@@ -43,4 +43,19 @@ public class ChatMessageDao extends AbstratDao<ChatMessageEntity> {
             .setParameter("recipient", recipient)
             .executeUpdate();
     }
+
+    /**
+     * Finds all unread messages for a specific recipient.
+     *
+     * @param recipient The recipient's username.
+     * @return A list of unread chat messages.
+     */
+    public List<ChatMessageEntity> findUnreadMessagesByRecipient(String recipient) {
+        return em.createQuery(
+                "SELECT m FROM ChatMessageEntity m WHERE m.recipient = :recipient AND m.isRead = false",
+                ChatMessageEntity.class
+            )
+            .setParameter("recipient", recipient)
+            .getResultList();
+    }
 }

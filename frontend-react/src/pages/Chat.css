@@ -104,23 +104,6 @@
   right: 10px;
 }
 
-.message-status {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  font-size: 0.8rem; /* Tamanho pequeno */
-  display: flex;
-  align-items: center;
-}
-
-.single-check {
-  color: white; /* Cor branca para mensagens não lidas */
-}
-
-.double-check {
-  color: #00ff00; /* Cor verde para mensagens lidas */
-}
-
 .chat-input {
   display: flex;
   padding: 10px;

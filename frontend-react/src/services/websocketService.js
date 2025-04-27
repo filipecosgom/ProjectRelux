@@ -58,10 +58,7 @@ class WebSocketService {
     };
 
     this.socket.onclose = (event) => {
-      console.log(
-        "Conexão WebSocket fechada. Estado:",
-        this.socket.readyState
-      ); // Deve ser 3 (CLOSED)
+      console.log("Conexão WebSocket fechada. Estado:", this.socket.readyState); // Deve ser 3 (CLOSED)
     };
 
     this.socket.onerror = (error) => {

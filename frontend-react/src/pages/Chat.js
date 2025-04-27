@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import webSocketService from "../services/websocketService";
 import api from "../services/apiService"; // Serviço para chamadas à API
-import { RiCheckFill, RiCheckDoubleLine } from "react-icons/ri";
 import "./Chat.css";
 
 //TODO tentar fazer com que um link para um produto crie um card para esse produto dentro do chat
@@ -99,7 +98,10 @@ const Chat = ({ loggedInUser }) => {
       if (message.sender === recipient || message.recipient === recipient) {
         setMessages((prevMessages) => [...prevMessages, message]);
       } else {
-        console.warn("Mensagem recebida, mas não pertence ao chat atual:", message);
+        console.warn(
+          "Mensagem recebida, mas não pertence ao chat atual:",
+          message
+        );
       }
     });
   }, [recipient]);
@@ -115,23 +117,33 @@ const Chat = ({ loggedInUser }) => {
     }
   }, [messages]);
 
-  // Marca mensagens como lidas após 5 segundos
+  // Marca mensagens como lidas
   useEffect(() => {
     if (messages.length > 0) {
       const unreadMessages = messages.filter((msg) => !msg.isRead);
       if (unreadMessages.length > 0) {
-        // Envia um único pedido para marcar todas as mensagens como lidas
-        api.put(`/messages/mark-all-as-read/${recipient}`).then(() => {
-          // Atualiza o estado local para refletir que todas as mensagens foram lidas
-          setMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-              !msg.isRead ? { ...msg, isRead: true } : msg
-            )
-          );
-        });
+        api.put(`/messages/mark-all-as-read/${recipient}`);
       }
     }
   }, [messages, recipient]);
+
+  useEffect(() => {
+    const markMessagesAsRead = async () => {
+      try {
+        await api.put(`/messages/mark-all-as-read/${recipient}`);
+        console.log(
+          "Mensagens marcadas como lidas para o destinatário:",
+          recipient
+        );
+      } catch (err) {
+        console.error("Erro ao marcar mensagens como lidas:", err);
+      }
+    };
+
+    if (recipient) {
+      markMessagesAsRead();
+    }
+  }, [recipient]);
 
   // Atualiza o destinatário e carrega o histórico ao selecionar um usuário
   const handleUserSelection = (user) => {
@@ -225,15 +237,6 @@ const Chat = ({ loggedInUser }) => {
                 </strong>{" "}
                 {msg.content}
                 <div className="timestamp">{msg.timestamp}</div>
-                {msg.sender === loggedInUser && (
-                  <div className="message-status">
-                    {msg.isRead ? (
-                      <RiCheckDoubleLine className="double-check" />
-                    ) : (
-                      <RiCheckFill className="single-check" />
-                    )}
-                  </div>
-                )}
               </div>
             ))}
             <div ref={messagesEndRef} />

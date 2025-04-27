@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Entity representing a chat message.
@@ -34,6 +35,7 @@ public class ChatMessageEntity implements Serializable {
     private LocalDateTime timestamp;
 
     @Column(name = "is_read", nullable = false) // Explicitly map to the "is_read" column
+    @JsonProperty("isRead") // Garante que o JSON use "isRead"
     private boolean isRead;
 
     // Getters and Setters

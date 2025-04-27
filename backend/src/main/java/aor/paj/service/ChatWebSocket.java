@@ -25,7 +25,7 @@ import jakarta.json.JsonReader;
 public class ChatWebSocket {
 
     // Stores all active WebSocket sessions mapped by username
-    private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
+    public static final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @Inject
     private ChatMessageDao chatMessageDao; // Injeta o DAO para salvar mensagens
@@ -84,6 +84,7 @@ public class ChatWebSocket {
                         .add("recipient", recipient)
                         .add("content", chatMessage)
                         .add("timestamp", LocalDateTime.now().toString())
+                        .add("isRead", false) // Mensagem enviada inicialmente não está lida
                         .build();
 
                     recipientSession.getBasicRemote().sendText(outgoingMessage.toString()); // Envia o JSON personalizado
