@@ -172,6 +172,11 @@ public class ProductService {
                 .add("title", productDto.getTitle())
                 .add("price", productDto.getPrice())
                 .add("description", productDto.getDescription())
+                .add("imagem", productDto.getImagem()) // Adiciona o campo imagem
+                .add("local", productDto.getLocal()) // Adiciona o campo local
+                .add("state", productDto.getState().toString()) // Converte para String
+                .add("category_id", productDto.getCategoryId()) // Adiciona o campo category_id
+                .add("user_id", productDto.getUserId()) // Adiciona o campo user_id
                 .build();
 
             ProductWebSocket.sendProductUpdate(String.valueOf(id), update);

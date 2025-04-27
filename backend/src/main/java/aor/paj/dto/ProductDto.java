@@ -1,7 +1,10 @@
 package aor.paj.dto;
 
+import aor.paj.entity.UserEntity;
+import aor.paj.dao.UserDao;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
 
 @XmlRootElement
 public class ProductDto {
@@ -15,6 +18,9 @@ public class ProductDto {
     private int id;
     private String userAutor;
     private EstadosDoProduto state;
+    private UserDao userDao;
+    private int userId;
+    private int categoryId;
 
     public ProductDto() {
         this.id = id;
@@ -120,5 +126,23 @@ public class ProductDto {
 
     public void setEstadoById(int stateId) {
         this.state = EstadosDoProduto.fromStateId(stateId);
+    }
+
+    @XmlElement
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    @XmlElement
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

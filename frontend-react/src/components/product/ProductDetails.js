@@ -5,6 +5,7 @@ import { userStore as useUserStore } from "../../stores/UserStore";
 import "./ProductDetails.css";
 import EditProductModal from "./EditProductModal";
 import { toast } from "react-toastify";
+import ProductWebSocket from "../../services/ProductWebSocket";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Obtém o ID do produto da URL
@@ -33,6 +34,16 @@ const ProductDetails = () => {
     };
 
     fetchProduct();
+
+    // Conecta ao WebSocket para receber atualizações em tempo real
+    ProductWebSocket.connect(id, (update) => {
+      setProduct(update); // Atualiza o estado do produto com os dados recebidos
+    });
+
+    // Desconecta do WebSocket ao desmontar o componente
+    return () => {
+      ProductWebSocket.disconnect();
+    };
   }, [id, navigate]);
 
   const handleEdit = () => {

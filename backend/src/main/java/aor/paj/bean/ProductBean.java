@@ -9,6 +9,7 @@ import aor.paj.dao.ProductDao;
 import aor.paj.dao.UserDao;
 import aor.paj.dto.EstadosDoProduto;
 import aor.paj.dto.ProductDto;
+import aor.paj.entity.CategoryEntity;
 import aor.paj.entity.ProductEntity;
 import aor.paj.entity.UserEntity;
 import jakarta.ejb.EJB;
@@ -73,7 +74,8 @@ public class ProductBean implements Serializable {
         ProductEntity productEntity = productDao.findById(id);
         if (productEntity != null) {
             productEntity.setTitle(productDto.getTitle());
-            productEntity.setCategory(categoryBean.convertCategoryDtoToCategoryEntity(productDto.getCategory()));
+            CategoryEntity category = categoryDao.findById(productDto.getCategoryId());
+            productEntity.setCategory(category);
             productEntity.setPrice(productDto.getPrice());
             productEntity.setImagem(productDto.getImagem());
             productEntity.setLocal(productDto.getLocal());
@@ -150,19 +152,24 @@ public class ProductBean implements Serializable {
         return productDtos;
     }
 
-    ProductDto convertProductEntityToProductDto(ProductEntity a) {
+    ProductDto convertProductEntityToProductDto(ProductEntity productEntity) {
         ProductDto productDto = new ProductDto();
-        productDto.setTitle(a.getTitle());
-        productDto.setDescription(a.getDescription());
-        productDto.setId(a.getId());
-        productDto.setUserAutor(a.getUserAutor().getUsername());
-        productDto.setPrice(a.getPrice());
-        productDto.setImagem(a.getImagem());
-        productDto.setLocal(a.getLocal());
-        productDto.setState(a.getState());
-        productDto.setCategory(categoryBean.convertCategoryEntityToCategoryDto(a.getCategory()));
-        return productDto;
+        productDto.setTitle(productEntity.getTitle());
+        productDto.setDescription(productEntity.getDescription());
+        productDto.setId(productEntity.getId());
+        productDto.setUserAutor(productEntity.getUserAutor().getUsername());
+        productDto.setPrice(productEntity.getPrice());
+        productDto.setImagem(productEntity.getImagem());
+        productDto.setLocal(productEntity.getLocal());
+        productDto.setState(productEntity.getState());
+        productDto.setCategory(categoryBean.convertCategoryEntityToCategoryDto(productEntity.getCategory()));
+        productDto.setCategoryId(productEntity.getCategory().getId());
 
+        // Resolve o userId usando o UserDao
+        UserEntity userEntity = userDao.findUserByUsername(productEntity.getUserAutor().getUsername());
+        productDto.setUserId(userEntity != null ? userEntity.getId() : 0);
+
+        return productDto;
     }
 
     public List<ProductDto> getAvailableProducts() {
