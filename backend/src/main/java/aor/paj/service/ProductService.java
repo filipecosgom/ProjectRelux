@@ -9,6 +9,8 @@ import aor.paj.dto.EstadosDoProduto;
 import aor.paj.dto.ProductDto;
 import aor.paj.entity.UserEntity;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -164,6 +166,16 @@ public class ProductService {
 
         boolean success = productBean.updateProduct(id, productDto);
         if (success) {
+            // Envia a notificação via WebSocket
+            JsonObject update = Json.createObjectBuilder()
+                .add("id", id)
+                .add("title", productDto.getTitle())
+                .add("price", productDto.getPrice())
+                .add("description", productDto.getDescription())
+                .build();
+
+            ProductWebSocket.sendProductUpdate(String.valueOf(id), update);
+
             return Response.status(200).entity("Produto atualizado com sucesso!").build();
         } else {
             return Response.status(401).entity("Produto não encontrado!").build();

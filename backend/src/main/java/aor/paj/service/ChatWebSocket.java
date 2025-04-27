@@ -7,6 +7,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -79,11 +80,13 @@ public class ChatWebSocket {
             if (recipientSession != null && recipientSession.isOpen()) {
                 try {
                     // Cria um JSON personalizado para o destinatário
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
                     JsonObject outgoingMessage = Json.createObjectBuilder()
                         .add("sender", username)
                         .add("recipient", recipient)
                         .add("content", chatMessage)
-                        .add("timestamp", LocalDateTime.now().toString())
+                        .add("timestamp", LocalDateTime.now().format(formatter)) // Formata a timestamp
                         .add("isRead", false) // Mensagem enviada inicialmente não está lida
                         .build();
 
