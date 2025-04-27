@@ -71,13 +71,18 @@ function AdminPanel() {
 
   const [sessionTimeout, setSessionTimeout] = useState(""); // Estado para tempo de expiração
 
+  const [editCategory, setEditCategory] = useState(null); // Categoria a ser editada
+  const [showEditCategoryModal, setShowEditCategoryModal] = useState(false); // Controle do modal
+
   // Estados para o dashboard
   const [userStats, setUserStats] = useState({ total: 0, verified: 0 });
   const [productStats, setProductStats] = useState([]);
   const [productsByUser, setProductsByUser] = useState([]);
   const [averageTimeToPurchase, setAverageTimeToPurchase] = useState(0);
   const [usersOverTime, setUsersOverTime] = useState([]);
-  const [purchasedProductsOverTime, setPurchasedProductsOverTime] = useState([]);
+  const [purchasedProductsOverTime, setPurchasedProductsOverTime] = useState(
+    []
+  );
 
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
@@ -523,6 +528,40 @@ function AdminPanel() {
     }
   };
 
+  const handleEditCategory = (category) => {
+    setEditCategory(category); // Define a categoria a ser editada
+    setShowEditCategoryModal(true); // Abre o modal
+  };
+
+  const handleSaveCategory = async (event) => {
+    event.preventDefault();
+
+    try {
+      await api.put(`/categories/${editCategory.id}`, editCategory); // Atualiza a categoria no backend
+      toast.success("Categoria atualizada com sucesso!");
+      setShowEditCategoryModal(false); // Fecha o modal
+      fetchCategories(); // Atualiza a lista de categorias
+    } catch (error) {
+      console.error("Erro ao atualizar categoria:", error.response?.data || error.message);
+      toast.error("Erro ao atualizar categoria. Tente novamente.");
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    if (!window.confirm("Tem certeza que deseja apagar esta categoria?")) {
+      return;
+    }
+
+    try {
+      await api.delete(`/categories/${categoryId}`); // Faz o request para apagar a categoria
+      toast.success("Categoria apagada com sucesso!");
+      fetchCategories(); // Atualiza a lista de categorias
+    } catch (error) {
+      console.error("Erro ao apagar categoria:", error.response?.data || error.message);
+      toast.error("Erro ao apagar categoria. Tente novamente.");
+    }
+  };
+
   return (
     <div className="admin-panel-container">
       <h1>Painel Administrativo</h1>
@@ -562,7 +601,6 @@ function AdminPanel() {
           Pesquisar Produtos de Usuário
         </button>
       </div>
-
       {/* Painel de Gerir Utilizadores */}
       {activePanel === "users" && (
         <div className="admin-panel-content">
@@ -644,7 +682,6 @@ function AdminPanel() {
           )}
         </div>
       )}
-
       {showCreateModal && (
         <div className="modal">
           <div className="modal-content">
@@ -739,7 +776,6 @@ function AdminPanel() {
           </div>
         </div>
       )}
-
       {/* Painel de Gerir Produtos */}
       {activePanel === "products" && (
         <div className="admin-panel-content">
@@ -913,7 +949,6 @@ function AdminPanel() {
           </div>
         </div>
       )}
-
       {/* Modal de Edição de Utilizador */}
       {showModal && editUser && (
         <EditUserModal
@@ -925,7 +960,6 @@ function AdminPanel() {
           error={error}
         />
       )}
-
       {/* Modal de Edição de Produto */}
       {showProductModal && editProduct && (
         <EditProductModal
@@ -938,10 +972,8 @@ function AdminPanel() {
           error={error}
         />
       )}
-
       {/* Painel de Pesquisa de Produtos de Usuário */}
       {activePanel === "user-products" && <SearchUserProductsForm />}
-
       {/* Painel de Gerir Categorias */}
       {activePanel === "categories" && (
         <div className="admin-panel-content">
@@ -949,13 +981,53 @@ function AdminPanel() {
           <ul>
             {categories.map((category) => (
               <li key={category.id}>
-                {category.name} {/* Certifique-se de usar "name" e não "nome" */}
+                {category.name}
+                <div className="category-actions">
+                  <button
+                    className="edit-button"
+                    onClick={() => handleEditCategory(category)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteCategory(category.id)}
+                  >
+                    Apagar
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
         </div>
       )}
-
+      {showEditCategoryModal && editCategory && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Editar Categoria</h3>
+            <form onSubmit={handleSaveCategory}>
+              <label>
+                Nome da Categoria:
+                <input
+                  type="text"
+                  name="name"
+                  value={editCategory.name}
+                  onChange={(e) =>
+                    setEditCategory({ ...editCategory, name: e.target.value })
+                  }
+                  required
+                />
+              </label>
+              <div className="modal-buttons">
+                <button type="submit">Salvar</button>
+                <button type="button" onClick={() => setShowEditCategoryModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {/* Configuração de Sessão */}
       <div className="session-config">
         <h3>Configuração de Sessão</h3>
@@ -969,7 +1041,6 @@ function AdminPanel() {
         />
         <button onClick={handleSaveTimeout}>Salvar</button>
       </div>
-
       {/* Dashboard de Estatísticas */}
       <div className="admin-dashboard">
         <h2>Dashboard de Estatísticas</h2>
@@ -1066,7 +1137,7 @@ function AdminPanel() {
           </LineChart>
         </div>
       </div>
-)}
+      )}
     </div>
   );
 }
