@@ -39,6 +39,7 @@ const Navbar = () => {
         try {
           const notification = JSON.parse(data); // Parse do JSON recebido
           setNotifications((prev) => [notification, ...prev]);
+          setUnreadNotificationCount((prevCount) => prevCount + 1); // Incrementa o contador
         } catch (error) {
           console.error("Erro ao processar mensagem do WebSocket:", error);
         }
@@ -134,6 +135,19 @@ const Navbar = () => {
     console.log("Notificação clicada:", notification);
   };
 
+  const handleNotificationIconClick = () => {
+    setIsNotificationPanelOpen((prev) => !prev); // Alterna o estado do painel
+    if (!isNotificationPanelOpen) {
+      // Reseta o contador de notificações não lidas ao abrir o painel
+      const resetNotifications = notifications.map((notification) => ({
+        ...notification,
+        isRead: true, // Marca todas as notificações como lidas
+      }));
+      setNotifications(resetNotifications);
+      setUnreadNotificationCount(0); // Reseta o contador de notificações não lidas
+    }
+  };
+
   const formatRelativeTime = (timestamp) => {
     // Lógica para formatar o tempo relativo
     const timeDiff = Date.now() - new Date(timestamp).getTime();
@@ -185,12 +199,12 @@ const Navbar = () => {
                 <li className="nav-item">
                   <div
                     className="notification-icon-container"
-                    onClick={() => setIsNotificationPanelOpen((prev) => !prev)}
+                    onClick={handleNotificationIconClick} // Usa a nova função
                   >
                     <FaBell className="notification-icon" />
-                    {notifications.filter((n) => !n.isRead).length > 0 && (
+                    {unreadNotificationCount > 0 && (
                       <span className="notification-badge">
-                        {notifications.filter((n) => !n.isRead).length}
+                        {unreadNotificationCount}
                       </span>
                     )}
                   </div>

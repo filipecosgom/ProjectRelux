@@ -246,3 +246,11 @@
 02:40:11.534 [main] [32mINFO[m - Login attempt for user: testUser
 02:40:11.663 [main] [32mINFO[m - Novo token gerado: SSrLYEOZBfbv9qLqCytJaTp8XlEQCQEY
 02:40:11.664 [main] [32mINFO[m - Login successful for user: testUser
+03:37:35.953 [main] [32mINFO[m - Login attempt for user: testUser
+03:37:35.973 [main] [33mWARN[m - User not found: testUser
+03:37:36.509 [main] [32mINFO[m - Login attempt for user: testUser
+03:37:36.650 [main] [33mWARN[m - Invalid password for user: testUser
+03:37:36.799 [main] [32mINFO[m - Novo token gerado: vv1AAIBSs-gTH3m2UVJ5m6zpu63-1S18
+03:37:36.956 [main] [32mINFO[m - Login attempt for user: testUser
+03:37:37.085 [main] [32mINFO[m - Novo token gerado: E15NoI5c2Dp-wfNxG9X7NqtaA9Doc2DK
+03:37:37.085 [main] [32mINFO[m - Login successful for user: testUser
