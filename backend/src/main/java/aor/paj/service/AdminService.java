@@ -47,6 +47,25 @@ public class AdminService {
         }
     }
 
+    @GET
+    @Path("/settings/session-timeout")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSessionTimeout(@HeaderParam("Authorization") String token) {
+        // Verifica se o usuário é administrador
+        if (!isAdmin(token)) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Acesso negado.").build();
+        }
+
+        try {
+            String timeoutValue = settingsDao.getSettingValue("session_timeout");
+            return Response.ok("{\"timeout\": " + timeoutValue + "}").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao obter o tempo de expiração.")
+                    .build();
+        }
+    }
+
     private boolean isAdmin(String token) {
         UserEntity loggedInUser = userBean.getUserByToken(token);
         return loggedInUser != null && loggedInUser.isAdmin();

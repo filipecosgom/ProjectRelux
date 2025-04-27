@@ -45,6 +45,10 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!inputs.username || !inputs.password) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
     try {
       console.log("Enviando dados para login:", inputs);
       const token = await loginUser(inputs.username, inputs.password);
