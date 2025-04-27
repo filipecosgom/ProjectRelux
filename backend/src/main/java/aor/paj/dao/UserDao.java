@@ -1,6 +1,8 @@
 package aor.paj.dao;
 
 import aor.paj.entity.UserEntity;
+import aor.paj.dto.TimeSeriesDto;
+import aor.paj.dto.UserProductStatsDto;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 
@@ -99,4 +101,33 @@ public class UserDao extends AbstratDao<UserEntity> {
         return null; // Retorna null se o usuário não for encontrado
     }
 }
+
+    public long countAllUsers() {
+        return em.createQuery("SELECT COUNT(u) FROM UserEntity u", Long.class).getSingleResult();
+    }
+
+    public long countVerifiedUsers() {
+        return em.createQuery("SELECT COUNT(u) FROM UserEntity u WHERE u.isVerified = true", Long.class).getSingleResult();
+    }
+
+    public List<TimeSeriesDto> getRegisteredUsersOverTime() {
+        return em.createQuery(
+            "SELECT new aor.paj.dto.TimeSeriesDto(CAST(u.registrationDate AS date), COUNT(u)) " +
+            "FROM UserEntity u GROUP BY CAST(u.registrationDate AS date) " +
+            "ORDER BY CAST(u.registrationDate AS date)",
+            TimeSeriesDto.class
+        ).getResultList();
+    }
+
+    public List<UserProductStatsDto> getProductsByUser() {
+        return em.createQuery(
+            "SELECT new aor.paj.dto.UserProductStatsDto(u.username, COUNT(p), " +
+            "SUM(CASE WHEN p.state = 'rascunho' THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN p.state = 'publicado' THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN p.state = 'reservado' THEN 1 ELSE 0 END), " +
+            "SUM(CASE WHEN p.state = 'comprado' THEN 1 ELSE 0 END)) " +
+            "FROM UserEntity u LEFT JOIN u.products p GROUP BY u.username",
+            UserProductStatsDto.class
+        ).getResultList();
+    }
 }

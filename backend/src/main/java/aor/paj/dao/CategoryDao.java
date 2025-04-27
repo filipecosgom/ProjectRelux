@@ -1,12 +1,11 @@
 package aor.paj.dao;
 
 import aor.paj.entity.CategoryEntity;
+import aor.paj.dto.CategoryDto;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 
-
 import java.util.List;
-
 
 @Stateless
 public class CategoryDao extends AbstratDao<CategoryEntity> {
@@ -46,5 +45,14 @@ public class CategoryDao extends AbstratDao<CategoryEntity> {
         if (category != null) {
             em.remove(category);
         }
+    }
+
+    public List<CategoryDto> getCategoriesByProductCount() {
+        return em.createQuery(
+            "SELECT new aor.paj.dto.CategoryDto(c.name, COUNT(p)) " +
+            "FROM CategoryEntity c LEFT JOIN c.products p " +
+            "GROUP BY c.name ORDER BY COUNT(p) DESC",
+            CategoryDto.class
+        ).getResultList();
     }
 }

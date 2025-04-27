@@ -85,6 +85,7 @@ h1 {
   border-radius: 5px;
   width: 80%;
   text-align: left;
+  min-height: 750px; /* Define a altura mínima */
   max-height: none;
   overflow-y: auto; /* Permite scroll vertical */
 }
@@ -139,11 +140,11 @@ h1 {
 
 /* Centraliza os itens da primeira coluna */
 .user-card-column-center {
-display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-gap: 10px; /* Espaçamento entre os elementos */
+  gap: 10px; /* Espaçamento entre os elementos */
   width: 100%; /* Garante que a coluna respeite a largura do card */
   box-sizing: border-box;
 }
@@ -407,7 +408,7 @@ gap: 10px; /* Espaçamento entre os elementos */
 
 .product-card-image {
   width: 100%;
-  height: 60%;
+  height: 178px;
   object-fit: contain; /* Garante que a imagem seja cortada proporcionalmente */
   border-radius: 8px;
   margin-bottom: 10px;
@@ -449,4 +450,38 @@ gap: 10px; /* Espaçamento entre os elementos */
     flex-direction: column; /* Alinha os itens em coluna */
     align-items: flex-start; /* Alinha os itens à esquerda */
   }
+}
+
+.admin-dashboard {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #4b4242;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-dashboard h2 {
+  margin-bottom: 20px;
+}
+
+.admin-dashboard > div {
+  margin-bottom: 30px;
+}
+
+.admin-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.admin-dashboard table th,
+.admin-dashboard table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.admin-dashboard table th {
+  background-color: #553333;
+  font-weight: bold;
 }

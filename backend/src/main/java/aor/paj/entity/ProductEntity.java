@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -44,6 +45,11 @@ public class ProductEntity implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "publication_date", nullable = true)
+    private LocalDateTime publicationDate;
+
+    @Column(name = "purchase_date", nullable = true)
+    private LocalDateTime purchaseDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -110,6 +116,21 @@ public class ProductEntity implements Serializable {
         this.description = description;
     }
 
+    public LocalDateTime getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(LocalDateTime publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public LocalDateTime getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
 
     public UserEntity getUserAutor() {
         return userAutor;

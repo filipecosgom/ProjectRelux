@@ -5,33 +5,40 @@ import { useProductStore } from "../stores/ProductStore";
 import CategoryManager from "../components/category/CategoryManager";
 import { FaUsersCog, FaEdit, FaTrash, FaSearch } from "react-icons/fa";
 import { TbBasketCog, TbBuildingCog } from "react-icons/tb";
-import { FaRegEyeSlash, FaEye } from "react-icons/fa";
-import api from "../services/apiService"; // Importa o serviço Axios configurado
+import api from "../services/apiService";
 import "./AdminPanel.css";
 import EditProductModal from "../components/product/EditProductModal";
 import EditUserModal from "../components/user/EditUserModal";
 import SearchUserProductsForm from "../components/admin/SearchUserProductsForm";
 import FilterDropdown from "../components/admin/FilterDropdown"; // Importa o componente de filtro
 import { toast } from "react-toastify"; // Importa o toastify
-
-// Fixme - Corrigir o CSS do UserList na Gestão de Utilizadores
-// Fixme - Update do user não está a funcionar!
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  Tooltip,
+  Legend,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 function AdminPanel() {
   const isAdmin = userStore((state) => state.isAdmin);
   const token = userStore((state) => state.token);
   const navigate = useNavigate();
   const location = useLocation();
-  const [activePanel, setActivePanel] = useState(null);
+  const [activePanel, setActivePanel] = useState("dashboard");
   const [users, setUsers] = useState([]);
   const { products, setProducts, addProduct, updateProduct, removeProduct } =
-    useProductStore(); // Usa a store de produtos
+    useProductStore();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPasswords, setShowPasswords] = useState({});
-  const [showModal, setShowModal] = useState(false); // Modal de edição de utilizador
-  const [showCreateModal, setShowCreateModal] = useState(false); // Modal de criação de utilizador
-  const [editUser, setEditUser] = useState(null); // Utilizador a ser editado
+  const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editUser, setEditUser] = useState(null);
   const [newUser, setNewUser] = useState({
     username: "",
     password: "",
@@ -41,10 +48,10 @@ function AdminPanel() {
     phone: "",
     imagem: "",
     isAdmin: false,
-  }); // Novo utilizador
-  const [editProduct, setEditProduct] = useState(null); // Produto a ser editado
-  const [showProductModal, setShowProductModal] = useState(false); // Modal de edição de produto
-  const [showCreateProductModal, setShowCreateProductModal] = useState(false); // Modal de criação de produto
+  });
+  const [editProduct, setEditProduct] = useState(null);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [showCreateProductModal, setShowCreateProductModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
     title: "",
     category: "",
@@ -63,6 +70,14 @@ function AdminPanel() {
   const [selectedState, setSelectedState] = useState(""); // Estado selecionado no filtro
 
   const [sessionTimeout, setSessionTimeout] = useState(""); // Estado para tempo de expiração
+
+  // Estados para o dashboard
+  const [userStats, setUserStats] = useState({ total: 0, verified: 0 });
+  const [productStats, setProductStats] = useState([]);
+  const [productsByUser, setProductsByUser] = useState([]);
+  const [averageTimeToPurchase, setAverageTimeToPurchase] = useState(0);
+  const [usersOverTime, setUsersOverTime] = useState([]);
+  const [purchasedProductsOverTime, setPurchasedProductsOverTime] = useState([]);
 
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
@@ -96,6 +111,52 @@ function AdminPanel() {
 
     fetchSessionTimeout();
   }, [token]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const userResponse = await api.get("/admin/stats/users");
+        setUserStats(userResponse.data);
+
+        const productResponse = await api.get("/admin/stats/products");
+        setProductStats(
+          Object.entries(productResponse.data).map(([key, value]) => ({
+            name: key,
+            value,
+          }))
+        );
+
+        const categoryResponse = await api.get("/admin/stats/categories");
+        setCategories(categoryResponse.data);
+
+        const productsByUserResponse = await api.get(
+          "/admin/stats/products-by-user"
+        );
+        setProductsByUser(productsByUserResponse.data);
+
+        const averageTimeResponse = await api.get(
+          "/admin/stats/average-time-to-purchase"
+        );
+        setAverageTimeToPurchase(
+          averageTimeResponse.data.averageTimeToPurchase
+        );
+
+        const usersOverTimeResponse = await api.get(
+          "/admin/stats/registered-users-over-time"
+        );
+        setUsersOverTime(usersOverTimeResponse.data);
+
+        const purchasedProductsResponse = await api.get(
+          "/admin/stats/purchased-products-over-time"
+        );
+        setPurchasedProductsOverTime(purchasedProductsResponse.data);
+      } catch (error) {
+        console.error("Erro ao buscar estatísticas:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const handlePanelChange = (panel) => {
     const newPanel = activePanel === panel ? null : panel;
@@ -192,6 +253,12 @@ function AdminPanel() {
     if (activePanel === "products") {
       fetchProducts();
       fetchCategories();
+    }
+  }, [activePanel]);
+
+  useEffect(() => {
+    if (activePanel === "categories") {
+      fetchCategories(); // Busca as categorias do backend
     }
   }, [activePanel]);
 
@@ -704,7 +771,7 @@ function AdminPanel() {
                     />
                     <h3>{product.title}</h3>
                     <p>
-                      <strong>Categoria:</strong> {product.category.nome}
+                      <strong>Categoria:</strong> {product.category.name}
                     </p>
                     <p>
                       <strong>Preço:</strong> {product.price} €
@@ -776,7 +843,7 @@ function AdminPanel() {
                   <option value="">Selecione uma categoria</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
-                      {category.nome}
+                      {category.name}
                     </option>
                   ))}
                 </select>
@@ -875,7 +942,19 @@ function AdminPanel() {
       {/* Painel de Pesquisa de Produtos de Usuário */}
       {activePanel === "user-products" && <SearchUserProductsForm />}
 
-      {activePanel === "categories" && <CategoryManager token={token} />}
+      {/* Painel de Gerir Categorias */}
+      {activePanel === "categories" && (
+        <div className="admin-panel-content">
+          <h2>Gerir Categorias</h2>
+          <ul>
+            {categories.map((category) => (
+              <li key={category.id}>
+                {category.name} {/* Certifique-se de usar "name" e não "nome" */}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Configuração de Sessão */}
       <div className="session-config">
@@ -890,6 +969,104 @@ function AdminPanel() {
         />
         <button onClick={handleSaveTimeout}>Salvar</button>
       </div>
+
+      {/* Dashboard de Estatísticas */}
+      <div className="admin-dashboard">
+        <h2>Dashboard de Estatísticas</h2>
+
+        {/* Estatísticas de Utilizadores */}
+        <div>
+          <h3>Utilizadores</h3>
+          <p>Total: {userStats.total}</p>
+          <p>Confirmados: {userStats.verified}</p>
+        </div>
+
+        {/* Estatísticas de Produtos por Estado */}
+        <div>
+          <h3>Produtos por Estado</h3>
+          <BarChart width={500} height={300} data={productStats}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="value" fill="#8884d8" />
+          </BarChart>
+        </div>
+
+        {/* Listagem de Categorias */}
+        <div>
+          <h3>Categorias</h3>
+          <ul>
+            {categories.map((category) => (
+              <li key={category.name}>
+                {category.name}: {category.count} produtos
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Produtos por Utilizador */}
+        <div>
+          <h3>Produtos por Utilizador</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Utilizador</th>
+                <th>Total</th>
+                <th>Rascunho</th>
+                <th>Publicado</th>
+                <th>Reservado</th>
+                <th>Comprado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productsByUser.map((user) => (
+                <tr key={user.username}>
+                  <td>{user.username}</td>
+                  <td>{user.totalProducts}</td>
+                  <td>{user.draftProducts}</td>
+                  <td>{user.publishedProducts}</td>
+                  <td>{user.reservedProducts}</td>
+                  <td>{user.purchasedProducts}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Tempo Médio para Compra */}
+        <div>
+          <h3>Tempo Médio para Compra</h3>
+          <p>{averageTimeToPurchase} dias</p>
+        </div>
+
+        {/* Gráficos Temporais */}
+        <div>
+          <h3>Utilizadores Registados ao Longo do Tempo</h3>
+          <LineChart width={500} height={300} data={usersOverTime}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="count" stroke="#8884d8" />
+          </LineChart>
+        </div>
+
+        <div>
+          <h3>Produtos Comprados ao Longo do Tempo</h3>
+          <LineChart width={500} height={300} data={purchasedProductsOverTime}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="count" stroke="#82ca9d" />
+          </LineChart>
+        </div>
+      </div>
+)}
     </div>
   );
 }
