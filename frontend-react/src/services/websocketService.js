@@ -3,6 +3,15 @@ class WebSocketService {
     this.socket = null;
     this.pingInterval = null; // Intervalo para enviar pings
     this.onMessageCallback = null; // Callback para mensagens recebidas
+    this.currentRecipient = null; // Destinatário atualmente selecionado
+  }
+
+  /**
+   * Define o destinatário atual.
+   * @param {string} recipient - Nome do destinatário atualmente selecionado.
+   */
+  setRecipient(recipient) {
+    this.currentRecipient = recipient;
   }
 
   /**
@@ -30,13 +39,29 @@ class WebSocketService {
 
     this.socket.onmessage = (event) => {
       console.log("Mensagem recebida do WebSocket:", event.data);
-      if (this.onMessageCallback) {
-        this.onMessageCallback(event.data);
+      const message = JSON.parse(event.data);
+
+      // Verifica se a mensagem é destinada ao destinatário atualmente selecionado
+      if (
+        message.sender === this.currentRecipient ||
+        message.recipient === this.currentRecipient
+      ) {
+        if (this.onMessageCallback) {
+          this.onMessageCallback(message);
+        }
+      } else {
+        console.warn(
+          "Mensagem ignorada, não é para o destinatário atual:",
+          message
+        );
       }
     };
 
     this.socket.onclose = (event) => {
-      console.log("Conexão WebSocket fechada. Estado:", this.socket.readyState); // Deve ser 3 (CLOSED)
+      console.log(
+        "Conexão WebSocket fechada. Estado:",
+        this.socket.readyState
+      ); // Deve ser 3 (CLOSED)
     };
 
     this.socket.onerror = (error) => {
@@ -47,7 +72,6 @@ class WebSocketService {
 
   /**
    * Envia uma mensagem para o WebSocket.
-   * @param {string} recipient - Nome do destinatário.
    * @param {string} message - Conteúdo da mensagem.
    */
   sendMessage(message) {

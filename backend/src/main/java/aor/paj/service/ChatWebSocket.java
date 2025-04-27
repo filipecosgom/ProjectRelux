@@ -64,7 +64,7 @@ public class ChatWebSocket {
             chatMessageEntity.setContent(chatMessage);
             chatMessageEntity.setTimestamp(LocalDateTime.now());
             chatMessageEntity.setRead(false); // Define como não lida inicialmente
-            // chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
+            //chatMessageDao.persist(chatMessageEntity); // Salva no banco de dados
 
             // Envia uma notificação para o destinatário
             NotificationWebSocket.getInstance().sendNotification(
@@ -78,7 +78,15 @@ public class ChatWebSocket {
             Session recipientSession = sessions.get(recipient);
             if (recipientSession != null && recipientSession.isOpen()) {
                 try {
-                    recipientSession.getBasicRemote().sendText(message); // Envia o JSON original
+                    // Cria um JSON personalizado para o destinatário
+                    JsonObject outgoingMessage = Json.createObjectBuilder()
+                        .add("sender", username)
+                        .add("recipient", recipient)
+                        .add("content", chatMessage)
+                        .add("timestamp", LocalDateTime.now().toString())
+                        .build();
+
+                    recipientSession.getBasicRemote().sendText(outgoingMessage.toString()); // Envia o JSON personalizado
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

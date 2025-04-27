@@ -94,6 +94,20 @@ const Chat = ({ loggedInUser }) => {
     }
   }, [loggedInUser, recipient]);
 
+  useEffect(() => {
+    webSocketService.onMessage((message) => {
+      if (message.sender === recipient || message.recipient === recipient) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      } else {
+        console.warn("Mensagem recebida, mas não pertence ao chat atual:", message);
+      }
+    });
+  }, [recipient]);
+
+  useEffect(() => {
+    webSocketService.setRecipient(recipient);
+  }, [recipient]);
+
   // Faz scroll para o final da lista de mensagens
   useEffect(() => {
     if (messagesEndRef.current) {
