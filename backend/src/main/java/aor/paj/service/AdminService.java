@@ -1,10 +1,13 @@
 package aor.paj.service;
 
 import aor.paj.dao.SettingsDao;
+import aor.paj.entity.UserEntity;
+import aor.paj.bean.UserBean;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.Map;
 
 @Path("/admin")
 @Produces(MediaType.APPLICATION_JSON)
@@ -14,18 +17,29 @@ public class AdminService {
     @Inject
     private SettingsDao settingsDao;
 
+    @Inject
+    private UserBean userBean;
+
     @PUT
     @Path("/settings/session-timeout")
-    public Response updateSessionTimeout(@HeaderParam("Authorization") String token, String timeout) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateSessionTimeout(@HeaderParam("Authorization") String token, Map<String, Object> body) {
         // Verifica se o usuário é administrador
         if (!isAdmin(token)) {
             return Response.status(Response.Status.FORBIDDEN).entity("Acesso negado.").build();
         }
 
         try {
+            // Extrai o valor de timeout do corpo da requisição
+            int timeoutValue = (int) body.get("timeout");
+
             // Atualiza o tempo de expiração no banco de dados
-            settingsDao.updateSetting("session_timeout", timeout);
+            settingsDao.updateSetting("session_timeout", String.valueOf(timeoutValue));
             return Response.ok("Tempo de expiração atualizado com sucesso.").build();
+        } catch (ClassCastException | NullPointerException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O valor de timeout deve ser um número inteiro.")
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao atualizar o tempo de expiração.")
@@ -34,9 +48,7 @@ public class AdminService {
     }
 
     private boolean isAdmin(String token) {
-        // Lógica para verificar se o token pertence a um administrador
-        // Decodifique o token JWT e verifique a role do usuário
-        // Exemplo simplificado:
-        return token != null && token.contains("admin");
+        UserEntity loggedInUser = userBean.getUserByToken(token);
+        return loggedInUser != null && loggedInUser.isAdmin();
     }
 }

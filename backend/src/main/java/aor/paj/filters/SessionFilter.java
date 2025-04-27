@@ -7,9 +7,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import jakarta.inject.Inject;
+import aor.paj.dao.SettingsDao; // Adjust the package path to match the actual location of SettingsDao
 
 @WebFilter("/*")
 public class SessionFilter implements Filter {
+
+    @Inject
+    private SettingsDao settingsDao;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -40,8 +46,15 @@ public class SessionFilter implements Filter {
     }
 
     private int getSessionTimeoutFromSettings() {
-        // Obtenha o tempo de expiração da tabela settings
-        return 30; // Exemplo
+        String timeoutValue = settingsDao.getSettingValue("session_timeout");
+        try {
+            int timeout = Integer.parseInt(timeoutValue);
+            System.out.println("Tempo de expiração configurado: " + timeout + " minutos");
+            return timeout;
+        } catch (NumberFormatException e) {
+            System.out.println("Valor inválido no banco de dados. Usando valor padrão: 30 minutos");
+            return 30; // Valor padrão
+        }
     }
 
     private void updateLastAccess(String token) {

@@ -3,6 +3,7 @@ package aor.paj.dao;
 
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
+import aor.paj.entity.SettingsEntity;
 
 @Stateless
 public class SettingsDao extends AbstratDao<SettingsEntity> {
@@ -26,6 +27,16 @@ public class SettingsDao extends AbstratDao<SettingsEntity> {
                                    .getSingleResult();
         if (setting != null) {
             setting.setValue(value);
+            em.merge(setting);
+        }
+    }
+
+    public void updateSetting(String key, int value) {
+        SettingsEntity setting = em.createQuery("SELECT s FROM SettingsEntity s WHERE s.key = :key", SettingsEntity.class)
+                                   .setParameter("key", key)
+                                   .getSingleResult();
+        if (setting != null) {
+            setting.setValue(String.valueOf(value)); // Converte o inteiro para string antes de armazenar
             em.merge(setting);
         }
     }

@@ -62,6 +62,8 @@ function AdminPanel() {
 
   const [selectedState, setSelectedState] = useState(""); // Estado selecionado no filtro
 
+  const [sessionTimeout, setSessionTimeout] = useState(""); // Estado para tempo de expiração
+
   // Redireciona para a homepage se o usuário não for admin
   useEffect(() => {
     if (!isAdmin) {
@@ -76,6 +78,24 @@ function AdminPanel() {
       setActivePanel(panelFromUrl);
     }
   }, [location.search]);
+
+  useEffect(() => {
+    const fetchSessionTimeout = async () => {
+      try {
+        const response = await api.get("/admin/settings/session-timeout", {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setSessionTimeout(response.data.timeout); // Atualiza o estado com o valor do timeout
+      } catch (error) {
+        console.error("Erro ao buscar o tempo de expiração:", error);
+        toast.error("Erro ao carregar o tempo de expiração.");
+      }
+    };
+
+    fetchSessionTimeout();
+  }, [token]);
 
   const handlePanelChange = (panel) => {
     const newPanel = activePanel === panel ? null : panel;
@@ -411,6 +431,31 @@ function AdminPanel() {
     fetchProducts();
   }, [setProducts]);
 
+  const handleSaveTimeout = async () => {
+    try {
+      // Converte o valor de sessionTimeout para inteiro
+      const timeoutValue = parseInt(sessionTimeout, 10);
+
+      if (isNaN(timeoutValue) || timeoutValue <= 0) {
+        toast.error("O valor de timeout deve ser um número inteiro positivo.");
+        return;
+      }
+
+      await api.put(
+        "/admin/settings/session-timeout",
+        { timeout: timeoutValue }, // Envia como número inteiro
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      toast.success("Tempo de expiração atualizado!");
+    } catch (error) {
+      toast.error("Erro ao atualizar o tempo de expiração.");
+    }
+  };
+
   return (
     <div className="admin-panel-container">
       <h1>Painel Administrativo</h1>
@@ -503,8 +548,7 @@ function AdminPanel() {
                   {/* Segunda Coluna */}
                   <div className="user-card-column">
                     <p>
-                      <strong>Nome:</strong> {user.firstName}{" "}
-                      {user.lastName}
+                      <strong>Nome:</strong> {user.firstName} {user.lastName}
                     </p>
                     <p>
                       <strong>Email:</strong> {user.email}
@@ -832,6 +876,20 @@ function AdminPanel() {
       {activePanel === "user-products" && <SearchUserProductsForm />}
 
       {activePanel === "categories" && <CategoryManager token={token} />}
+
+      {/* Configuração de Sessão */}
+      <div className="session-config">
+        <h3>Configuração de Sessão</h3>
+        <p>Tempo atual de expiração: {sessionTimeout} minutos</p>
+        <input
+          type="number"
+          value={sessionTimeout}
+          onChange={(e) => setSessionTimeout(e.target.value)}
+          placeholder="Tempo de expiração (minutos)"
+          min="1" // Garante que o valor mínimo seja 1
+        />
+        <button onClick={handleSaveTimeout}>Salvar</button>
+      </div>
     </div>
   );
 }

@@ -18,85 +18,88 @@ import Chat from "./pages/Chat";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
-import { userStore } from "./stores/UserStore"; // Importa a store do usuário
+import { userStore } from "./stores/UserStore";
+import SessionManager from "./components/SessionManager"; // Ajuste o caminho conforme necessário
 
 function App() {
   const { username } = userStore(); // Obtém o username do usuário logado da store
 
   return (
     <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Breadcrumbs />
-                <ProductList />
-              </>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/profile/:username"
-            element={
-              <>
-                <Breadcrumbs />
-                <UserProfile />
-              </>
-            }
-          />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route
-            path="/users"
-            element={
-              <>
-                <Breadcrumbs />
-                <UserList />
-              </>
-            }
-          />
-          <Route
-            path="/profile/:username"
-            element={
-              <>
-                <Breadcrumbs />
-                <Profile />
-              </>
-            }
-          />
-          <Route
-            path="/product/:id"
-            element={
-              <>
-                <Breadcrumbs />
-                <ProductDetails />
-              </>
-            }
-          />
-          <Route
-            path="/category/:categoryId"
-            element={
-              <>
-                <Breadcrumbs />
-                <CategoryProducts />
-              </>
-            }
-          />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/chat" element={<Chat loggedInUser={username} />} />
-          <Route
-            path="/chat/:username"
-            element={<Chat loggedInUser={username} />} // Passa o username da store como prop
-          />
-        </Routes>
-        <Footer />
-        <ToastContainer theme="dark" />
-      </div>
+      <SessionManager>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <ProductList />
+                </>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile/:username"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <UserProfile />
+                </>
+              }
+            />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route
+              path="/users"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <UserList />
+                </>
+              }
+            />
+            <Route
+              path="/profile/:username"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <Profile />
+                </>
+              }
+            />
+            <Route
+              path="/product/:id"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <ProductDetails />
+                </>
+              }
+            />
+            <Route
+              path="/category/:categoryId"
+              element={
+                <>
+                  <Breadcrumbs />
+                  <CategoryProducts />
+                </>
+              }
+            />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/chat" element={<Chat loggedInUser={username} />} />
+            <Route
+              path="/chat/:username"
+              element={<Chat loggedInUser={username} />}
+            />
+          </Routes>
+          <Footer />
+          <ToastContainer theme="dark" />
+        </div>
+      </SessionManager>
     </Router>
   );
 }
