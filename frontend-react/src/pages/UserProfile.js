@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom"; // Adicione useNavigate para redirecionar
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts"; // Import Recharts components
+import { BsChatLeftTextFill } from "react-icons/bs"; // Importa o ícone de chat
+import { FaTools } from "react-icons/fa"; // Importa o ícone de ferramentas
 import api from "../services/apiService";
 import EditUserModal from "../components/user/EditUserModal";
 import Breadcrumbs from "../components/navbar/Breadcrumbs";
@@ -13,6 +15,9 @@ function UserProfile() {
   const [productStates, setProductStates] = useState([]); // Estado para os estados dos produtos
   const [showEditModal, setShowEditModal] = useState(false);
   const [error, setError] = useState(null);
+
+  const loggedInUser = sessionStorage.getItem("username"); // Obtém o utilizador logado do sessionStorage
+  const navigate = useNavigate(); // Para redirecionar ao iniciar o chat
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -38,10 +43,10 @@ function UserProfile() {
         setUserProducts(response.data); // Armazena os produtos no estado
 
         // Calcula os estados dos produtos
-const states = response.data.reduce((acc, product) => {
-  acc[product.state] = (acc[product.state] || 0) + 1; // Usa o campo correto "state"
-  return acc;
-}, {});
+        const states = response.data.reduce((acc, product) => {
+          acc[product.state] = (acc[product.state] || 0) + 1; // Usa o campo correto "state"
+          return acc;
+        }, {});
         const stateData = Object.keys(states).map((key) => ({
           name: key,
           value: states[key],
@@ -70,6 +75,11 @@ const states = response.data.reduce((acc, product) => {
     setShowEditModal(true);
   };
 
+  const handleSendMessage = () => {
+    // Redireciona para a página de chat com o utilizador
+    navigate(`/chat/${username}`);
+  };
+
   return (
     <div className="user-profile-container">
       <h1>Perfil de {userProfile.username}</h1>
@@ -79,9 +89,28 @@ const states = response.data.reduce((acc, product) => {
       </p>
       <p>Email: {userProfile.email}</p>
       <p>Telefone: {userProfile.phone}</p>
-      {userProfile.canEdit && (
-        <button onClick={handleEditProfile}>Editar Perfil</button>
-      )}
+
+      {/* Botões de editar perfil e enviar mensagem */}
+      <div className="profile-actions">
+        {userProfile.canEdit && (
+          <button className="edit-profile-button" onClick={handleEditProfile}>
+            <FaTools size={16} style={{ marginRight: "5px" }} />
+            Editar Perfil
+          </button>
+        )}
+        {/* Botões de enviar mensagem */}
+        {loggedInUser !== username && (
+          <button
+            className="send-message-button"
+            onClick={handleSendMessage}
+            title={`Enviar mensagem para ${username}`}
+          >
+            <BsChatLeftTextFill size={20} />
+            <span> Enviar mensagem</span>
+          </button>
+        )}
+      </div>
+
       {showEditModal && (
         <EditUserModal
           user={userProfile}

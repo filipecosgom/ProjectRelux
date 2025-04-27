@@ -154,3 +154,53 @@
   justify-content: center;
   align-items: center;
 }
+
+/* Ações do perfil */
+.profile-actions {
+  display: flex;
+  gap: 10px; /* Espaçamento entre os botões */
+  margin-top: 20px;
+}
+
+.edit-profile-button {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espaçamento entre o ícone e o texto */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-profile-button:hover {
+  background-color: #0056b3;
+}
+
+.send-message-button {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Espaçamento entre o ícone e o texto */
+  background-color: transparent;
+  color: #007bff;
+  border: 0px solid #007bff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.send-message-button:hover {
+  background-color: rgba(
+    0,
+    123,
+    255,
+    0.1
+  ); /* Fundo levemente azul ao passar o mouse */
+}
+
+.send-message-button span {
+  font-size: 14px;
+}
