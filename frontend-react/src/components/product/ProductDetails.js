@@ -34,17 +34,20 @@ const ProductDetails = () => {
     };
 
     fetchProduct();
+  }, [id, navigate]);
 
-    // Conecta ao WebSocket para receber atualizações em tempo real
+  useEffect(() => {
     ProductWebSocket.connect(id, (update) => {
-      setProduct(update); // Atualiza o estado do produto com os dados recebidos
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        ...update, // Mescla os dados recebidos com o estado atual
+      }));
     });
 
-    // Desconecta do WebSocket ao desmontar o componente
     return () => {
       ProductWebSocket.disconnect();
     };
-  }, [id, navigate]);
+  }, [id]);
 
   const handleEdit = () => {
     setEditProduct(product); // Define o produto atual como o produto a ser editado
