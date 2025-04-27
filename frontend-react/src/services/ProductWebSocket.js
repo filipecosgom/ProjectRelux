@@ -4,7 +4,10 @@ class ProductWebSocket {
   }
 
   connect(productId, onMessageCallback) {
-    this.socket = new WebSocket(`ws://localhost:8080/product/${productId}`);
+    // Adicione o contexto da aplicação ao URL
+    this.socket = new WebSocket(
+      `ws://localhost:8080/filipe-proj5/product/${productId}`
+    );
 
     this.socket.onopen = () => {
       console.log(`Conectado ao WebSocket do produto ${productId}`);

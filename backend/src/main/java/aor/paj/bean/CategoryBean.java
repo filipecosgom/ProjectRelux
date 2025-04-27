@@ -35,14 +35,14 @@ public class CategoryBean implements Serializable {
     public CategoryEntity convertCategoryDtoToCategoryEntity(CategoryDto categoryDto) {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setId(categoryDto.getId());
-        categoryEntity.setName(categoryDto.getNome());
+        categoryEntity.setName(categoryDto.getName());
         return categoryEntity;
     }
 
     public CategoryDto convertCategoryEntityToCategoryDto(CategoryEntity categoryEntity) {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(categoryEntity.getId());
-        categoryDto.setNome(categoryEntity.getName());
+        categoryDto.setName(categoryEntity.getName());
         return categoryDto;
     }
 

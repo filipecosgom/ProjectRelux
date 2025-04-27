@@ -109,7 +109,7 @@ const ProductDetails = () => {
       <div className="product-info-column">
         <h1>{product.title}</h1>
         <p>
-          <strong>Categoria:</strong> {product.category.nome}
+          <strong>Categoria:</strong> {product.category ? product.category.name : "Sem categoria"}
         </p>
         <p>
           <strong>Preço:</strong> {product.price}€

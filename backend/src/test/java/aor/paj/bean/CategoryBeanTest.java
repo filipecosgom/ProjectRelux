@@ -25,7 +25,7 @@ public class CategoryBeanTest {
         // Preparar (Arrange): Configura os dados de entrada para o teste
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(1);
-        categoryDto.setNome("Test Category");
+        categoryDto.setName("Test Category");
 
         CategoryEntity categoryEntity = categoryBean.convertCategoryDtoToCategoryEntity(categoryDto);
 
@@ -45,6 +45,6 @@ public class CategoryBeanTest {
 
         // Verificação se o resultado é o esperado
         assertEquals(2, categoryDto.getId(), "O ID da categoria deve ser 2");
-        assertEquals("Another Category", categoryDto.getNome(), "O nome da categoria deve ser 'Another Category'");
+        assertEquals("Another Category", categoryDto.getName(), "O nome da categoria deve ser 'Another Category'");
     }
 }

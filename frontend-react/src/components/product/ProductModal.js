@@ -11,7 +11,7 @@ Modal.setAppElement("#root"); // Define o elemento principal para acessibilidade
 const ProductModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
-    category: { id: "", nome: "" },
+    category: { id: "", name: "" },
     price: "",
     imagem: "",
     local: "",
@@ -46,7 +46,7 @@ const ProductModal = ({ isOpen, onClose }) => {
         const response = await api.get("/categories/all"); // Faz o request com o serviço Axios
         // Ordena as categorias por nome antes de definir no estado
         const sortedCategories = response.data.sort((a, b) =>
-          a.nome.localeCompare(b.nome)
+          a.name.localeCompare(b.name)
         );
         setCategories(sortedCategories);
       } catch (error) {
@@ -70,7 +70,7 @@ const ProductModal = ({ isOpen, onClose }) => {
       );
       setFormData((prev) => ({
         ...prev,
-        category: { id: selectedCategory.id, nome: selectedCategory.nome },
+        category: { id: selectedCategory.id, name: selectedCategory.name },
       }));
     } else if (name === "price") {
       // Validação do preço
@@ -161,7 +161,7 @@ const ProductModal = ({ isOpen, onClose }) => {
             <option value="">Selecione uma categoria</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
-                {category.nome}
+                {category.name}
               </option>
             ))}
           </select>

@@ -6,16 +6,15 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CategoryDto {
     private int id;
-    private String nome;
+    private String name; // Renomeado de "nome" para "name"
 
     public CategoryDto() {
 
     }
 
-    public CategoryDto(int id, String nome) {
+    public CategoryDto(int id, String name) {
         this.id = id;
-        this.nome = nome;
-
+        this.name = name;
     }
 
     @XmlElement
@@ -29,12 +28,12 @@ public class CategoryDto {
     }
 
     @XmlElement
-    public String getNome() {
-        return nome;
+    public String getName() { // Renomeado de "getNome" para "getName"
+        return name;
     }
 
-    public CategoryDto setNome(String nome) {
-        this.nome = nome;
+    public CategoryDto setName(String name) { // Renomeado de "setNome" para "setName"
+        this.name = name;
         return this;
     }
 }

@@ -89,7 +89,7 @@ public class CategoryService {
         }
 
         // Atualiza o nome da categoria
-        category.setName(categoryDto.getNome());
+        category.setName(categoryDto.getName());
         categoryDao.update(category);
 
         return Response.status(Response.Status.OK).entity("Categoria atualizada com sucesso!").build();

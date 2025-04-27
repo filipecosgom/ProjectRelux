@@ -82,7 +82,7 @@ const EditProductModal = ({
               <option value="">Selecione uma categoria</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.nome}
+                  {category.name}
                 </option>
               ))}
             </select>
