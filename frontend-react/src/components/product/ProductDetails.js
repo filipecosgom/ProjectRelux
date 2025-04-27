@@ -112,7 +112,8 @@ const ProductDetails = () => {
       <div className="product-info-column">
         <h1>{product.title}</h1>
         <p>
-          <strong>Categoria:</strong> {product.category ? product.category.name : "Sem categoria"}
+          <strong>Categoria:</strong>{" "}
+          {product.category ? product.category.name : "Sem categoria"}
         </p>
         <p>
           <strong>Preço:</strong> {product.price}€
@@ -141,7 +142,9 @@ const ProductDetails = () => {
                 if (username) {
                   setShowConfirmation(true);
                 } else {
-                  toast.error("Necessita estar logado para comprar. Faça login aqui");
+                  toast.error(
+                    "Necessita estar logado para comprar. Faça login aqui"
+                  );
                   navigate("/Login");
                 }
               }}

@@ -50,7 +50,24 @@ function App() {
             }
           />
           <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/users" element={<UserList />} />
+          <Route
+            path="/users"
+            element={
+              <>
+                <Breadcrumbs />
+                <UserList />
+              </>
+            }
+          />
+          <Route
+            path="/profile/:username"
+            element={
+              <>
+                <Breadcrumbs />
+                <Profile />
+              </>
+            }
+          />
           <Route
             path="/product/:id"
             element={

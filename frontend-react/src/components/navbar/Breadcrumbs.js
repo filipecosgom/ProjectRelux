@@ -4,7 +4,7 @@ import api from "../../services/apiService"; // Importa o serviço Axios configu
 import "./Breadcrumbs.css";
 
 const Breadcrumbs = () => {
-  const { id, categoryId } = useParams(); // Obtém o ID do produto ou da categoria da URL
+  const { id, categoryId, username } = useParams(); // Obtém os parâmetros da URL
   const [product, setProduct] = useState(null);
   const [category, setCategory] = useState(null);
 
@@ -44,6 +44,36 @@ const Breadcrumbs = () => {
     }
   }, [id, categoryId]);
 
+  // Renderizar breadcrumbs para a página de utilizadores
+  if (window.location.pathname === "/users") {
+    return (
+      <div className="breadcrumbs">
+        <Link to="/" className="breadcrumb-link">
+          Home
+        </Link>
+        <span className="breadcrumb-separator">/</span>
+        <span className="breadcrumb-current">Utilizadores</span>
+      </div>
+    );
+  }
+
+  // Renderizar breadcrumbs para a página de perfil do usuário
+  if (username) {
+    return (
+      <div className="breadcrumbs">
+        <Link to="/" className="breadcrumb-link">
+          Home
+        </Link>
+        <span className="breadcrumb-separator">/</span>
+        <Link to="/users" className="breadcrumb-link">
+          Utilizadores
+        </Link>
+        <span className="breadcrumb-separator">/</span>
+        <span className="breadcrumb-current">{username}</span>
+      </div>
+    );
+  }
+
   // Renderizar breadcrumbs para a página inicial
   if (!id && !categoryId) {
     return (
@@ -80,8 +110,7 @@ const Breadcrumbs = () => {
           to={`/category/${product.category.id}`} // Redireciona para a rota da categoria
           className="breadcrumb-link"
         >
-          {product.category.name}{" "}
-          {/* Certifique-se de que o backend retorna "nome" */}
+          {product.category.name}
         </Link>
         <span className="breadcrumb-separator">/</span>
         <span className="breadcrumb-current">{product.title}</span>

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts"; // Import Recharts components
 import api from "../services/apiService";
 import EditUserModal from "../components/user/EditUserModal";
+import Breadcrumbs from "../components/navbar/Breadcrumbs";
 import "./UserProfile.css";
 
 function UserProfile() {
